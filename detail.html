@@ -9,14 +9,14 @@
 
   <style>
     :root {
-        --bg-main: #F9F1E2; /* Cream dari palette */
+        --bg-main: #F9F1E2;
         --bg-card: #FFFFFF;
-        --bg-item: #EFE4D2; /* Light Sand/Beige */
-        --color-primary: #A3496C; /* Plum / Muted Pink */
+        --bg-item: #EFE4D2;
+        --color-primary: #A3496C;
         --color-primary-hover: #853A55;
-        --text-main: #543A2A; /* Dark Brown */
-        --text-muted: #886144; /* Medium Brown */
-        --border-color: #DFBE8D; /* Ochre / Sand */
+        --text-main: #543A2A;
+        --text-muted: #886144;
+        --border-color: #DFBE8D;
     }
 
     body { 
@@ -43,113 +43,29 @@
       border: 1px solid var(--border-color);
     }
     
-    .profile-header {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-bottom: 32px;
-      text-align: center;
-    }
-
-    .logo-image {
-      height: 80px;
-      width: 80px;
-      border-radius: 50%;
-      object-fit: contain;
-      border: 2px solid var(--border-color);
-      padding: 4px;
-      background-color: var(--bg-card);
-      margin-bottom: 20px;
-      box-shadow: 0 8px 25px rgba(163, 73, 108, 0.15);
-    }
-
+    .profile-header { display: flex; flex-direction: column; align-items: center; margin-bottom: 32px; text-align: center; }
+    .logo-image { height: 80px; width: 80px; border-radius: 50%; object-fit: contain; border: 2px solid var(--border-color); padding: 4px; background-color: var(--bg-card); margin-bottom: 20px; box-shadow: 0 8px 25px rgba(163, 73, 108, 0.15); }
     h1 { margin: 0 0 4px 0; font-size: 24px; font-weight: 700; letter-spacing: -0.5px; }
     .subtitle { color: var(--text-muted); margin: 0; font-size: 14px; font-weight: 500; }
 
-    .data-list {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      margin-bottom: 32px;
-    }
-    
-    .data-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 18px 24px;
-      border-radius: 20px;
-      background: var(--bg-item);
-      border: 1px solid transparent;
-      transition: all 0.2s ease;
-    }
-    
-    .data-item:hover {
-      border-color: var(--color-primary);
-      background: var(--bg-main);
-    }
+    .data-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px; }
+    .data-item { display: flex; justify-content: space-between; align-items: center; padding: 18px 24px; border-radius: 20px; background: var(--bg-item); border: 1px solid transparent; transition: all 0.2s ease; }
+    .data-item:hover { border-color: var(--color-primary); background: var(--bg-main); }
+    .data-label { font-size: 13px; font-weight: 500; color: var(--text-muted); }
+    .data-value { color: var(--text-main); font-weight: 600; font-size: 14px; text-align: right; }
 
-    .data-label { 
-      font-size: 13px;
-      font-weight: 500; 
-      color: var(--text-muted); 
-    }
+    #userPasswordInput { background-color: transparent; border: none; outline: none; color: var(--text-main); font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600; text-align: right; width: 140px; pointer-events: none; letter-spacing: 2px; }
     
-    .data-value { 
-      color: var(--text-main); 
-      font-weight: 600;
-      font-size: 14px;
-      text-align: right;
-    }
-
-    #userPasswordInput {
-      background-color: transparent;
-      border: none;
-      outline: none;
-      color: var(--text-main);
-      font-family: 'Inter', sans-serif;
-      font-size: 14px;
-      font-weight: 600;
-      text-align: right;
-      width: 140px;
-      pointer-events: none;
-      letter-spacing: 2px;
-    }
-    
-    .status-badge {
-      font-weight: 600;
-      padding: 6px 16px;
-      border-radius: 100px;
-      font-size: 12px;
-    }
+    .status-badge { font-weight: 600; padding: 6px 16px; border-radius: 100px; font-size: 12px; }
     .status-pending { background-color: rgba(245, 158, 11, 0.15); color: #d97706; }
     .status-verified { background-color: rgba(16, 185, 129, 0.15); color: #059669; }
+    .status-gagal { background-color: rgba(239, 68, 68, 0.15); color: #DC2626; } /* TAMBAHAN UNTUK GAGAL */
 
-    .toggle-btn {
-      background: none; border: none; cursor: pointer; padding: 4px;
-      color: var(--text-muted); transition: color 0.2s ease; margin-left: 8px;
-    }
+    .toggle-btn { background: none; border: none; cursor: pointer; padding: 4px; color: var(--text-muted); transition: color 0.2s ease; margin-left: 8px; }
     .toggle-btn:hover { color: var(--color-primary); }
     
-    .logout-button { 
-      background: transparent;
-      color: var(--color-primary); 
-      padding: 16px; 
-      border: 1px solid var(--color-primary); 
-      border-radius: 100px; 
-      cursor: pointer; 
-      font-size: 14px; 
-      font-weight: 600; 
-      transition: all 0.2s ease;
-      width: 100%;
-      text-align: center;
-    }
-    
-    .logout-button:hover { 
-      background: rgba(163, 73, 108, 0.08); 
-      border-color: var(--color-primary-hover);
-      color: var(--color-primary-hover);
-    }
+    .logout-button { background: transparent; color: var(--color-primary); padding: 16px; border: 1px solid var(--color-primary); border-radius: 100px; cursor: pointer; font-size: 14px; font-weight: 600; transition: all 0.2s ease; width: 100%; text-align: center; }
+    .logout-button:hover { background: rgba(163, 73, 108, 0.08); border-color: var(--color-primary-hover); color: var(--color-primary-hover); }
 
     @media (max-width: 480px) {
       .dashboard-card { padding: 30px 20px; }
@@ -172,6 +88,12 @@
 
   <div class="data-list" id="userDetails">
     
+    <!-- Alasan Container (Sembunyi secara default) -->
+    <div class="data-item" id="alasanContainer" style="display: none; border-color: #EF4444; background-color: #FEF2F2;">
+        <span class="data-label" style="color: #DC2626;">Alasan Tidak Lolos</span>
+        <span id="userAlasan" class="data-value" style="color: #B91C1C;">Memuat...</span>
+    </div>
+
     <div class="data-item">
         <span class="data-label">Status Seleksi</span>
         <div id="userStatus" class="data-value"><span class="status-badge status-pending">Memuat...</span></div>
@@ -195,6 +117,11 @@
     <div class="data-item">
         <span class="data-label">Nomor Kontak WhatsApp</span>
         <span id="userTelepon" class="data-value">Memuat...</span>
+    </div>
+
+    <div class="data-item">
+        <span class="data-label">Jenis Kelamin</span>
+        <span id="userJK" class="data-value">Memuat...</span>
     </div>
 
     <div class="data-item">
@@ -256,18 +183,31 @@
       try {
           const user = JSON.parse(userDataString);
           
-         document.getElementById('userName').textContent = user.nama || '-';
+          document.getElementById('userName').textContent = user.nama || '-';
           document.getElementById('userSekolah').textContent = user.asalSekolah || '-';
           document.getElementById('userTelepon').textContent = user.nomorTelepon || '-';
           document.getElementById('userNik').textContent = user.nik || '-';
+          document.getElementById('userJK').textContent = user.jenisKelamin || '-';
           document.getElementById('userTTL').textContent = user.tempatLahir || '-';
           document.getElementById('userUsia').textContent = (user.usia ? user.usia + ' Tahun' : '-');
           document.getElementById('userFisik').textContent = (user.tinggi ? user.tinggi + ' cm' : '-') + ' / ' + (user.berat ? user.berat + ' kg' : '-');
           
+          // Penentuan Status dan Alasan
           const status = user.status ? String(user.status).trim() : 'Menunggu Verifikasi';
-          let badgeClass = status.toLowerCase().includes('terverifikasi') ? 'status-verified' : 'status-pending';
+          let badgeClass = 'status-pending';
+          
+          if (status.toLowerCase() === 'lolos' || status.toLowerCase() === 'terverifikasi') {
+              badgeClass = 'status-verified';
+          } else if (status.toLowerCase() === 'tidak lolos' || status.toLowerCase() === 'gagal') {
+              badgeClass = 'status-gagal';
+              
+              // Tampilkan kotak alasan jika gagal
+              const alasanContainer = document.getElementById('alasanContainer');
+              alasanContainer.style.display = 'flex';
+              document.getElementById('userAlasan').textContent = user.alasan ? user.alasan : 'Tidak memenuhi kualifikasi / Tidak ada keterangan dari admin.';
+          }
+          
           userStatusElement.innerHTML = `<span class="status-badge ${badgeClass}">${status}</span>`;
-
           passwordInput.value = user.password || 'Tidak tersedia';
           document.getElementById('pageTitle').textContent = `Halo, ${user.nama.split(' ')[0]}`;
           

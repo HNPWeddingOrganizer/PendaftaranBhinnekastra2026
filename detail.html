@@ -9,6 +9,7 @@
   
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 
   <style>
     :root {
@@ -47,7 +48,25 @@
     }
     
     .profile-header { display: flex; flex-direction: column; align-items: center; margin-bottom: 32px; text-align: center; }
-    .logo-image { height: 80px; width: 80px; border-radius: 50%; object-fit: cover; border: 2px solid var(--border-color); padding: 2px; background-color: var(--bg-card); margin-bottom: 20px; box-shadow: 0 8px 25px rgba(163, 73, 108, 0.15); }
+    
+    /* Styling Foto Profil & Lingkaran Loading */
+    .profile-img-container { position: relative; width: 90px; height: 90px; margin-bottom: 20px; display: inline-block; }
+    .logo-image { height: 90px; width: 90px; border-radius: 50%; object-fit: cover; border: 2px solid var(--border-color); padding: 2px; background-color: var(--bg-card); box-shadow: 0 8px 25px rgba(163, 73, 108, 0.15); cursor: pointer; transition: transform 0.2s; }
+    .logo-image:hover { transform: scale(1.03); }
+
+    /* Ring Spinner Loading melingkar di luar foto */
+    .profile-loading-ring {
+      position: absolute;
+      inset: -4px;
+      border: 3px solid transparent;
+      border-top-color: var(--color-primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      display: none;
+      pointer-events: none;
+    }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
     h1 { margin: 0 0 4px 0; font-size: 24px; font-weight: 700; letter-spacing: -0.5px; }
     .subtitle { color: var(--text-muted); margin: 0; font-size: 14px; font-weight: 500; }
 
@@ -70,6 +89,10 @@
     .logout-button { background: transparent; color: var(--color-primary); padding: 16px; border: 1px solid var(--color-primary); border-radius: 100px; cursor: pointer; font-size: 14px; font-weight: 600; transition: all 0.2s ease; width: 100%; text-align: center; }
     .logout-button:hover { background: rgba(163, 73, 108, 0.08); border-color: var(--color-primary-hover); color: var(--color-primary-hover); }
 
+    /* Modal Pratinjau Foto */
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(4px); z-index: 100; justify-content: center; align-items: center; padding: 20px; }
+    .modal-content { background: var(--bg-card); padding: 24px; border-radius: 24px; max-width: 400px; width: 100%; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.2); border: 1px solid var(--border-color); }
+    
     @media (max-width: 480px) {
       .dashboard-card { padding: 30px 20px; }
       .data-item { flex-direction: column; align-items: flex-start; gap: 8px; padding: 16px; }
@@ -81,17 +104,40 @@
 </head>
 <body onload="loadUserDetails()">
 
+<!-- MODAL PRATINJAU FOTO PROFIL -->
+<div class="modal-overlay" id="photoModal" onclick="closePhotoModal()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <h3 class="font-bold text-lg mb-4 text-slate-800">Foto Profil Anda</h3>
+        <div class="flex justify-center mb-4">
+            <img id="modalFullImage" src="" alt="Pratinjau Foto" class="w-56 h-56 rounded-full object-cover border-4 border-slate-200 shadow-md">
+        </div>
+        <div class="flex flex-col gap-2">
+            <!-- Tombol Ganti Foto -->
+            <label for="fotoUploadModal" class="w-full bg-[#A3496C] hover:bg-[#853A55] text-white py-2.5 px-4 rounded-xl text-sm font-semibold cursor-pointer transition shadow">
+                <i class="fas fa-camera mr-2"></i> Ganti Foto Profil
+            </label>
+            <button onclick="closePhotoModal()" class="w-full bg-gray-200 hover:bg-gray-300 text-gray-700 py-2.5 px-4 rounded-xl text-sm font-semibold transition">
+                Tutup
+            </button>
+        </div>
+    </div>
+</div>
+
 <div class="dashboard-card">
   
   <div class="profile-header">
-      <div class="relative inline-block mb-5 group">
-          <img id="userProfileImage" src="https://upload.wikimedia.org/wikipedia/commons/3/36/Logo_DPPI.png" alt="Foto Profil" class="logo-image m-0 transition-opacity">
+      <!-- Container Foto Profil dengan Ring Loading & Klik Detail -->
+      <div class="profile-img-container group">
+          <div id="loadingRing" class="profile-loading-ring"></div>
+          <img id="userProfileImage" src="https://upload.wikimedia.org/wikipedia/commons/3/36/Logo_DPPI.png" alt="Foto Profil" class="logo-image" onclick="openPhotoModal()" title="Klik untuk lihat detail foto">
           
-          <label for="fotoUpload" class="absolute inset-0 bg-black/60 text-white flex flex-col justify-center items-center rounded-full opacity-0 group-hover:opacity-100 cursor-pointer transition-all duration-300 m-[2px]" style="height: 80px; width: 80px; border-radius: 50%;">
-              <svg class="w-5 h-5 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-              <span class="text-[10px] font-bold">Ubah Foto</span>
+          <!-- Tombol kecil overlay untuk ganti foto -->
+          <label for="fotoUpload" class="absolute bottom-0 right-0 bg-[#A3496C] hover:bg-[#853A55] text-white p-2 rounded-full shadow-md cursor-pointer transition transform hover:scale-110" title="Unggah Foto Baru">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
           </label>
-          <input type="file" id="fotoUpload" accept="image/png, image/jpeg, image/jpg" class="hidden">
+          <input type="file" id="fotoUpload" accept="image/png, image/jpeg, image/jpg" class="hidden" onchange="handlePhotoUpload(this)">
+          <!-- Input tersembunyi untuk modal -->
+          <input type="file" id="fotoUploadModal" accept="image/png, image/jpeg, image/jpg" class="hidden" onchange="handlePhotoUpload(this)">
       </div>
 
       <h1 id="pageTitle">Memuat Data...</h1>
@@ -198,16 +244,20 @@
           const user = JSON.parse(userDataString);
           
           const imgProfile = document.getElementById('userProfileImage');
+          const modalFullImage = document.getElementById('modalFullImage');
+          
+          let profileSrc = `https://placehold.co/200/F9F1E2/A3496C?text=${user.nama.charAt(0)}`;
           if (user.fotoProfil && user.fotoProfil !== "") {
               const match = user.fotoProfil.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) || user.fotoProfil.match(/id=([a-zA-Z0-9_-]+)/);
               if (match && match[1]) {
-                  imgProfile.src = `https://drive.google.com/thumbnail?id=${match[1]}&sz=w200-h200`;
+                  profileSrc = `https://drive.google.com/thumbnail?id=${match[1]}&sz=w300-h300`;
               } else {
-                  imgProfile.src = user.fotoProfil;
+                  profileSrc = user.fotoProfil;
               }
-          } else {
-              imgProfile.src = `https://placehold.co/200/F9F1E2/A3496C?text=${user.nama.charAt(0)}`;
           }
+          
+          imgProfile.src = profileSrc;
+          modalFullImage.src = profileSrc;
 
           document.getElementById('userName').textContent = user.nama || '-';
           document.getElementById('userSekolah').textContent = user.asalSekolah || '-';
@@ -246,17 +296,23 @@
     }
   }
 
-  document.getElementById('fotoUpload').addEventListener('change', async function(e) {
-      const file = e.target.files[0];
+  // Fungsi Handler Upload Foto dengan Animasi Loading Melingkar
+  async function handlePhotoUpload(inputElement) {
+      const file = inputElement.files[0];
       if (!file) return;
 
       const messageArea = document.getElementById('messageArea');
+      const loadingRing = document.getElementById('loadingRing');
       const imgProfile = document.getElementById('userProfileImage');
       const userData = JSON.parse(sessionStorage.getItem('userData'));
 
-      imgProfile.style.opacity = '0.3';
-      messageArea.className = "text-blue-500 text-center mt-4 text-sm font-medium";
-      messageArea.textContent = 'Mengunggah foto... Mohon tunggu.';
+      // Tampilkan spinner loading melingkar di sekeliling foto
+      loadingRing.style.display = 'block';
+      imgProfile.style.opacity = '0.4';
+      messageArea.className = "text-blue-600 text-center mt-4 text-sm font-medium";
+      messageArea.textContent = 'Mengunggah foto profil... Mohon tunggu.';
+
+      closePhotoModal(); // Tutup modal jika sedang terbuka
 
       const reader = new FileReader();
       reader.onload = async function(event) {
@@ -274,28 +330,39 @@
               const result = await response.json();
 
               if (result.success) {
-                  messageArea.className = "text-green-500 text-center mt-4 text-sm font-medium";
-                  messageArea.textContent = 'Foto berhasil diperbarui!';
+                  messageArea.className = "text-green-600 text-center mt-4 text-sm font-medium";
+                  messageArea.textContent = 'Foto profil berhasil diperbarui!';
                   
                   userData.fotoProfil = result.fotoProfil;
                   sessionStorage.setItem('userData', JSON.stringify(userData));
                   
                   loadUserDetails();
-                  imgProfile.style.opacity = '1';
                   setTimeout(() => { messageArea.textContent = ''; }, 3000);
               } else {
                   messageArea.className = "text-red-500 text-center mt-4 text-sm font-medium";
                   messageArea.textContent = result.message;
-                  imgProfile.style.opacity = '1';
               }
           } catch (error) {
               messageArea.className = "text-red-500 text-center mt-4 text-sm font-medium";
               messageArea.textContent = 'Gagal terhubung ke server saat mengunggah foto.';
+          } finally {
+              // Hilangkan efek loading
+              loadingRing.style.display = 'none';
               imgProfile.style.opacity = '1';
+              inputElement.value = ''; // Reset input file
           }
       };
       reader.readAsDataURL(file);
-  });
+  }
+
+  // Fungsi Modal Pratinjau Foto
+  function openPhotoModal() {
+      document.getElementById('photoModal').style.display = 'flex';
+  }
+
+  function closePhotoModal() {
+      document.getElementById('photoModal').style.display = 'none';
+  }
 
   function redirectToLogin() {
     sessionStorage.removeItem('userData');

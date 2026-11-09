@@ -1,301 +1,229 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Detail Akun Peserta</title>
-  
-  <!-- Menggunakan Tailwind CSS untuk utilitas layout dan responsif -->
+  <title>Dashboard Profil - TRIPATI DPPI</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  
-  <!-- Poppins Font from Google Fonts for better aesthetics -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
-    /* Styling Hitam & Gold */
     :root {
-        --color-black: #121212;
-        --color-dark-gray: #1e1e1e;
-        --color-gold-primary: #FFD700; 
-        --color-gold-secondary: #AA9860;
-        --color-text-light: #e0e0e0;
-        --color-cta-logout: #dc3545; /* Merah untuk Logout */
-        --color-status-pending: #ff8c8c; /* Merah muda untuk Menunggu */
-        --color-status-verified: #00ff88; /* Hijau terang untuk Terverifikasi */
+        --bg-main: #07070F;
+        --bg-card: #12121C;
+        --bg-item: #1C1C28;
+        --color-primary: #7C3AED; 
+        --color-primary-hover: #6D28D9;
+        --text-muted: #64748b;
     }
 
     body { 
-      font-family: 'Poppins', sans-serif; 
-      background-color: var(--color-black); 
+      font-family: 'Inter', sans-serif; 
+      background-color: var(--bg-main); 
+      color: #ffffff;
       display: flex; 
       justify-content: center; 
       align-items: center; 
       min-height: 100vh; 
       margin: 0; 
       padding: 20px;
+      background-image: radial-gradient(circle at 50% 0%, rgba(124, 58, 237, 0.15) 0%, transparent 60%);
+      background-repeat: no-repeat;
     }
-    
-    .container { 
-      background-color: var(--color-dark-gray); 
-      padding: 30px; 
-      border-radius: 12px; 
-      box-shadow: 0 15px 30px rgba(0,0,0,0.5); 
+
+    .dashboard-card { 
+      background: var(--bg-card);
+      padding: 40px; 
+      border-radius: 32px; 
+      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); 
       width: 100%;
       max-width: 500px; 
-      text-align: center; 
-      border: 1px solid var(--color-gold-secondary);
+      border: 1px solid rgba(255, 255, 255, 0.03);
     }
     
-    h1 { 
-      color: var(--color-gold-primary);
-      margin-bottom: 5px; 
-      font-size: 28px; 
-      font-weight: 700; 
-      text-shadow: 0 0 8px rgba(255, 215, 0, 0.6);
+    .profile-header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 32px;
+      text-align: center;
     }
-    
-    h2 { 
-      color: var(--color-text-light); 
-      margin-top: 0; 
-      margin-bottom: 30px; 
-      font-size: 18px; 
-      font-weight: 400;
+
+    .logo-image {
+      height: 80px;
+      width: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      padding: 2px;
+      background-color: var(--bg-card);
+      margin-bottom: 20px;
     }
-    
-    .announcement { 
-      background-color: #333; 
-      color: var(--color-gold-primary); 
-      padding: 15px; 
-      border-radius: 8px; 
-      font-weight: bold; 
-      margin-bottom: 25px; 
-      border: 1px solid var(--color-gold-secondary);
-    }
-    
-    .data-box { 
-      padding: 20px; 
-      border-radius: 10px; 
-      background-color: #333; 
-      text-align: left; 
-      margin-bottom: 20px; 
-      border: 1px solid #444;
+
+    h1 { margin: 0 0 4px 0; font-size: 24px; font-weight: 700; letter-spacing: -0.5px; }
+    .subtitle { color: var(--text-muted); margin: 0; font-size: 14px; font-weight: 500; }
+
+    .data-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 32px;
     }
     
     .data-item {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 10px 0;
-      border-bottom: 1px solid #444;
+      padding: 18px 24px;
+      border-radius: 20px;
+      background: var(--bg-item);
+      border: 1px solid transparent;
+      transition: all 0.2s ease;
     }
     
-    .data-item:last-child {
-      border-bottom: none;
+    .data-item:hover {
+      border-color: rgba(124, 58, 237, 0.3);
+      background: #232332;
     }
-    
+
     .data-label { 
-      font-weight: 600; 
-      color: var(--color-gold-secondary); 
-      flex-basis: 40%;
+      font-size: 13px;
+      font-weight: 500; 
+      color: var(--text-muted); 
     }
     
     .data-value { 
-      color: var(--color-text-light); 
-      flex-basis: 60%;
+      color: #fff; 
+      font-weight: 600;
+      font-size: 14px;
       text-align: right;
-      word-break: break-all;
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
     }
 
     #userPasswordInput {
-        background-color: transparent;
-        border: none;
-        outline: none;
-        color: #ff8c8c; 
-        font-family: 'monospace';
-        font-size: 1rem;
-        text-align: right;
-        padding: 0;
-        margin: 0;
-        width: 100%;
-        pointer-events: none;
+      background-color: transparent;
+      border: none;
+      outline: none;
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      text-align: right;
+      width: 140px;
+      pointer-events: none;
+      letter-spacing: 2px;
     }
     
     .status-badge {
-        font-weight: 700;
-        padding: 5px 10px;
-        border-radius: 6px;
-        text-transform: uppercase;
-        font-size: 0.9em;
+      font-weight: 600;
+      padding: 6px 16px;
+      border-radius: 100px;
+      font-size: 12px;
     }
-    
-    .status-pending {
-        background-color: #581616;
-        color: var(--color-status-pending);
-    }
-    
-    .status-verified {
-        background-color: #0d361f;
-        color: var(--color-status-verified);
-    }
+    .status-pending { background-color: rgba(245, 158, 11, 0.1); color: #fbbf24; }
+    .status-verified { background-color: rgba(16, 185, 129, 0.1); color: #34d399; }
 
-    .toggle-button {
-        background: none;
-        border: none;
-        cursor: pointer;
-        padding: 0 5px;
-        color: var(--color-gold-primary);
-        transition: color 0.2s;
+    .toggle-btn {
+      background: none; border: none; cursor: pointer; padding: 4px;
+      color: var(--text-muted); transition: color 0.2s ease; margin-left: 8px;
     }
-    
-    .toggle-button:hover {
-        color: white;
-    }
+    .toggle-btn:hover { color: #fff; }
     
     .logout-button { 
-      background-color: var(--color-cta-logout); 
-      color: white; 
-      padding: 12px 25px; 
-      border: none; 
-      border-radius: 8px; 
+      background: transparent;
+      color: #f87171; 
+      padding: 16px; 
+      border: 1px solid rgba(239, 68, 68, 0.3); 
+      border-radius: 100px; 
       cursor: pointer; 
-      margin-top: 15px; 
-      font-size: 16px; 
-      font-weight: bold; 
-      transition: all 0.1s;
+      font-size: 14px; 
+      font-weight: 600; 
+      transition: all 0.2s ease;
       width: 100%;
-      box-shadow: 0 5px 0 #9f1e29;
+      text-align: center;
     }
     
     .logout-button:hover { 
-      background-color: #c82333; 
-      box-shadow: 0 3px 0 #9f1e29;
-      transform: translateY(2px);
+      background: rgba(239, 68, 68, 0.1); 
+      border-color: #ef4444;
     }
 
-    /* Responsifitas */
-    @media (max-width: 600px) {
-      .container {
-        padding: 20px;
-      }
-      .data-item {
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 15px 0;
-      }
-      .data-label {
-        flex-basis: 100%;
-        margin-bottom: 5px;
-        color: var(--color-gold-primary);
-      }
-      .data-value {
-        flex-basis: 100%;
-        justify-content: flex-start;
-        width: 100%;
-      }
-      #userPasswordInput {
-          text-align: left;
-      }
+    @media (max-width: 480px) {
+      .dashboard-card { padding: 30px 20px; }
+      .data-item { flex-direction: column; align-items: flex-start; gap: 8px; padding: 16px; }
+      .data-value { width: 100%; text-align: left; }
+      #userPasswordInput { text-align: left; width: 100%; }
+      .password-row { display: flex; width: 100%; justify-content: space-between; align-items: center;}
     }
   </style>
 </head>
 <body onload="loadUserDetails()">
 
-<div class="container">
-  <!-- Logo DPPI -->
-  <div class="flex justify-center mb-6 mt-2">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/3/36/Logo_DPPI.png"
-            alt="Logo DPPI" 
-            class="h-20 w-20 rounded-full object-cover border-2 border-yellow-400"
-            style="box-shadow: 0 0 15px rgba(255, 215, 0, 0.7);"
-            onerror="this.onerror=null; this.src='https://placehold.co/80x80/1A1A1A/FFD700?text=Logo';" 
-      >
-  </div>
-    
-  <h1 id="pageTitle">Detail Akun Peserta</h1>
-  <h2 id="pageSubtitle">Informasi ini diambil dari data pendaftaran/login terakhir Anda.</h2>
-
-  <div class="announcement">
-    Harap simpan data NIK dan Password Anda dengan aman!
+<div class="dashboard-card">
+  
+  <div class="profile-header">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/3/36/Logo_DPPI.png" alt="Logo DPPI" class="logo-image" onerror="this.src='https://placehold.co/100/12121C/FFFFFF?text=DPPI';">
+      <h1 id="pageTitle">Memuat Data...</h1>
+      <p class="subtitle">Akun Resmi TRIPATI DPPI</p>
   </div>
 
-  <div class="data-box" id="userDetails">
-    <!-- Status Verifikasi -->
+  <div class="data-list" id="userDetails">
+    
     <div class="data-item">
-        <span class="data-label">Status Verifikasi:</span> 
-        <div id="userStatus" class="data-value">
-            <span class="status-badge status-pending">Memuat...</span>
-        </div>
+        <span class="data-label">Status Seleksi</span>
+        <div id="userStatus" class="data-value"><span class="status-badge status-pending">Memuat...</span></div>
     </div>
     
-    <!-- Nama Lengkap -->
     <div class="data-item">
-        <span class="data-label">Nama Lengkap:</span> 
-        <span id="userName" class="data-value">Memuat...</span>
-    </div>
-    
-    <!-- Asal Sekolah -->
-    <div class="data-item">
-        <span class="data-label">Asal Sekolah:</span> 
-        <span id="userSekolah" class="data-value">Memuat...</span>
-    </div>
-
-    <!-- Nomor Telepon -->
-    <div class="data-item">
-        <span class="data-label">Nomor Telepon:</span> 
-        <span id="userTelepon" class="data-value">Memuat...</span>
-    </div>
-    
-    <!-- NIK (Username) -->
-    <div class="data-item">
-        <span class="data-label">Username (NIK):</span> 
+        <span class="data-label">Nomor Induk Kependudukan</span>
         <span id="userNik" class="data-value">Memuat...</span>
     </div>
 
-    <!-- Password DENGAN TOGGLE -->
-    <div class="data-item bg-red-900/10 rounded-b-lg p-3 -mx-4 -mb-4">
-        <span class="data-label">Password:</span> 
-        <div class="data-value">
+    <div class="data-item">
+        <span class="data-label">Nama Lengkap</span>
+        <span id="userName" class="data-value">Memuat...</span>
+    </div>
+    
+    <div class="data-item">
+        <span class="data-label">Asal Instansi / Sekolah</span>
+        <span id="userSekolah" class="data-value">Memuat...</span>
+    </div>
+
+    <div class="data-item">
+        <span class="data-label">Nomor Kontak WhatsApp</span>
+        <span id="userTelepon" class="data-value">Memuat...</span>
+    </div>
+
+    <div class="data-item">
+        <span class="data-label">Kata Sandi Keamanan</span>
+        <div class="password-row flex items-center">
             <input type="password" id="userPasswordInput" value="Memuat..." readonly/>
-            <button class="toggle-button" onclick="togglePasswordVisibility()" aria-label="Toggle password visibility">
-                <!-- Ikon Mata Tertutup -->
-                <svg id="toggleIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M2.067 11.121A11.75 11.75 0 0 1 12.001 5.5c4.154 0 7.844 2.19 9.934 5.621m-19.868 0A11.75 11.75 0 0 0 12 18.5c4.154 0 7.844-2.19 9.934-5.621m-19.868 0L3.5 12"></path>
-                    <circle cx="12" cy="12" r="3"></circle>
+            <button class="toggle-btn" onclick="togglePasswordVisibility()" aria-label="Lihat Sandi">
+                <svg id="toggleIcon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"></path>
                 </svg>
             </button>
         </div>
     </div>
   </div>
   
-  <button class="logout-button" onclick="redirectToLogin()">LOGOUT / KEMBALI KE LOGIN</button>
+  <button class="logout-button" onclick="redirectToLogin()">
+      Keluar dari Akun
+  </button>
   
-  <!-- Area pesan jika terjadi kesalahan -->
-  <div id="messageArea" style="color: #ff4757; margin-top: 10px; font-size: 0.9rem;"></div>
+  <div id="messageArea" class="text-red-400 text-center mt-4 text-sm font-medium"></div>
 </div>
 
 <script>
-  // Fungsi untuk mengubah visibilitas password
   function togglePasswordVisibility() {
     const passwordInput = document.getElementById('userPasswordInput');
     const toggleIcon = document.getElementById('toggleIcon');
     
     if (passwordInput.type === 'password') {
         passwordInput.type = 'text';
-        // Ganti ikon menjadi Ikon Mata Tertutup (Eye-Off)
-        toggleIcon.innerHTML = `
-            <path d="M9.88 9.88c.18-.33.32-.63.45-.92m-.45.92-.01.01m9.62-5.74A9.76 9.76 0 0 0 12 5.5c-4.154 0-7.844 2.19-9.934 5.621m19.868 0a11.75 11.75 0 0 0-19.868 0m9.934 0a3 3 0 1 1-4.243-4.243m4.243 4.243L21 21" />
-            <line x1="2" y1="2" x2="22" y2="22"></line>
-        `;
+        toggleIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>`;
     } else {
         passwordInput.type = 'password';
-        // Ganti ikon menjadi Ikon Mata Terbuka (Eye)
-        toggleIcon.innerHTML = `
-            <path d="M2.067 11.121A11.75 11.75 0 0 1 12.001 5.5c4.154 0 7.844 2.19 9.934 5.621m-19.868 0A11.75 11.75 0 0 0 12 18.5c4.154 0 7.844-2.19 9.934-5.621m-19.868 0L3.5 12"/>
-            <circle cx="12" cy="12" r="3"/>
-        `;
+        toggleIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"></path>`;
     }
   }
 
@@ -303,67 +231,39 @@
     const messageArea = document.getElementById('messageArea');
     const passwordInput = document.getElementById('userPasswordInput');
     const userStatusElement = document.getElementById('userStatus');
-    
-    // Mengambil data pengguna dari sessionStorage yang disimpan saat login/daftar di index.html
     const userDataString = sessionStorage.getItem('userData'); 
     
-    // Defaultkan status awal saat memuat
-    userStatusElement.innerHTML = '<span class="status-badge status-pending">Memuat...</span>';
-
     if (userDataString) {
       try {
           const user = JSON.parse(userDataString);
           
-          // Tampilkan data ke elemen HTML
-          document.getElementById('userName').textContent = user.nama || 'Tidak ada data';
-          document.getElementById('userSekolah').textContent = user.asalSekolah || 'Tidak ada data';
-          document.getElementById('userTelepon').textContent = user.nomorTelepon || 'Tidak ada data';
-          document.getElementById('userNik').textContent = user.nik || 'Tidak ada data';
+          document.getElementById('userName').textContent = user.nama || '-';
+          document.getElementById('userSekolah').textContent = user.asalSekolah || '-';
+          document.getElementById('userTelepon').textContent = user.nomorTelepon || '-';
+          document.getElementById('userNik').textContent = user.nik || '-';
           
-          // Tampilkan Status Verifikasi
-          const status = user.status ? String(user.status).trim() : 'Data Kosong';
-          
-          let badgeClass = 'status-pending';
-          if (status.toLowerCase().includes('terverifikasi')) {
-              badgeClass = 'status-verified';
-          }
-          
+          const status = user.status ? String(user.status).trim() : 'Menunggu Verifikasi';
+          let badgeClass = status.toLowerCase().includes('terverifikasi') ? 'status-verified' : 'status-pending';
           userStatusElement.innerHTML = `<span class="status-badge ${badgeClass}">${status}</span>`;
-          document.getElementById('pageSubtitle').textContent = "Detail Akun Peserta Anda.";
 
-          // Atur nilai input password dari sesi
-          if (user.password) {
-              passwordInput.value = user.password;
-          } else {
-              passwordInput.value = 'Password tidak tersedia di sesi';
-          }
-          passwordInput.type = 'password';
-          
-          // Sesuaikan judul
-          document.getElementById('pageTitle').textContent = "Selamat Datang!";
+          passwordInput.value = user.password || 'Tidak tersedia';
+          document.getElementById('pageTitle').textContent = `Halo, ${user.nama.split(' ')[0]}`;
           
       } catch (e) {
-          messageArea.textContent = 'Kesalahan memproses data sesi. Mengalihkan ke login...';
-          console.error('Error parsing user data:', e);
+          messageArea.textContent = 'Data gagal dimuat. Mengalihkan...';
           sessionStorage.removeItem('userData');
           setTimeout(redirectToLogin, 1000);
       }
     } else {
-      // Jika data tidak ada (user belum login), arahkan ke index.html
-      passwordInput.value = 'Memuat...';
-      messageArea.textContent = 'Sesi tidak ditemukan. Mengalihkan ke halaman login...';
-      setTimeout(redirectToLogin, 1000);
+      messageArea.textContent = 'Sesi habis. Silakan masuk kembali.';
+      setTimeout(redirectToLogin, 1200);
     }
   }
 
   function redirectToLogin() {
-    // Menghapus sesi sebelum mengalihkan
     sessionStorage.removeItem('userData');
-    
-    // Arahkan kembali ke halaman index Vercel
     window.location.href = '/index.html'; 
   }
 </script>
-
 </body>
 </html>

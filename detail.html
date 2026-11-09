@@ -9,25 +9,27 @@
 
   <style>
     :root {
-        --bg-main: #07070F;
-        --bg-card: #12121C;
-        --bg-item: #1C1C28;
-        --color-primary: #7C3AED; 
-        --color-primary-hover: #6D28D9;
-        --text-muted: #64748b;
+        --bg-main: #F9F1E2; /* Cream dari palette */
+        --bg-card: #FFFFFF;
+        --bg-item: #EFE4D2; /* Light Sand/Beige */
+        --color-primary: #A3496C; /* Plum / Muted Pink */
+        --color-primary-hover: #853A55;
+        --text-main: #543A2A; /* Dark Brown */
+        --text-muted: #886144; /* Medium Brown */
+        --border-color: #DFBE8D; /* Ochre / Sand */
     }
 
     body { 
       font-family: 'Inter', sans-serif; 
       background-color: var(--bg-main); 
-      color: #ffffff;
+      color: var(--text-main);
       display: flex; 
       justify-content: center; 
       align-items: center; 
       min-height: 100vh; 
       margin: 0; 
       padding: 20px;
-      background-image: radial-gradient(circle at 50% 0%, rgba(124, 58, 237, 0.15) 0%, transparent 60%);
+      background-image: radial-gradient(circle at 50% 0%, rgba(163, 73, 108, 0.12) 0%, transparent 60%);
       background-repeat: no-repeat;
     }
 
@@ -35,10 +37,10 @@
       background: var(--bg-card);
       padding: 40px; 
       border-radius: 32px; 
-      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); 
+      box-shadow: 0 15px 35px rgba(84, 58, 42, 0.08); 
       width: 100%;
       max-width: 500px; 
-      border: 1px solid rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-color);
     }
     
     .profile-header {
@@ -53,11 +55,12 @@
       height: 80px;
       width: 80px;
       border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid rgba(255, 255, 255, 0.1);
-      padding: 2px;
+      object-fit: contain;
+      border: 2px solid var(--border-color);
+      padding: 4px;
       background-color: var(--bg-card);
       margin-bottom: 20px;
+      box-shadow: 0 8px 25px rgba(163, 73, 108, 0.15);
     }
 
     h1 { margin: 0 0 4px 0; font-size: 24px; font-weight: 700; letter-spacing: -0.5px; }
@@ -82,8 +85,8 @@
     }
     
     .data-item:hover {
-      border-color: rgba(124, 58, 237, 0.3);
-      background: #232332;
+      border-color: var(--color-primary);
+      background: var(--bg-main);
     }
 
     .data-label { 
@@ -93,7 +96,7 @@
     }
     
     .data-value { 
-      color: #fff; 
+      color: var(--text-main); 
       font-weight: 600;
       font-size: 14px;
       text-align: right;
@@ -103,7 +106,7 @@
       background-color: transparent;
       border: none;
       outline: none;
-      color: #fff;
+      color: var(--text-main);
       font-family: 'Inter', sans-serif;
       font-size: 14px;
       font-weight: 600;
@@ -119,20 +122,20 @@
       border-radius: 100px;
       font-size: 12px;
     }
-    .status-pending { background-color: rgba(245, 158, 11, 0.1); color: #fbbf24; }
-    .status-verified { background-color: rgba(16, 185, 129, 0.1); color: #34d399; }
+    .status-pending { background-color: rgba(245, 158, 11, 0.15); color: #d97706; }
+    .status-verified { background-color: rgba(16, 185, 129, 0.15); color: #059669; }
 
     .toggle-btn {
       background: none; border: none; cursor: pointer; padding: 4px;
       color: var(--text-muted); transition: color 0.2s ease; margin-left: 8px;
     }
-    .toggle-btn:hover { color: #fff; }
+    .toggle-btn:hover { color: var(--color-primary); }
     
     .logout-button { 
       background: transparent;
-      color: #f87171; 
+      color: var(--color-primary); 
       padding: 16px; 
-      border: 1px solid rgba(239, 68, 68, 0.3); 
+      border: 1px solid var(--color-primary); 
       border-radius: 100px; 
       cursor: pointer; 
       font-size: 14px; 
@@ -143,8 +146,9 @@
     }
     
     .logout-button:hover { 
-      background: rgba(239, 68, 68, 0.1); 
-      border-color: #ef4444;
+      background: rgba(163, 73, 108, 0.08); 
+      border-color: var(--color-primary-hover);
+      color: var(--color-primary-hover);
     }
 
     @media (max-width: 480px) {
@@ -161,7 +165,7 @@
 <div class="dashboard-card">
   
   <div class="profile-header">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/3/36/Logo_DPPI.png" alt="Logo DPPI" class="logo-image" onerror="this.src='https://placehold.co/100/12121C/FFFFFF?text=DPPI';">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/3/36/Logo_DPPI.png" alt="Logo DPPI" class="logo-image" onerror="this.src='https://placehold.co/100/F9F1E2/A3496C?text=DPPI';">
       <h1 id="pageTitle">Memuat Data...</h1>
       <p class="subtitle">Akun Resmi TRIPATI DPPI</p>
   </div>

@@ -3,16 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard Profil - TRIPATI DPPI</title>
-  
+  <title>Login & Daftar - TRIPATI DPPI 2025</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <style>
-    /* Menggunakan font Plus Jakarta Sans untuk kesan modern dan premium */
-    body { 
-      font-family: 'Plus Jakarta Sans', sans-serif; 
-      background-color: #0f1115; /* Hitam kebiruan sangat gelap */
+    :root {
+        --color-gold-primary: #FFD700; 
+        --color-gold-secondary: #B8860B; 
+        --color-error: #ef4444;
+        --color-success: #10b981;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #0f1115;
       background-image: 
         radial-gradient(at 0% 0%, rgba(255, 215, 0, 0.05) 0px, transparent 50%),
         radial-gradient(at 100% 100%, rgba(184, 134, 11, 0.05) 0px, transparent 50%);
@@ -25,364 +30,379 @@
       padding: 20px;
       color: #e2e8f0;
     }
-
-    /* Styling Container Utama (Glass/Card Effect) */
-    .dashboard-card { 
+    
+    /* Card Style matching Detail page */
+    .auth-card {
       background: linear-gradient(145deg, #1a1d24 0%, #13151a 100%);
       padding: 40px; 
       border-radius: 24px; 
-      box-shadow: 
-        0 20px 40px -10px rgba(0,0,0,0.7), 
-        inset 0 1px 0 rgba(255,255,255,0.05); 
+      box-shadow: 0 20px 40px -10px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.05); 
       width: 100%;
-      max-width: 550px; 
+      max-width: 480px; 
       position: relative;
-      overflow: hidden;
       border: 1px solid rgba(255, 215, 0, 0.1);
     }
     
-    /* Dekorasi Sudut */
-    .dashboard-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; width: 100%; height: 4px;
-      background: linear-gradient(90deg, #FFD700, #B8860B);
-    }
-
-    /* Profil Header */
-    .profile-header {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin-bottom: 35px;
-    }
-
-    .logo-container {
-        position: relative;
-        margin-bottom: 20px;
+    .auth-card::before {
+      content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px;
+      background: linear-gradient(90deg, var(--color-gold-primary), var(--color-gold-secondary));
+      border-radius: 24px 24px 0 0;
     }
 
     .logo-image {
-        height: 90px;
-        width: 90px;
-        border-radius: 50%;
-        object-fit: cover;
-        border: 2px solid #FFD700;
+        height: 80px; width: 80px; border-radius: 50%; object-fit: cover;
+        border: 2px solid var(--color-gold-primary); padding: 4px;
+        background-color: #1a1d24; box-shadow: 0 8px 25px rgba(255, 215, 0, 0.2);
+    }
+
+    /* Tabs Customization */
+    .tab-container {
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 12px;
         padding: 4px;
-        background-color: #1a1d24;
-        box-shadow: 0 8px 25px rgba(255, 215, 0, 0.2);
-    }
-
-    h1 { 
-      color: #ffffff;
-      margin: 0 0 5px 0; 
-      font-size: 26px; 
-      font-weight: 700; 
-      letter-spacing: -0.5px;
-    }
-    
-    .subtitle { 
-      color: #94a3b8; 
-      margin: 0; 
-      font-size: 14px; 
-      font-weight: 500;
-    }
-
-    /* List Informasi Data */
-    .data-container {
-        display: grid;
-        gap: 16px;
+        display: flex;
         margin-bottom: 30px;
-    }
-    
-    .data-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 16px 20px;
-      border-radius: 12px;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      transition: all 0.2s ease;
-    }
-    
-    .data-item:hover {
-        background: rgba(255, 255, 255, 0.05);
-        border-color: rgba(255, 215, 0, 0.2);
-        transform: translateY(-2px);
+        border: 1px solid rgba(255, 255, 255, 0.05);
     }
 
-    .data-label-group {
+    .tab-btn {
+        flex: 1; text-align: center; padding: 12px; border-radius: 10px;
+        font-weight: 600; font-size: 14px; color: #94a3b8; transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .tab-btn.active {
+        background: rgba(255, 215, 0, 0.1); color: var(--color-gold-primary);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .tabcontent { display: none; animation: fadeIn 0.4s ease; }
+    .tabcontent.active { display: block; }
+    
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* Input Customization */
+    .form-group { margin-bottom: 20px; }
+    .input-label { display: block; font-size: 13px; font-weight: 600; color: #94a3b8; margin-bottom: 8px; letter-spacing: 0.5px; text-transform: uppercase;}
+    
+    .input-wrapper {
+        position: relative;
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 12px;
+        transition: all 0.3s ease;
         display: flex;
         align-items: center;
-        gap: 12px;
+        overflow: hidden;
     }
 
-    .data-icon {
-        color: #FFD700;
-        width: 20px;
-        height: 20px;
+    .input-wrapper:focus-within {
+        border-color: rgba(255, 215, 0, 0.4);
+        background: rgba(255, 215, 0, 0.02);
+        box-shadow: 0 0 0 4px rgba(255, 215, 0, 0.05);
+    }
+
+    .input-icon {
+        padding: 0 16px;
+        color: var(--color-gold-primary);
         opacity: 0.8;
     }
 
-    .data-label { 
-      font-size: 13px;
-      font-weight: 600; 
-      color: #94a3b8; 
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+    .input-field {
+        background: transparent; border: none; width: 100%; padding: 14px 14px 14px 0;
+        color: #f8fafc; font-size: 15px; outline: none; font-family: 'Plus Jakarta Sans', sans-serif;
     }
+    .input-field::placeholder { color: #475569; }
+
+    .password-toggle {
+        padding: 0 16px; cursor: pointer; color: #94a3b8; transition: color 0.2s;
+    }
+    .password-toggle:hover { color: var(--color-gold-primary); }
+
+    /* File Input Styling */
+    .file-input-wrapper {
+        position: relative; background: rgba(255, 255, 255, 0.02);
+        border: 1px dashed rgba(255, 255, 255, 0.15); border-radius: 12px;
+        padding: 12px; transition: all 0.3s ease;
+    }
+    .file-input-wrapper:hover { border-color: var(--color-gold-primary); background: rgba(255, 215, 0, 0.02); }
+    .file-input {
+        width: 100%; color: #94a3b8; font-size: 14px;
+    }
+    .file-input::file-selector-button {
+        background: #1e293b; color: #f8fafc; border: 1px solid #334155;
+        padding: 8px 16px; border-radius: 8px; margin-right: 12px;
+        cursor: pointer; transition: all 0.2s; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 600;
+    }
+    .file-input::file-selector-button:hover { background: #334155; }
+
+    /* Buttons */
+    .btn-submit {
+        background: linear-gradient(135deg, var(--color-gold-primary) 0%, var(--color-gold-secondary) 100%);
+        color: #000; width: 100%; padding: 14px; border-radius: 12px; font-weight: 700;
+        font-size: 15px; border: none; cursor: pointer; transition: all 0.3s ease;
+        margin-top: 10px; display: flex; align-items: center; justify-content: center;
+        box-shadow: 0 10px 20px -5px rgba(255, 215, 0, 0.3);
+    }
+    .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 15px 25px -5px rgba(255, 215, 0, 0.4); }
     
-    .data-value { 
-      color: #f8fafc; 
-      font-weight: 600;
-      font-size: 15px;
-      text-align: right;
-    }
+    .btn-register { background: #1e293b; color: #fff; box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.3); }
+    .btn-register:hover { background: #334155; box-shadow: 0 15px 25px -5px rgba(0, 0, 0, 0.4); border-color: rgba(255, 255, 255, 0.1); }
 
-    /* Khusus untuk Password Field */
-    .password-item {
-        background: linear-gradient(to right, rgba(255, 215, 0, 0.03), rgba(255, 215, 0, 0.01));
-        border-color: rgba(255, 215, 0, 0.15);
-    }
+    .btn-loading { opacity: 0.7; pointer-events: none; transform: none !important; box-shadow: none !important; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spinner { animation: spin 1s linear infinite; }
 
-    #userPasswordInput {
-        background-color: transparent;
-        border: none;
-        outline: none;
-        color: #FFD700;
-        font-family: 'Plus Jakarta Sans', sans-serif;
-        font-size: 15px;
-        font-weight: 700;
-        text-align: right;
-        width: 150px;
-        pointer-events: none;
-        letter-spacing: 2px;
+    /* Messages */
+    .message {
+        margin-top: 20px; padding: 14px; border-radius: 10px; font-size: 14px;
+        font-weight: 600; text-align: center; display: none;
     }
-    
-    /* Styling Badge Status */
-    .status-badge {
-        font-weight: 700;
-        padding: 6px 14px;
-        border-radius: 20px;
-        font-size: 12px;
-        letter-spacing: 0.5px;
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-    }
+    .message.show { display: block; animation: fadeIn 0.3s ease; }
+    .success { background: rgba(16, 185, 129, 0.1); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.2); }
+    .error { background: rgba(239, 68, 68, 0.1); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.2); }
 
-    .status-badge::before {
-        content: '';
-        width: 6px;
-        height: 6px;
-        border-radius: 50%;
-    }
-
-    .status-pending {
-        background-color: rgba(245, 158, 11, 0.1);
-        color: #fbbf24;
-        border: 1px solid rgba(245, 158, 11, 0.2);
-    }
-    .status-pending::before { background-color: #fbbf24; }
-    
-    .status-verified {
-        background-color: rgba(16, 185, 129, 0.1);
-        color: #34d399;
-        border: 1px solid rgba(16, 185, 129, 0.2);
-    }
-    .status-verified::before { background-color: #34d399; }
-
-    /* Tombol Interaktif */
-    .toggle-btn {
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 8px;
-        cursor: pointer;
-        padding: 6px;
-        color: #FFD700;
-        transition: all 0.2s ease;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-left: 10px;
-    }
-    .toggle-btn:hover { background: rgba(255, 215, 0, 0.1); }
-    
-    .logout-button { 
-      background: #1e293b;
-      color: #f1f5f9; 
-      padding: 16px 24px; 
-      border: 1px solid #334155; 
-      border-radius: 12px; 
-      cursor: pointer; 
-      font-size: 15px; 
-      font-weight: 600; 
-      transition: all 0.2s ease;
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 10px;
-    }
-    
-    .logout-button:hover { 
-      background: #dc2626; 
-      border-color: #ef4444;
-      color: white;
-      transform: translateY(-2px);
-      box-shadow: 0 10px 20px -10px rgba(220, 38, 38, 0.5);
-    }
-
-    /* Responsifitas Mobile */
-    @media (max-width: 480px) {
-      .dashboard-card { padding: 25px 20px; }
-      .data-item { flex-direction: column; align-items: flex-start; gap: 10px; }
-      .data-value { width: 100%; text-align: left; }
-      #userPasswordInput { text-align: left; width: 100%; }
-      .toggle-btn { position: absolute; right: 20px; bottom: 15px; }
-      .password-item { position: relative; padding-bottom: 16px; }
-    }
   </style>
 </head>
-<body onload="loadUserDetails()">
+<body>
 
-<div class="dashboard-card">
-  
-  <div class="profile-header">
-      <div class="logo-container">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/3/36/Logo_DPPI.png" alt="Logo DPPI" class="logo-image" onerror="this.onerror=null; this.src='https://placehold.co/80x80/1A1A1A/FFD700?text=DPPI';">
-      </div>
-      <h1 id="pageTitle">Memuat Profil...</h1>
-      <p class="subtitle" id="pageSubtitle">Akun TRIPATI DPPI 2025</p>
-  </div>
+    <div class="auth-card">
+        
+        <!-- Header -->
+        <div class="flex flex-col items-center mb-8">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/3/36/Logo_DPPI.png" alt="Logo DPPI" class="logo-image mb-4" onerror="this.onerror=null; this.src='https://placehold.co/80x80/1A1A1A/FFD700?text=DPPI';">
+            <h1 class="text-2xl font-bold text-white mb-1">TRIPATI 2025</h1>
+            <p class="text-sm text-slate-400 font-medium text-center">Portal Pendaftaran Akun DPPI Kota Yogyakarta</p>
+        </div>
 
-  <div class="data-container" id="userDetails">
-    
-    <!-- Status -->
-    <div class="data-item">
-        <div class="data-label-group">
-            <svg class="data-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-            <span class="data-label">Status Verifikasi</span>
+        <!-- Custom Tabs -->
+        <div class="tab-container">
+            <div class="tab-btn active" onclick="openTab(event, 'Login')">Masuk</div>
+            <div class="tab-btn" onclick="openTab(event, 'Daftar')">Daftar Akun</div>
         </div>
-        <div id="userStatus" class="data-value">
-            <span class="status-badge status-pending">Memuat...</span>
-        </div>
-    </div>
-    
-    <!-- NIK -->
-    <div class="data-item">
-        <div class="data-label-group">
-            <svg class="data-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2"></path></svg>
-            <span class="data-label">Username (NIK)</span>
-        </div>
-        <span id="userNik" class="data-value">Memuat...</span>
-    </div>
 
-    <!-- Nama -->
-    <div class="data-item">
-        <div class="data-label-group">
-            <svg class="data-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
-            <span class="data-label">Nama Lengkap</span>
-        </div>
-        <span id="userName" class="data-value">Memuat...</span>
-    </div>
-    
-    <!-- Sekolah -->
-    <div class="data-item">
-        <div class="data-label-group">
-            <svg class="data-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14v6"></path></svg>
-            <span class="data-label">Asal Sekolah</span>
-        </div>
-        <span id="userSekolah" class="data-value">Memuat...</span>
-    </div>
+        <!-- FORM LOGIN -->
+        <div id="Login" class="tabcontent active">
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginNik" class="input-label">NIK (Username)</label>
+                    <div class="input-wrapper">
+                        <div class="input-icon">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                        </div>
+                        <input type="text" placeholder="Masukkan 16 digit NIK" name="nik" required id="loginNik" class="input-field">
+                    </div>
+                </div>
 
-    <!-- Telepon -->
-    <div class="data-item">
-        <div class="data-label-group">
-            <svg class="data-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
-            <span class="data-label">Nomor WhatsApp</span>
+                <div class="form-group">
+                    <label for="loginPassword" class="input-label">Kata Sandi</label>
+                    <div class="input-wrapper">
+                        <div class="input-icon">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                        </div>
+                        <input type="password" placeholder="Masukkan sandi Anda" name="password" required id="loginPassword" class="input-field">
+                        <div class="password-toggle" onclick="togglePasswordVisibility('loginPassword', this)">
+                            <svg class="w-5 h-5 toggle-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"></path></svg>
+                        </div>
+                    </div>
+                </div>
+                
+                <button type="submit" id="btnLogin" class="btn-submit">
+                    <svg class="spinner -ml-1 mr-3 h-5 w-5 text-black hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                    <span class="btn-text">Masuk ke Dasbor</span>
+                </button>
+                <div id="loginMessage" class="message"></div>
+            </form>
         </div>
-        <span id="userTelepon" class="data-value">Memuat...</span>
-    </div>
 
-    <!-- Password -->
-    <div class="data-item password-item">
-        <div class="data-label-group">
-            <svg class="data-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path></svg>
-            <span class="data-label">Kata Sandi</span>
-        </div>
-        <div class="flex items-center">
-            <input type="password" id="userPasswordInput" value="Memuat..." readonly/>
-            <button class="toggle-btn" onclick="togglePasswordVisibility()" aria-label="Lihat Sandi">
-                <svg id="toggleIcon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"></path>
-                </svg>
-            </button>
+        <!-- FORM DAFTAR -->
+        <div id="Daftar" class="tabcontent">
+            <form id="daftarForm">
+                <div class="form-group">
+                    <label for="daftarNik" class="input-label">NIK (Username)</label>
+                    <div class="input-wrapper">
+                        <div class="input-icon"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2"></path></svg></div>
+                        <input type="text" placeholder="16 Digit NIK Anda" name="nik" required id="daftarNik" class="input-field">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="daftarPassword" class="input-label">Buat Kata Sandi</label>
+                    <div class="input-wrapper">
+                        <div class="input-icon"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path></svg></div>
+                        <input type="password" placeholder="Minimal 6 karakter" name="password" required id="daftarPassword" class="input-field">
+                        <div class="password-toggle" onclick="togglePasswordVisibility('daftarPassword', this)">
+                            <svg class="w-5 h-5 toggle-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"></path></svg>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="daftarNama" class="input-label">Nama Lengkap</label>
+                    <div class="input-wrapper">
+                        <div class="input-icon"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg></div>
+                        <input type="text" placeholder="Sesuai Kartu Pelajar/KTP" name="nama" required id="daftarNama" class="input-field">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="daftarSekolah" class="input-label">Asal Sekolah</label>
+                    <div class="input-wrapper">
+                        <div class="input-icon"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14v6"></path></svg></div>
+                        <input type="text" placeholder="Nama instansi pendidikan" name="asalSekolah" required id="daftarSekolah" class="input-field">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="daftarTelepon" class="input-label">Nomor WhatsApp</label>
+                    <div class="input-wrapper">
+                        <div class="input-icon"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg></div>
+                        <input type="text" placeholder="Cth: 081234567890" name="nomorTelepon" required id="daftarTelepon" class="input-field">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="fileBukti" class="input-label">Bukti Kartu Pelajar (Wajib)</label>
+                    <div class="file-input-wrapper">
+                        <input type="file" name="fileBukti" required id="fileBukti" accept=".jpg,.jpeg,.png,.pdf" class="file-input">
+                    </div>
+                </div>
+                
+                <button type="submit" id="btnDaftar" class="btn-submit btn-register">
+                    <svg class="spinner -ml-1 mr-3 h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                    <span class="btn-text">Daftar Akun Baru</span>
+                </button>
+                <div id="daftarMessage" class="message"></div>
+            </form>
         </div>
     </div>
-  </div>
-  
-  <button class="logout-button" onclick="redirectToLogin()">
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
-      Keluar (Logout)
-  </button>
-  
-  <div id="messageArea" class="text-red-400 text-center mt-4 text-sm font-medium"></div>
-</div>
 
 <script>
-  function togglePasswordVisibility() {
-    const passwordInput = document.getElementById('userPasswordInput');
-    const toggleIcon = document.getElementById('toggleIcon');
+  // MASUKKAN URL GOOGLE APPS SCRIPT WEB APP ANDA DI SINI
+  const gasBaseUrl = 'https://script.google.com/macros/s/AKfycbySLZG1J8-C0sSkEFI0wx0j5-0uaY6MJtKrAkoHthK6VW_CeYGN7g5eiiNtMXQeKEr_/exec';
+
+  function showMessage(element, type, message) {
+    element.className = 'message ' + type + ' show';
+    element.innerHTML = message;
+  }
+  
+  function togglePasswordVisibility(inputId, toggleContainer) {
+    const passwordInput = document.getElementById(inputId);
+    const icon = toggleContainer.querySelector('.toggle-icon');
     
     if (passwordInput.type === 'password') {
         passwordInput.type = 'text';
-        toggleIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>`;
+        icon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>`;
     } else {
         passwordInput.type = 'password';
-        toggleIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"></path>`;
+        icon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"></path>`;
     }
   }
 
-  function loadUserDetails() {
-    const messageArea = document.getElementById('messageArea');
-    const passwordInput = document.getElementById('userPasswordInput');
-    const userStatusElement = document.getElementById('userStatus');
-    const userDataString = sessionStorage.getItem('userData'); 
+  function openTab(evt, tabName) {
+    document.querySelectorAll('.tabcontent').forEach(tab => tab.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    document.getElementById(tabName).classList.add('active');
+    evt.currentTarget.classList.add("active");
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    if (sessionStorage.getItem('userData')) {
+        window.location.href = '/detail.html'; 
+        return;
+    }
+  });
+  
+  function setButtonLoading(button, isLoading, originalText, loadingText) {
+      const spinner = button.querySelector('.spinner');
+      const textSpan = button.querySelector('.btn-text');
+      button.disabled = isLoading;
+      button.classList.toggle('btn-loading', isLoading);
+      if (spinner) spinner.classList.toggle('hidden', !isLoading);
+      if (textSpan) textSpan.textContent = isLoading ? loadingText : originalText;
+  }
+
+  document.getElementById('daftarForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const btnDaftar = document.getElementById('btnDaftar');
+    const messageDiv = document.getElementById('daftarMessage');
+    const fileInput = document.getElementById('fileBukti');
+    const passwordInput = document.getElementById('daftarPassword').value;
+
+    if (passwordInput.length < 6) return showMessage(messageDiv, "error", "Sandi minimal 6 karakter.");
+    if (fileInput.files.length === 0) return showMessage(messageDiv, "error", "File bukti wajib diunggah.");
     
-    if (userDataString) {
-      try {
-          const user = JSON.parse(userDataString);
-          
-          document.getElementById('userName').textContent = user.nama || '-';
-          document.getElementById('userSekolah').textContent = user.asalSekolah || '-';
-          document.getElementById('userTelepon').textContent = user.nomorTelepon || '-';
-          document.getElementById('userNik').textContent = user.nik || '-';
-          
-          const status = user.status ? String(user.status).trim() : 'Menunggu Verifikasi';
-          let badgeClass = status.toLowerCase().includes('terverifikasi') ? 'status-verified' : 'status-pending';
-          userStatusElement.innerHTML = `<span class="status-badge ${badgeClass}">${status}</span>`;
+    setButtonLoading(btnDaftar, true, 'Daftar Akun Baru', 'Mengirim data...');
 
-          passwordInput.value = user.password || 'Tidak tersedia';
-          document.getElementById('pageTitle').textContent = `Halo, ${user.nama.split(' ')[0]}!`;
-          
-      } catch (e) {
-          messageArea.textContent = 'Data sesi tidak valid. Mengalihkan...';
-          sessionStorage.removeItem('userData');
-          setTimeout(redirectToLogin, 1000);
-      }
-    } else {
-      messageArea.textContent = 'Sesi telah habis. Silakan login kembali.';
-      setTimeout(redirectToLogin, 1200);
+    const file = fileInput.files[0];
+    const reader = new FileReader();
+    
+    reader.onload = async function(event) {
+        const base64Data = event.target.result.split(',')[1];
+        const payload = {
+            action: 'register',
+            nik: document.getElementById('daftarNik').value,
+            password: passwordInput,
+            nama: document.getElementById('daftarNama').value,
+            asalSekolah: document.getElementById('daftarSekolah').value,
+            nomorTelepon: document.getElementById('daftarTelepon').value,
+            fileName: file.name,
+            fileMimeType: file.type,
+            fileBase64: base64Data
+        };
+
+        try {
+            const response = await fetch(gasBaseUrl, { method: 'POST', body: JSON.stringify(payload) });
+            const result = await response.json();
+            setButtonLoading(btnDaftar, false, 'Daftar Akun Baru');
+            
+            if (result.success) {
+                showMessage(messageDiv, "success", "Berhasil! Mengalihkan...");
+                const userData = { ...result.data, password: passwordInput };
+                sessionStorage.setItem('userData', JSON.stringify(userData));
+                setTimeout(() => { window.location.href = '/detail.html'; }, 800); 
+            } else {
+                showMessage(messageDiv, "error", result.message);
+            }
+        } catch (error) {
+            setButtonLoading(btnDaftar, false, 'Daftar Akun Baru');
+            showMessage(messageDiv, "error", "Gagal menghubungi server.");
+        }
+    };
+    reader.readAsDataURL(file);
+  });
+  
+  document.getElementById('loginForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const btnLogin = document.getElementById('btnLogin');
+    const messageDiv = document.getElementById('loginMessage');
+    
+    const payload = {
+      action: 'login',
+      nik: document.getElementById('loginNik').value.trim(),
+      password: document.getElementById('loginPassword').value
+    };
+
+    setButtonLoading(btnLogin, true, 'Masuk ke Dasbor', 'Memeriksa...');
+
+    try {
+        const response = await fetch(gasBaseUrl, { method: 'POST', body: JSON.stringify(payload) });
+        const result = await response.json();
+        setButtonLoading(btnLogin, false, 'Masuk ke Dasbor');
+
+        if (result.success) {
+            showMessage(messageDiv, "success", "Berhasil! Memuat dasbor...");
+            const userData = { ...result.data, password: payload.password };
+            sessionStorage.setItem('userData', JSON.stringify(userData));
+            setTimeout(() => { window.location.href = '/detail.html'; }, 800); 
+        } else {
+            showMessage(messageDiv, "error", result.message);
+        }
+    } catch (error) {
+        setButtonLoading(btnLogin, false, 'Masuk ke Dasbor');
+        showMessage(messageDiv, "error", "Koneksi ke server gagal.");
     }
-  }
-
-  function redirectToLogin() {
-    sessionStorage.removeItem('userData');
-    window.location.href = '/index.html'; 
-  }
+  });
 </script>
-
 </body>
 </html>

@@ -34,16 +34,25 @@
     }
 
     /* --- LOGO STYLING --- */
-    .hero-logo, .auth-logo {
+   .hero-logo {
       border-radius: 50%;
-      object-fit: contain; 
+      object-fit: contain; /* Menjaga proporsi logo agar tidak gepeng */
       background-color: var(--bg-card);
-      border: 2px solid var(--border-color);
-      padding: 4px;
-      box-shadow: 0 10px 30px rgba(45, 36, 31, 0.08);
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      padding: 0.5px;
+      box-shadow: 0 8px 25px rgba(124, 58, 237, 0.2);
     }
-    .hero-logo { width: 90px; height: 90px; position: relative; z-index: 2; margin: 0 auto; }
-    .auth-logo { width: 75px; height: 75px; }
+
+    .auth-logo{
+      border-radius: 50%;
+      object-fit: contain; /* Menjaga proporsi logo agar tidak gepeng */
+      background-color: var(--bg-card);
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 8px 25px rgba(124, 58, 237, 0.2);
+    }
+
+    .hero-logo { width: 200px; height: 200px; position: relative; z-index: 2; margin: 0 auto; }
+    .auth-logo { width: 120px; height: 120px; position: relative; z-index: 2; margin: 0 auto; }
 
     /* --- ONBOARDING SCREEN STYLES --- */
     .onboarding-screen {
@@ -59,12 +68,12 @@
     /* Concentric Rings */
     .rings {
       position: absolute; border-radius: 50%;
-      border: 1px solid rgba(176, 92, 54, 0.15);
+      border: 1px solid rgba(124, 58, 237, 0.15);
       top: 50%; left: 50%; transform: translate(-50%, -50%);
     }
-    .ring-1 { width: 160px; height: 160px; }
-    .ring-2 { width: 280px; height: 280px; border-color: rgba(176, 92, 54, 0.08); }
-    .ring-3 { width: 420px; height: 420px; border-style: dashed; border-color: rgba(176, 92, 54, 0.05); }
+    .ring-1 { width: 280px; height: 280px; }
+    .ring-2 { width: 410px; height: 410px; border-color: rgba(124, 58, 237, 0.08); }
+    .ring-3 { width: 550px; height: 550px; border-style: dashed; border-color: rgba(124, 58, 237, 0.05); }
 
     .bottom-panel {
       background: var(--bg-card);

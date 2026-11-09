@@ -323,6 +323,34 @@
               <input type="text" placeholder="08xxxxxxxxxx" name="nomorTelepon" required id="daftarTelepon" class="input-field">
             </div>
           </div>
+
+          <div class="form-group">
+            <label class="input-label">Tempat, Tanggal Lahir</label>
+            <div class="input-wrapper">
+              <input type="text" placeholder="Contoh: Jakarta, 17 Agustus 2010" name="tempatLahir" required id="daftarTTL" class="input-field">
+            </div>
+          </div>
+          
+          <div class="flex gap-3">
+              <div class="form-group flex-1">
+                <label class="input-label">Usia</label>
+                <div class="input-wrapper">
+                  <input type="number" placeholder="16" name="usia" required id="daftarUsia" class="input-field text-center">
+                </div>
+              </div>
+              <div class="form-group flex-1">
+                <label class="input-label">TB (cm)</label>
+                <div class="input-wrapper">
+                  <input type="number" placeholder="170" name="tinggi" required id="daftarTinggi" class="input-field text-center">
+                </div>
+              </div>
+              <div class="form-group flex-1">
+                <label class="input-label">BB (kg)</label>
+                <div class="input-wrapper">
+                  <input type="number" placeholder="60" name="berat" required id="daftarBerat" class="input-field text-center">
+                </div>
+              </div>
+          </div>
           
           <div class="form-group">
             <label class="input-label">Bukti Kartu Pelajar</label>
@@ -345,7 +373,7 @@
 </div>
 
 <script>
-  const gasBaseUrl = 'https://script.google.com/macros/s/AKfycbySLZG1J8-C0sSkEFI0wx0j5-0uaY6MJtKrAkoHthK6VW_CeYGN7g5eiiNtMXQeKEr_/exec';
+  const gasBaseUrl = 'https://script.google.com/macros/s/AKfycbxXKOR3sSyh1urFLEHgbD8KtOIUeIceiKKUSYdWSCQDhHhHOb7gP1bFjM1WadPr5Gw/exec';
 
   // --- CAROUSEL LOGIC ---
   const carousel = document.getElementById('textCarousel');
@@ -511,6 +539,10 @@
             nama: document.getElementById('daftarNama').value,
             asalSekolah: document.getElementById('daftarSekolah').value,
             nomorTelepon: document.getElementById('daftarTelepon').value,
+            tempatLahir: document.getElementById('daftarTTL').value,
+            usia: document.getElementById('daftarUsia').value,
+            tinggi: document.getElementById('daftarTinggi').value,
+            berat: document.getElementById('daftarBerat').value,
             fileName: file.name,
             fileMimeType: file.type,
             fileBase64: base64Data

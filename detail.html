@@ -1,459 +1,365 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <base target="_top">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PENDAFTARAN AKUN TRIPATI DPPI KOTA YOGYAKARTA 2025</title>
+  <title>Detail Akun Peserta</title>
+  
   <!-- Menggunakan Tailwind CSS untuk utilitas layout dan responsif -->
   <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Poppins Font from Google Fonts for better aesthetics -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
-    
-    /* VARIABEL WARNA */
+    /* Styling Hitam & Gold */
     :root {
-        --color-black: #1A1A1A;
-        --color-dark-gray: #2D2D2D;
-        --color-gold-primary: #FFD700; /* Rich Gold */
-        --color-gold-secondary: #B8860B; /* Muted Gold/Shadow */
-        --color-cta-register: #007bff; /* Biru untuk Daftar */
-        --color-cta-register-shadow: #0056b3; /* Shadow Biru Tua */
-        --color-error: #ff4757;
-        --color-success: #2ed573;
+        --color-black: #121212;
+        --color-dark-gray: #1e1e1e;
+        --color-gold-primary: #FFD700; 
+        --color-gold-secondary: #AA9860;
+        --color-text-light: #e0e0e0;
+        --color-cta-logout: #dc3545; /* Merah untuk Logout */
+        --color-status-pending: #ff8c8c; /* Merah muda untuk Menunggu */
+        --color-status-verified: #00ff88; /* Hijau terang untuk Terverifikasi */
     }
 
-    body {
-      font-family: 'Poppins', sans-serif;
-      overflow: hidden;
+    body { 
+      font-family: 'Poppins', sans-serif; 
       background-color: var(--color-black); 
-      color: #F0F0F0;
+      display: flex; 
+      justify-content: center; 
+      align-items: center; 
+      min-height: 100vh; 
+      margin: 0; 
+      padding: 20px;
     }
     
-    /* ANIMATED BACKGROUND & SHAPES */
-    .animated-bg {
-      background: var(--color-black); 
-      position: relative;
+    .container { 
+      background-color: var(--color-dark-gray); 
+      padding: 30px; 
+      border-radius: 12px; 
+      box-shadow: 0 15px 30px rgba(0,0,0,0.5); 
+      width: 100%;
+      max-width: 500px; 
+      text-align: center; 
+      border: 1px solid var(--color-gold-secondary);
     }
     
-    .shape {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(50px); 
-      opacity: 0.2; 
-      animation: float 25s infinite;
-      z-index: 0;
+    h1 { 
+      color: var(--color-gold-primary);
+      margin-bottom: 5px; 
+      font-size: 28px; 
+      font-weight: 700; 
+      text-shadow: 0 0 8px rgba(255, 215, 0, 0.6);
     }
     
-    .shape-1 {
-      width: 400px; height: 400px; background: var(--color-gold-primary); 
-      top: -150px; left: -150px; animation-delay: 0s;
+    h2 { 
+      color: var(--color-text-light); 
+      margin-top: 0; 
+      margin-bottom: 30px; 
+      font-size: 18px; 
+      font-weight: 400;
     }
     
-    .shape-2 {
-      width: 350px; height: 350px; background: var(--color-gold-secondary); 
-      bottom: -100px; right: -100px; animation-delay: 5s;
+    .announcement { 
+      background-color: #333; 
+      color: var(--color-gold-primary); 
+      padding: 15px; 
+      border-radius: 8px; 
+      font-weight: bold; 
+      margin-bottom: 25px; 
+      border: 1px solid var(--color-gold-secondary);
     }
     
-    .shape-3 {
-      width: 300px; height: 300px; background: #FFECB3; 
-      top: 50%; left: 50%; transform: translate(-50%, -50%);
-      animation-delay: 10s;
+    .data-box { 
+      padding: 20px; 
+      border-radius: 10px; 
+      background-color: #333; 
+      text-align: left; 
+      margin-bottom: 20px; 
+      border: 1px solid #444;
     }
     
-    @keyframes float {
-      0%, 100% { transform: translate(0, 0) rotate(0deg); }
-      33% { transform: translate(40px, -40px) rotate(100deg); }
-      66% { transform: translate(-30px, 30px) rotate(200deg); }
+    .data-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid #444;
     }
     
-    /* GLASSMORPHISM CARD (Hitam Emas) */
-    .glass-card {
-      background: rgba(42, 42, 42, 0.7); 
-      backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 215, 0, 0.3); 
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    .data-item:last-child {
+      border-bottom: none;
     }
     
-    /* INPUT STYLING */
-    .input-wrapper { position: relative; overflow: visible; }
-    
-    .input-icon {
-      position: absolute; left: 8px; top: 50%; transform: translateY(-50%);
-      width: 48px; height: 48px;
-      background: linear-gradient(135deg, var(--color-gold-primary) 0%, var(--color-gold-secondary) 100%); 
-      display: flex; align-items: center; justify-content: center;
-      border-radius: 8px; z-index: 10; pointer-events: none;
-      box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+    .data-label { 
+      font-weight: 600; 
+      color: var(--color-gold-secondary); 
+      flex-basis: 40%;
     }
     
-    /* Password Toggle Icon */
-    .password-toggle {
-        position: absolute;
-        right: 12px; /* Jarak dari kanan */
-        top: 50%;
-        transform: translateY(-50%);
+    .data-value { 
+      color: var(--color-text-light); 
+      flex-basis: 60%;
+      text-align: right;
+      word-break: break-all;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
+
+    #userPasswordInput {
+        background-color: transparent;
+        border: none;
+        outline: none;
+        color: #ff8c8c; 
+        font-family: 'monospace';
+        font-size: 1rem;
+        text-align: right;
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        pointer-events: none;
+    }
+    
+    .status-badge {
+        font-weight: 700;
+        padding: 5px 10px;
+        border-radius: 6px;
+        text-transform: uppercase;
+        font-size: 0.9em;
+    }
+    
+    .status-pending {
+        background-color: #581616;
+        color: var(--color-status-pending);
+    }
+    
+    .status-verified {
+        background-color: #0d361f;
+        color: var(--color-status-verified);
+    }
+
+    .toggle-button {
+        background: none;
+        border: none;
         cursor: pointer;
-        z-index: 20; /* Pastikan di atas input */
+        padding: 0 5px;
         color: var(--color-gold-primary);
-        padding: 5px;
         transition: color 0.2s;
     }
-    .password-toggle:hover {
-        color: #fff;
-    }
-
-    .input-field {
-      background-color: #2D2D2D !important;
-      color: #F0F0F0;
-      border: 2px solid #3A3A3A !important;
-      transition: all 0.3s ease;
-      padding-right: 1rem !important; /* Default padding */
-      padding-left: 64px !important; /* Padding for icon space */
+    
+    .toggle-button:hover {
+        color: white;
     }
     
-    /* Tambahkan padding di kanan untuk toggle password */
-    #loginPassword, #daftarPassword {
-        padding-right: 40px !important; 
-    }
-
-    .input-field::placeholder { color: #A0A0A0; }
-
-    .input-field:focus {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 25px rgba(255, 215, 0, 0.2); 
-      border-color: var(--color-gold-primary) !important;
-    }
-    
-    /* BUTTON STYLING */
-    
-    /* Gold Button (LOGIN) - Primary */
-    .btn-primary {
-      background: linear-gradient(135deg, var(--color-gold-primary) 0%, var(--color-gold-secondary) 100%); 
-      color: var(--color-black) !important; 
-      position: relative;
-      overflow: hidden;
-      transition: all 0.3s ease;
-      /* 3D Effect */
-      box-shadow: 0 6px 0 var(--color-gold-secondary); 
-      padding: 12px;
-      border-radius: 8px;
-      font-weight: bold;
+    .logout-button { 
+      background-color: var(--color-cta-logout); 
+      color: white; 
+      padding: 12px 25px; 
+      border: none; 
+      border-radius: 8px; 
+      cursor: pointer; 
+      margin-top: 15px; 
+      font-size: 16px; 
+      font-weight: bold; 
+      transition: all 0.1s;
+      width: 100%;
+      box-shadow: 0 5px 0 #9f1e29;
     }
     
-    .btn-primary::before {
-      content: '';
-      position: absolute;
-      top: 0; left: -100%; width: 100%; height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent); 
-      transition: left 0.5s;
-    }
-    
-    .btn-primary:hover::before { left: 100%; }
-    
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 0 var(--color-gold-secondary), 0 15px 35px rgba(255, 215, 0, 0.5); 
+    .logout-button:hover { 
+      background-color: #c82333; 
+      box-shadow: 0 3px 0 #9f1e29;
+      transform: translateY(2px);
     }
 
-    /* Blue Button (DAFTAR) - Register */
-    .btn-register { 
-        background-color: var(--color-cta-register); 
-        color: white !important; 
-        box-shadow: 0 6px 0 var(--color-cta-register-shadow);
-        width: 100%; 
-        padding: 12px; 
-        border: none; 
-        border-radius: 8px; 
-        cursor: pointer; 
-        font-size: 16px; 
-        font-weight: bold; 
-        transition: all 0.1s;
-        position: relative;
-        overflow: hidden;
+    /* Responsifitas */
+    @media (max-width: 600px) {
+      .container {
+        padding: 20px;
+      }
+      .data-item {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 15px 0;
+      }
+      .data-label {
+        flex-basis: 100%;
+        margin-bottom: 5px;
+        color: var(--color-gold-primary);
+      }
+      .data-value {
+        flex-basis: 100%;
+        justify-content: flex-start;
+        width: 100%;
+      }
+      #userPasswordInput {
+          text-align: left;
+      }
     }
-    .btn-register:hover { 
-        background-color: var(--color-cta-register-shadow); 
-        box-shadow: 0 4px 0 var(--color-cta-register-shadow);
-        transform: translateY(2px);
-    }
-    .btn-register::before {
-      content: '';
-      position: absolute;
-      top: 0; left: -100%; width: 100%; height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
-      transition: left 0.5s;
-    }
-    .btn-register:hover::before { left: 100%; }
-    
-    /* Button Loading State */
-    .btn-loading {
-        background-color: #555 !important;
-        pointer-events: none;
-        cursor: not-allowed;
-        box-shadow: none !important;
-        transform: none !important;
-        opacity: 0.7;
-    }
-    
-    /* Loading Spinner */
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-    
-    .spinner {
-      animation: spin 1s linear infinite;
-    }
-
-    /* TEXT GRADIENT & GLOW */
-    .gold-text-gradient {
-      background: linear-gradient(135deg, var(--color-gold-primary) 30%, var(--color-gold-secondary) 80%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      color: transparent;
-    }
-
-    /* Message Styles - Disesuaikan agar lebih menonjol */
-    .message { 
-        margin-top: 15px; 
-        padding: 12px; 
-        border-radius: 8px; 
-        text-align: center; 
-        display: flex; /* Menggunakan flexbox untuk ikon */
-        align-items: center;
-        justify-content: center;
-        font-weight: 600; 
-        transition: all 0.3s ease;
-        opacity: 0;
-        transform: translateY(10px);
-    }
-
-    .message.show {
-        opacity: 1;
-        transform: translateY(0);
-    }
-    .message-icon { margin-right: 10px; width: 24px; height: 24px; }
-    .success { background-color: #3c5440; color: var(--color-success); border: 2px solid var(--color-success); }
-    .error { background-color: #721c24; color: var(--color-error); border: 2px solid var(--color-error); }
-    .info { background-color: #5d4037; color: #ffab40; border: 2px solid #ffab40; } 
-
-    /* Tab Styles */
-    .tab { border: none; }
-    .tab button { 
-      background-color: rgba(42, 42, 42, 0.9);
-      color: #A0A0A0; 
-      flex-grow: 1;
-      padding: 12px 15px; 
-      border: none;
-      transition: 0.3s; 
-      font-weight: 500;
-    }
-    .tab button.active { 
-      background-color: var(--color-gold-primary); 
-      color: var(--color-black); 
-      font-weight: bold;
-      border-radius: 6px;
-      box-shadow: 0 4px 10px rgba(255, 215, 0, 0.4);
-    }
-    .tab button:first-child { border-top-left-radius: 6px; border-bottom-left-radius: 6px; }
-    .tab button:last-child { border-top-right-radius: 6px; border-bottom-right-radius: 6px; }
-
-    .tabcontent { display: none; padding: 10px 0; }
-    .tabcontent.active { display: block; }
-
-    /* Icon SVGs for forms */
-    .icon-color { stroke: var(--color-black); }
   </style>
 </head>
+<body onload="loadUserDetails()">
 
-<body class="animated-bg min-h-screen flex items-center justify-center">
-    <!-- Floating Shapes for Aesthetic -->
-    <div class="shape shape-1"></div>
-    <div class="shape shape-2"></div>
-    <div class="shape shape-3"></div>
+<div class="container">
+  <!-- Logo DPPI -->
+  <div class="flex justify-center mb-6 mt-2">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/3/36/Logo_DPPI.png"
+            alt="Logo DPPI" 
+            class="h-20 w-20 rounded-full object-cover border-2 border-yellow-400"
+            style="box-shadow: 0 0 15px rgba(255, 215, 0, 0.7);"
+            onerror="this.onerror=null; this.src='https://placehold.co/80x80/1A1A1A/FFD700?text=Logo';" 
+      >
+  </div>
+    
+  <h1 id="pageTitle">Detail Akun Peserta</h1>
+  <h2 id="pageSubtitle">Informasi ini diambil dari data pendaftaran/login terakhir Anda.</h2>
 
-    <div class="glass-card p-8 md:p-10 w-full max-w-md form-container z-10 rounded-xl">
-        
-        <!-- DPPI Logo Display -->
-        <div class="flex justify-center mb-6 mt-2">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/3/36/Logo_DPPI.png"
-                 alt="Logo Ujian PIP" 
-                 class="h-32 w-32 rounded-full object-cover border-4 border-yellow-400"
-                 style="box-shadow: 0 0 30px rgba(255, 215, 0, 0.7);"
-                 onerror="this.onerror=null; this.src='https://placehold.co/120x120/1A1A1A/FFD700?text=Logo+DPPI';" 
-            >
-        </div>
+  <div class="announcement">
+    Harap simpan data NIK dan Password Anda dengan aman!
+  </div>
 
-        <h2 class="text-3xl font-bold mb-6 text-center gold-text-gradient">
-            PENDAFTARAN TRIPATI 2025
-        </h2>
-
-        <div class="tab flex space-x-2 mb-4">
-            <button class="tablinks active" onclick="openTab(event, 'Login')">Masuk (Login)</button>
-            <button class="tablinks" onclick="openTab(event, 'Daftar')">Daftar Akun</button>
-        </div>
-
-        <div id="Login" class="tabcontent active">
-            <form id="loginForm">
-                <!-- NIK Input -->
-                <label for="loginNik" class="text-sm font-medium text-gray-300">NIK (Username)</label>
-                <div class="input-wrapper my-2">
-                    <div class="input-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon-color lucide lucide-user"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                    </div>
-                    <input type="text" placeholder="Masukkan NIK Anda" name="nik" required id="loginNik" 
-                           class="input-field w-full py-3 px-4 rounded-lg text-lg"
-                    >
-                </div>
-
-                <!-- Password Input -->
-                <label for="loginPassword" class="text-sm font-medium text-gray-300">Password</label>
-                <div class="input-wrapper my-2">
-                    <div class="input-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon-color lucide lucide-lock"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                    </div>
-                    <input type="password" placeholder="Masukkan Password" name="password" required id="loginPassword" 
-                           class="input-field w-full py-3 px-4 rounded-lg text-lg"
-                    >
-                    <!-- Tombol Toggle Password -->
-                    <span class="password-toggle" onclick="togglePasswordVisibility('loginPassword', this)">
-                        <!-- Ikon mata tertutup (default) -->
-                        <svg id="loginEyeClosed" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye-off"><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c.76 0 1.51.1 2.24.28"/><path d="M14.24 14.24a3 3 0 0 0-4.24-4.24"/><path d="M16.94 16.94A10.5 10.5 0 0 1 12 19c-.76 0-1.51-.1-2.24-.28"/><path d="M10.73 18.92c-.73.18-1.5.28-2.24.28a10.43 10.43 0 0 1-5.27-1.78l-1.72-1.72"/><path d="M2 2l20 20"/><path d="M5.08 10.73c-.18.73-.28 1.5-.28 2.27a10.43 10.43 0 0 0 1.78 5.27l1.72 1.72"/></svg>
-                    </span>
-                </div>
-                
-                <button type="submit" id="btnLogin" class="btn-primary w-full mt-4 text-xl flex items-center justify-center">
-                    <svg class="spinner -ml-1 mr-2 h-5 w-5 text-black hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    <span class="btn-text">LOGIN</span>
-                </button>
-                <div id="loginMessage" class="message"></div>
-            </form>
-        </div>
-
-        <div id="Daftar" class="tabcontent">
-            <form id="daftarForm">
-                <!-- NIK Input -->
-                <label for="daftarNik" class="text-sm font-medium text-gray-300">NIK (Username)</label>
-                <div class="input-wrapper my-2">
-                    <div class="input-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon-color lucide lucide-user"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                    </div>
-                    <input type="text" placeholder="NIK" name="nik" required id="daftarNik" class="input-field w-full py-3 px-4 rounded-lg text-lg">
-                </div>
-
-                <!-- Password Input -->
-                <label for="daftarPassword" class="text-sm font-medium text-gray-300">Password</label>
-                <div class="input-wrapper my-2">
-                    <div class="input-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon-color lucide lucide-key"><path d="m21.79 6.21-3.6-3.6a4 4 0 0 0-5.66 0L1 14.86a2 2 0 0 0 0 2.83l3.6 3.6a4 4 0 0 0 5.66 0L21.79 6.21z"/><circle cx="13" cy="11" r="2"/></svg>
-                    </div>
-                    <input type="password" placeholder="Password Anda (Min. 6 karakter)" name="password" required id="daftarPassword" class="input-field w-full py-3 px-4 rounded-lg text-lg">
-                    <!-- Tombol Toggle Password -->
-                    <span class="password-toggle" onclick="togglePasswordVisibility('daftarPassword', this)">
-                        <!-- Ikon mata tertutup (default) -->
-                        <svg id="daftarEyeClosed" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye-off"><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c.76 0 1.51.1 2.24.28"/><path d="M14.24 14.24a3 3 0 0 0-4.24-4.24"/><path d="M16.94 16.94A10.5 10.5 0 0 1 12 19c-.76 0-1.51-.1-2.24-.28"/><path d="M10.73 18.92c-.73.18-1.5.28-2.24.28a10.43 10.43 0 0 1-5.27-1.78l-1.72-1.72"/><path d="M2 2l20 20"/><path d="M5.08 10.73c-.18.73-.28 1.5-.28 2.27a10.43 10.43 0 0 0 1.78 5.27l1.72 1.72"/></svg>
-                    </span>
-                </div>
-                
-                <!-- Nama Lengkap -->
-                <label for="daftarNama" class="text-sm font-medium text-gray-300">Nama Lengkap</label>
-                <div class="input-wrapper my-2">
-                    <div class="input-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon-color lucide lucide-user-check"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="m16 17 2 2 4-4"/></svg>
-                    </div>
-                    <input type="text" placeholder="Nama Lengkap" name="nama" required id="daftarNama" class="input-field w-full py-3 px-4 rounded-lg text-lg">
-                </div>
-
-                <!-- Asal Sekolah -->
-                <label for="daftarSekolah" class="text-sm font-medium text-gray-300">Asal Sekolah</label>
-                <div class="input-wrapper my-2">
-                    <div class="input-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon-color lucide lucide-graduation-cap"><path d="M22 10v6M10 21h4c.7 0 1.4-.3 2-1l1-2V13c0-.4-.1-.8-.4-1.1L15.3 8.3c-.4-.4-.7-.7-1.3-.7H9.7c-.6 0-1 .3-1.3.7L5.4 11.9c-.3.3-.4.7-.4 1.1v4c0 .7.3 1.4 1 2l1 2c.6.7 1.3 1 2 1h4z"/><path d="m14 16 1-2v-4"/><path d="m10 16 1-2v-4"/><path d="M22 10v6l-1 2c-.6.7-1.3 1-2 1h-4"/></svg>
-                    </div>
-                    <input type="text" placeholder="Nama Sekolah Anda" name="asalSekolah" required id="daftarSekolah" class="input-field w-full py-3 px-4 rounded-lg text-lg">
-                </div>
-
-                <!-- Nomor Telepon -->
-                <label for="daftarTelepon" class="text-sm font-medium text-gray-300">Nomor Telepon</label>
-                <div class="input-wrapper my-2">
-                    <div class="input-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon-color lucide lucide-phone"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.63A2 2 0 0 1 3.08 2h3a2 2 0 0 1 2 1.72 17.5 17.5 0 0 0 .97 4.15 2 2 0 0 1-.45 2.11L8.09 13.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 17.5 17.5 0 0 0 4.15.97A2 2 0 0 1 22 16.92z"/></svg>
-                    </div>
-                    <input type="text" placeholder="Cth: 081234567890" name="nomorTelepon" required id="daftarTelepon" class="input-field w-full py-3 px-4 rounded-lg text-lg">
-                </div>
-                
-                <!-- Bukti Kartu Pelajar -->
-                <label for="fileBukti" class="text-sm font-medium text-gray-300 mt-4 block">Bukti Kartu Pelajar/SK Kelas X (Wajib)</label>
-                <!-- File input is handled differently, so we won't use the icon wrapper -->
-                <input type="file" name="fileBukti" required id="fileBukti" 
-                    accept=".jpg,.jpeg,.png,.pdf" 
-                    class="w-full py-3 px-1 rounded-lg text-lg border-2 border-dashed border-gray-600/50 bg-gray-700/30 text-gray-300"
-                >
-                
-                <button type="submit" id="btnDaftar" class="btn-register w-full mt-6 text-xl flex items-center justify-center">
-                    <svg class="spinner -ml-1 mr-2 h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    <span class="btn-text">DAFTAR SEKARANG</span>
-                </button>
-                <div id="daftarMessage" class="message"></div>
-            </form>
+  <div class="data-box" id="userDetails">
+    <!-- Status Verifikasi -->
+    <div class="data-item">
+        <span class="data-label">Status Verifikasi:</span> 
+        <div id="userStatus" class="data-value">
+            <span class="status-badge status-pending">Memuat...</span>
         </div>
     </div>
+    
+    <!-- Nama Lengkap -->
+    <div class="data-item">
+        <span class="data-label">Nama Lengkap:</span> 
+        <span id="userName" class="data-value">Memuat...</span>
+    </div>
+    
+    <!-- Asal Sekolah -->
+    <div class="data-item">
+        <span class="data-label">Asal Sekolah:</span> 
+        <span id="userSekolah" class="data-value">Memuat...</span>
+    </div>
 
-<!-- Pertahankan struktur HTML dan CSS (Source 3) Anda di sini. Hanya ganti bagian <script> -->
+    <!-- Nomor Telepon -->
+    <div class="data-item">
+        <span class="data-label">Nomor Telepon:</span> 
+        <span id="userTelepon" class="data-value">Memuat...</span>
+    </div>
+    
+    <!-- NIK (Username) -->
+    <div class="data-item">
+        <span class="data-label">Username (NIK):</span> 
+        <span id="userNik" class="data-value">Memuat...</span>
+    </div>
+
+    <!-- Password DENGAN TOGGLE -->
+    <div class="data-item bg-red-900/10 rounded-b-lg p-3 -mx-4 -mb-4">
+        <span class="data-label">Password:</span> 
+        <div class="data-value">
+            <input type="password" id="userPasswordInput" value="Memuat..." readonly/>
+            <button class="toggle-button" onclick="togglePasswordVisibility()" aria-label="Toggle password visibility">
+                <!-- Ikon Mata Tertutup -->
+                <svg id="toggleIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M2.067 11.121A11.75 11.75 0 0 1 12.001 5.5c4.154 0 7.844 2.19 9.934 5.621m-19.868 0A11.75 11.75 0 0 0 12 18.5c4.154 0 7.844-2.19 9.934-5.621m-19.868 0L3.5 12"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+            </button>
+        </div>
+    </div>
+  </div>
+  
+  <button class="logout-button" onclick="redirectToLogin()">LOGOUT / KEMBALI KE LOGIN</button>
+  
+  <!-- Area pesan jika terjadi kesalahan -->
+  <div id="messageArea" style="color: #ff4757; margin-top: 10px; font-size: 0.9rem;"></div>
+</div>
 
 <script>
-  // Fungsi toggle password tidak berubah
+  // Fungsi untuk mengubah visibilitas password
   function togglePasswordVisibility() {
-      // ... (tetap gunakan kode Anda di Source 3)
+    const passwordInput = document.getElementById('userPasswordInput');
+    const toggleIcon = document.getElementById('toggleIcon');
+    
+    if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        // Ganti ikon menjadi Ikon Mata Tertutup (Eye-Off)
+        toggleIcon.innerHTML = `
+            <path d="M9.88 9.88c.18-.33.32-.63.45-.92m-.45.92-.01.01m9.62-5.74A9.76 9.76 0 0 0 12 5.5c-4.154 0-7.844 2.19-9.934 5.621m19.868 0a11.75 11.75 0 0 0-19.868 0m9.934 0a3 3 0 1 1-4.243-4.243m4.243 4.243L21 21" />
+            <line x1="2" y1="2" x2="22" y2="22"></line>
+        `;
+    } else {
+        passwordInput.type = 'password';
+        // Ganti ikon menjadi Ikon Mata Terbuka (Eye)
+        toggleIcon.innerHTML = `
+            <path d="M2.067 11.121A11.75 11.75 0 0 1 12.001 5.5c4.154 0 7.844 2.19 9.934 5.621m-19.868 0A11.75 11.75 0 0 0 12 18.5c4.154 0 7.844-2.19 9.934-5.621m-19.868 0L3.5 12"/>
+            <circle cx="12" cy="12" r="3"/>
+        `;
+    }
   }
 
   function loadUserDetails() {
     const messageArea = document.getElementById('messageArea');
     const passwordInput = document.getElementById('userPasswordInput');
     const userStatusElement = document.getElementById('userStatus');
+    
+    // Mengambil data pengguna dari sessionStorage yang disimpan saat login/daftar di index.html
     const userDataString = sessionStorage.getItem('userData'); 
     
+    // Defaultkan status awal saat memuat
     userStatusElement.innerHTML = '<span class="status-badge status-pending">Memuat...</span>';
 
     if (userDataString) {
       try {
           const user = JSON.parse(userDataString);
           
+          // Tampilkan data ke elemen HTML
           document.getElementById('userName').textContent = user.nama || 'Tidak ada data';
           document.getElementById('userSekolah').textContent = user.asalSekolah || 'Tidak ada data';
           document.getElementById('userTelepon').textContent = user.nomorTelepon || 'Tidak ada data';
           document.getElementById('userNik').textContent = user.nik || 'Tidak ada data';
           
+          // Tampilkan Status Verifikasi
           const status = user.status ? String(user.status).trim() : 'Data Kosong';
-          let badgeClass = status.toLowerCase().includes('terverifikasi') ? 'status-verified' : 'status-pending';
+          
+          let badgeClass = 'status-pending';
+          if (status.toLowerCase().includes('terverifikasi')) {
+              badgeClass = 'status-verified';
+          }
           
           userStatusElement.innerHTML = `<span class="status-badge ${badgeClass}">${status}</span>`;
           document.getElementById('pageSubtitle').textContent = "Detail Akun Peserta Anda.";
 
-          passwordInput.value = user.password || 'Password tidak tersedia di sesi';
+          // Atur nilai input password dari sesi
+          if (user.password) {
+              passwordInput.value = user.password;
+          } else {
+              passwordInput.value = 'Password tidak tersedia di sesi';
+          }
           passwordInput.type = 'password';
+          
+          // Sesuaikan judul
           document.getElementById('pageTitle').textContent = "Selamat Datang!";
           
       } catch (e) {
           messageArea.textContent = 'Kesalahan memproses data sesi. Mengalihkan ke login...';
+          console.error('Error parsing user data:', e);
           sessionStorage.removeItem('userData');
           setTimeout(redirectToLogin, 1000);
       }
     } else {
+      // Jika data tidak ada (user belum login), arahkan ke index.html
       passwordInput.value = 'Memuat...';
-      messageArea.textContent = 'Sesi tidak ditemukan. Mengalihkan ke login...';
+      messageArea.textContent = 'Sesi tidak ditemukan. Mengalihkan ke halaman login...';
       setTimeout(redirectToLogin, 1000);
     }
   }
 
   function redirectToLogin() {
+    // Menghapus sesi sebelum mengalihkan
     sessionStorage.removeItem('userData');
+    
     // Arahkan kembali ke halaman index Vercel
     window.location.href = '/index.html'; 
   }

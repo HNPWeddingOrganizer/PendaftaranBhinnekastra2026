@@ -9,12 +9,12 @@
 
   <style>
     :root {
-        --bg-main: #0a0514; /* Deep space purple/black */
-        --bg-card: #120b24; /* Lighter purple card */
-        --bg-input: #1a103c;
-        --color-primary: #8b5cf6; /* Vibrant Purple */
-        --color-primary-hover: #7c3aed;
-        --text-muted: #94a3b8;
+        --bg-main: #07070F; /* Menyesuaikan dengan detail.html */
+        --bg-card: #12121C;
+        --bg-input: #1C1C28;
+        --color-primary: #7C3AED; 
+        --color-primary-hover: #6D28D9;
+        --text-muted: #64748b;
     }
 
     body {
@@ -26,159 +26,119 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      overflow: hidden; /* Prevent scrolling during swipe */
-      background-image: 
-        radial-gradient(circle at 50% 30%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
-        radial-gradient(circle at 50% 100%, rgba(139, 92, 246, 0.05) 0%, transparent 60%);
+      overflow: hidden; 
+      background-image: radial-gradient(circle at 50% 0%, rgba(124, 58, 237, 0.15) 0%, transparent 60%);
+      background-repeat: no-repeat;
     }
+
+    /* --- LOGO STYLING --- */
+    .hero-logo, .auth-logo {
+      border-radius: 50%;
+      object-fit: contain; /* Menjaga proporsi logo agar tidak gepeng */
+      background-color: var(--bg-card);
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      padding: 4px;
+      box-shadow: 0 8px 25px rgba(124, 58, 237, 0.2);
+    }
+    .hero-logo { width: 90px; height: 90px; position: relative; z-index: 2; margin: 0 auto; }
+    .auth-logo { width: 75px; height: 75px; }
 
     /* --- ONBOARDING SCREEN STYLES --- */
     .onboarding-screen {
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      display: flex;
-      flex-direction: column;
-      z-index: 50;
+      position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+      display: flex; flex-direction: column; z-index: 50;
       transition: opacity 0.4s ease, transform 0.4s ease;
     }
 
     .hero-section {
-      flex: 1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      position: relative;
+      flex: 1; display: flex; justify-content: center; align-items: center; position: relative;
     }
 
     /* Concentric Rings */
     .rings {
-      position: absolute;
-      border-radius: 50%;
-      border: 1px solid rgba(139, 92, 246, 0.1);
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
+      position: absolute; border-radius: 50%;
+      border: 1px solid rgba(124, 58, 237, 0.15);
+      top: 50%; left: 50%; transform: translate(-50%, -50%);
     }
-    .ring-1 { width: 150px; height: 150px; }
-    .ring-2 { width: 250px; height: 250px; border-color: rgba(139, 92, 246, 0.05); }
-    .ring-3 { width: 380px; height: 380px; border-style: dashed; border-color: rgba(139, 92, 246, 0.08); }
-    
-    .hero-logo {
-      position: relative;
-      z-index: 2;
-      width: 70px;
-      height: 70px;
-      border-radius: 50%;
-      background: rgba(139, 92, 246, 0.1);
-      padding: 5px;
-      box-shadow: 0 0 40px rgba(139, 92, 246, 0.3);
-    }
+    .ring-1 { width: 160px; height: 160px; }
+    .ring-2 { width: 280px; height: 280px; border-color: rgba(124, 58, 237, 0.08); }
+    .ring-3 { width: 420px; height: 420px; border-style: dashed; border-color: rgba(124, 58, 237, 0.05); }
 
     .bottom-panel {
       background: var(--bg-card);
-      border-top-left-radius: 32px;
-      border-top-right-radius: 32px;
-      padding: 40px 30px;
-      text-align: center;
+      border-top-left-radius: 32px; border-top-right-radius: 32px;
+      padding: 40px 0 40px 0; text-align: center;
       box-shadow: 0 -10px 40px rgba(0,0,0,0.5);
-      border-top: 1px solid rgba(255,255,255,0.02);
+      border-top: 1px solid rgba(255,255,255,0.03);
     }
 
+    /* Carousel / Text yang bisa di-slide */
+    .carousel-container {
+      display: flex; overflow-x: auto; scroll-snap-type: x mandatory;
+      scrollbar-width: none; -webkit-overflow-scrolling: touch;
+      margin-bottom: 20px; padding-bottom: 10px;
+    }
+    .carousel-container::-webkit-scrollbar { display: none; }
+    .carousel-slide {
+      flex: 0 0 100%; scroll-snap-align: center; padding: 0 30px;
+    }
+
+    /* Swipe to Start Button */
+    .swipe-wrapper { padding: 0 30px; }
     .swipe-container {
-      margin-top: 30px;
-      background: var(--color-primary);
-      height: 64px;
-      border-radius: 100px;
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 10px 25px -5px rgba(139, 92, 246, 0.4);
+      background: var(--color-primary); height: 64px; border-radius: 100px;
+      position: relative; display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 10px 25px -5px rgba(124, 58, 237, 0.4);
     }
-
     .swipe-text {
-      color: #fff;
-      font-weight: 600;
-      font-size: 15px;
-      letter-spacing: 0.5px;
-      pointer-events: none;
-      user-select: none;
+      color: #fff; font-weight: 600; font-size: 15px; letter-spacing: 0.5px;
+      pointer-events: none; user-select: none;
     }
-
     .swipe-thumb {
-      position: absolute;
-      left: 6px;
-      width: 52px;
-      height: 52px;
-      background: #0a0514;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: grab;
-      color: #fff;
-      box-shadow: 2px 0 10px rgba(0,0,0,0.2);
-      z-index: 10;
+      position: absolute; left: 6px; width: 52px; height: 52px;
+      background: #07070F; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      cursor: grab; color: #fff; box-shadow: 2px 0 10px rgba(0,0,0,0.2);
+      z-index: 10; touch-action: none; /* Mencegah layar ikut scroll saat geser di HP */
     }
     .swipe-thumb:active { cursor: grabbing; }
 
     /* --- AUTH SCREEN STYLES --- */
     .auth-screen {
-      display: none; /* Hidden initially */
-      opacity: 0;
-      transform: translateY(20px);
-      width: 100%;
-      padding: 20px;
-      transition: opacity 0.5s ease, transform 0.5s ease;
-      z-index: 40;
+      display: none; opacity: 0; transform: translateY(20px);
+      width: 100%; padding: 20px; transition: opacity 0.5s ease, transform 0.5s ease; z-index: 40;
     }
-
     .auth-container {
-      background: var(--bg-card);
-      width: 100%;
-      max-width: 420px;
-      margin: 0 auto;
-      padding: 40px 32px;
-      border-radius: 32px;
-      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+      background: var(--bg-card); width: 100%; max-width: 440px; margin: 0 auto;
+      padding: 40px 32px; border-radius: 32px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
       border: 1px solid rgba(255,255,255,0.03);
     }
-
-    .logo-container { display: flex; justify-content: center; margin-bottom: 24px; }
-    .logo-container img { width: 64px; height: 64px; border-radius: 50%; padding: 2px; }
-
-    /* Tab Switcher */
+    
     .tab-switcher {
-      display: flex;
-      background: var(--bg-main);
-      border-radius: 100px;
-      padding: 4px;
-      margin-bottom: 32px;
+      display: flex; background: var(--bg-main); border-radius: 100px;
+      padding: 4px; margin-bottom: 32px; border: 1px solid rgba(255,255,255,0.02);
     }
     .tab-btn {
-      flex: 1; text-align: center; padding: 10px 0; border-radius: 100px;
+      flex: 1; text-align: center; padding: 12px 0; border-radius: 100px;
       font-size: 14px; font-weight: 600; color: var(--text-muted);
       cursor: pointer; transition: all 0.3s ease;
     }
     .tab-btn.active {
-      background: var(--color-primary); color: #fff;
-      box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+      background: var(--color-primary); color: #fff; box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
     }
 
     .tabcontent { display: none; animation: slideUp 0.4s ease forwards; }
     .tabcontent.active { display: block; }
     @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* Form Inputs */
     .form-group { margin-bottom: 18px; }
-    .input-label { display: block; font-size: 13px; font-weight: 500; color: #94a3b8; margin-bottom: 8px; margin-left: 4px; }
+    .input-label { display: block; font-size: 13px; font-weight: 500; color: var(--text-muted); margin-bottom: 8px; margin-left: 4px; }
     .input-wrapper {
       position: relative; display: flex; align-items: center;
       background: var(--bg-input); border-radius: 16px;
       transition: all 0.2s ease; border: 1px solid transparent;
     }
-    .input-wrapper:focus-within {
-      border-color: var(--color-primary); box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
-    }
+    .input-wrapper:focus-within { border-color: var(--color-primary); }
     .input-field {
       width: 100%; background: transparent; border: none; color: #fff;
       padding: 16px 20px; font-size: 14px; outline: none; font-family: 'Inter', sans-serif;
@@ -187,19 +147,17 @@
     .password-toggle { position: absolute; right: 16px; color: var(--text-muted); cursor: pointer; }
     .password-toggle:hover { color: #fff; }
 
-    /* Input File */
     .file-input-wrapper {
       background: var(--bg-input); border-radius: 16px; padding: 12px; border: 1px dashed rgba(255,255,255,0.1);
     }
-    .file-input-wrapper input { color: #94a3b8; font-size: 13px; width: 100%; }
+    .file-input-wrapper input { color: var(--text-muted); font-size: 13px; width: 100%; }
     .file-input-wrapper input::file-selector-button {
-      background: var(--bg-main); color: #fff; border: none;
+      background: var(--bg-main); color: #fff; border: 1px solid rgba(255,255,255,0.05);
       padding: 8px 16px; border-radius: 12px; cursor: pointer;
       margin-right: 12px; font-weight: 500; transition: background 0.2s;
     }
     .file-input-wrapper input::file-selector-button:hover { background: #23134f; }
 
-    /* Button Action */
     .btn-submit {
       width: 100%; background: var(--color-primary); color: #fff; border: none;
       padding: 16px; border-radius: 100px; font-size: 15px; font-weight: 600;
@@ -208,7 +166,7 @@
     }
     .btn-submit:hover {
       background: var(--color-primary-hover); transform: translateY(-2px);
-      box-shadow: 0 10px 20px -5px rgba(139, 92, 246, 0.4);
+      box-shadow: 0 10px 20px -5px rgba(124, 58, 237, 0.4);
     }
     .btn-loading { opacity: 0.7; pointer-events: none; transform: none !important; }
     .spinner { animation: spin 1s linear infinite; margin-right: 8px; }
@@ -222,7 +180,6 @@
     .error { background: rgba(239, 68, 68, 0.1); color: #f87171; }
     
     @media (max-width: 480px) {
-        .bottom-panel { padding: 35px 20px; }
         .auth-container { padding: 35px 24px; }
     }
   </style>
@@ -235,25 +192,35 @@
       <div class="rings ring-1"></div>
       <div class="rings ring-2"></div>
       <div class="rings ring-3"></div>
-      <img src="https://upload.wikimedia.org/wikipedia/commons/3/36/Logo_DPPI.png" alt="Logo" class="hero-logo" onerror="this.src='https://placehold.co/100/12121C/8b5cf6?text=DPPI'">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/3/36/Logo_DPPI.png" alt="Logo DPPI" class="hero-logo" onerror="this.src='https://placehold.co/100/12121C/FFFFFF?text=DPPI'">
     </div>
+    
     <div class="bottom-panel">
-      <h1 class="text-2xl font-bold mb-2 tracking-tight">Portal TRIPATI DPPI</h1>
-      <p class="text-sm text-slate-400 font-medium mb-4">Akses cerdas untuk manajemen data dan informasi seleksi peserta DPPI 2025.</p>
+      <!-- Carousel Info (Bisa di-slide) -->
+      <div class="carousel-container" id="textCarousel">
+        <div class="carousel-slide">
+            <h1 class="text-2xl font-bold mb-2 tracking-tight">Portal TRIPATI DPPI</h1>
+            <p class="text-sm text-slate-400 font-medium">Akses cerdas untuk manajemen data dan informasi seleksi peserta DPPI 2025.</p>
+        </div>
+        <div class="carousel-slide">
+            <h1 class="text-2xl font-bold mb-2 tracking-tight">Cepat & Terintegrasi</h1>
+            <p class="text-sm text-slate-400 font-medium">Pantau status pendaftaran dan lengkapi data persyaratan dengan mudah.</p>
+        </div>
+      </div>
       
-      <!-- Dots -->
-      <div class="flex justify-center gap-2 my-6 opacity-50">
-        <div class="w-2 h-2 rounded-full bg-purple-500"></div>
-        <div class="w-2 h-2 rounded-full bg-slate-600"></div>
-        <div class="w-2 h-2 rounded-full bg-slate-600"></div>
-        <div class="w-2 h-2 rounded-full bg-slate-600"></div>
+      <!-- Dots Indicator -->
+      <div class="flex justify-center gap-2 mb-8" id="carouselDots">
+        <div class="w-2 h-2 rounded-full bg-purple-500 transition-colors duration-300"></div>
+        <div class="w-2 h-2 rounded-full bg-slate-600 transition-colors duration-300"></div>
       </div>
 
-      <div class="swipe-container" id="swipeContainer">
-        <span class="swipe-text">Geser untuk Mulai</span>
-        <div class="swipe-thumb" id="swipeThumb">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-        </div>
+      <div class="swipe-wrapper">
+          <div class="swipe-container" id="swipeContainer">
+            <span class="swipe-text">Geser untuk Mulai</span>
+            <div class="swipe-thumb" id="swipeThumb">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+            </div>
+          </div>
       </div>
     </div>
   </div>
@@ -262,8 +229,8 @@
   <div class="auth-screen" id="authScreen">
     <div class="auth-container">
       
-      <div class="logo-container">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/3/36/Logo_DPPI.png" alt="Logo DPPI" onerror="this.src='https://placehold.co/100/12121C/8b5cf6?text=DPPI'">
+      <div class="flex justify-center mb-6">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/3/36/Logo_DPPI.png" alt="Logo DPPI" class="auth-logo" onerror="this.src='https://placehold.co/100/12121C/FFFFFF?text=DPPI'">
       </div>
       <div class="text-center mb-8">
         <h2 class="text-xl font-bold mb-1 tracking-tight">Masuk ke Akun Anda.</h2>
@@ -273,7 +240,7 @@
       <!-- Switcher -->
       <div class="tab-switcher">
         <div class="tab-btn active" onclick="openTab(event, 'Login')">Masuk</div>
-        <div class="tab-btn" onclick="openTab(event, 'Daftar')">Daftar</div>
+        <div class="tab-btn" onclick="openTab(event, 'Daftar')">Daftar Akun</div>
       </div>
 
       <!-- FORM LOGIN -->
@@ -365,7 +332,22 @@
 <script>
   const gasBaseUrl = 'https://script.google.com/macros/s/AKfycbySLZG1J8-C0sSkEFI0wx0j5-0uaY6MJtKrAkoHthK6VW_CeYGN7g5eiiNtMXQeKEr_/exec';
 
-  // --- SWIPE LOGIC ---
+  // --- CAROUSEL LOGIC ---
+  const carousel = document.getElementById('textCarousel');
+  const dots = document.getElementById('carouselDots').children;
+  
+  carousel.addEventListener('scroll', () => {
+      const index = Math.round(carousel.scrollLeft / carousel.clientWidth);
+      for(let i=0; i<dots.length; i++) {
+          if(i === index) {
+              dots[i].className = 'w-2 h-2 rounded-full bg-purple-500 transition-colors duration-300';
+          } else {
+              dots[i].className = 'w-2 h-2 rounded-full bg-slate-600 transition-colors duration-300';
+          }
+      }
+  });
+
+  // --- SWIPE TO START LOGIC ---
   const swipeThumb = document.getElementById('swipeThumb');
   const swipeContainer = document.getElementById('swipeContainer');
   const onboardingScreen = document.getElementById('onboardingScreen');
@@ -374,11 +356,11 @@
   let isDragging = false;
   let startX = 0;
   let currentX = 0;
-  // Account for container padding (6px left + 6px right roughly)
   let maxDrag = 0; 
 
   function initSwipe() {
-      maxDrag = swipeContainer.clientWidth - swipeThumb.clientWidth - 12;
+      // Kalkulasi batas maksimal geser (offsetWidth dipakai agar lebih akurat)
+      maxDrag = swipeContainer.offsetWidth - swipeThumb.offsetWidth - 12;
   }
   
   window.addEventListener('resize', initSwipe);
@@ -387,11 +369,12 @@
       isDragging = true;
       startX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
       swipeThumb.style.transition = 'none';
-      document.body.style.overflow = 'hidden'; // prevent scrolling
+      document.body.style.overflow = 'hidden'; 
   }
 
   function doDrag(e) {
       if (!isDragging) return;
+      if (e.cancelable) e.preventDefault(); // Sangat penting agar layar tidak ikut scroll di HP
       
       const x = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
       currentX = Math.max(0, Math.min(x - startX, maxDrag));
@@ -403,7 +386,7 @@
       isDragging = false;
       
       if (currentX >= maxDrag * 0.8) {
-          // Success Swipe
+          // Sukses di-swipe sampai ujung
           swipeThumb.style.transform = `translateX(${maxDrag}px)`;
           
           setTimeout(() => {
@@ -413,18 +396,14 @@
               setTimeout(() => {
                   onboardingScreen.style.display = 'none';
                   authScreen.style.display = 'block';
-                  
-                  // Trigger reflow to animate in
-                  void authScreen.offsetWidth; 
-                  
+                  void authScreen.offsetWidth; // trigger reflow
                   authScreen.style.opacity = '1';
                   authScreen.style.transform = 'translateY(0)';
-                  document.body.style.overflow = 'auto'; // allow scrolling again
+                  document.body.style.overflow = 'auto';
               }, 400);
           }, 200);
-          
       } else {
-          // Snap back
+          // Snap kembali ke awal jika belum sampai ujung
           swipeThumb.style.transition = 'transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1)';
           swipeThumb.style.transform = `translateX(0px)`;
           currentX = 0;
@@ -432,14 +411,13 @@
   }
 
   swipeThumb.addEventListener('mousedown', startDrag);
-  window.addEventListener('mousemove', doDrag);
+  window.addEventListener('mousemove', doDrag, {passive: false});
   window.addEventListener('mouseup', endDrag);
 
   swipeThumb.addEventListener('touchstart', startDrag, {passive: true});
-  window.addEventListener('touchmove', doDrag, {passive: true});
+  window.addEventListener('touchmove', doDrag, {passive: false}); // Passive false wajib agar preventDefault() jalan
   window.addEventListener('touchend', endDrag);
 
-  // Initialize swipe bounds
   initSwipe();
 
   // --- FORM LOGIC ---
@@ -467,7 +445,6 @@
     document.getElementById(tabName).classList.add('active');
     evt.currentTarget.classList.add("active");
     
-    // Update Header Text based on Tab
     const headerTitle = document.querySelector('.auth-container h2');
     const headerDesc = document.querySelector('.auth-container p');
     if(tabName === 'Login') {
@@ -481,7 +458,6 @@
 
   document.addEventListener('DOMContentLoaded', () => {
     if (sessionStorage.getItem('userData')) {
-        // If already logged in, hide onboarding and go straight to detail
         window.location.href = '/detail.html'; 
         return;
     }

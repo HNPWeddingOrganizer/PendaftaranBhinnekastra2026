@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard Profil - TRIPATI DPPI</title>
   
-  <!-- TAMBAHKAN BARIS INI -->
   <link rel="icon" type="image/png" href="https://upload.wikimedia.org/wikipedia/commons/a/a0/Logo_dppi_512.png">
   
   <script src="https://cdn.tailwindcss.com"></script>
@@ -48,7 +47,7 @@
     }
     
     .profile-header { display: flex; flex-direction: column; align-items: center; margin-bottom: 32px; text-align: center; }
-    .logo-image { height: 80px; width: 80px; border-radius: 50%; object-fit: contain; border: 2px solid var(--border-color); padding: 4px; background-color: var(--bg-card); margin-bottom: 20px; box-shadow: 0 8px 25px rgba(163, 73, 108, 0.15); }
+    .logo-image { height: 80px; width: 80px; border-radius: 50%; object-fit: cover; border: 2px solid var(--border-color); padding: 2px; background-color: var(--bg-card); margin-bottom: 20px; box-shadow: 0 8px 25px rgba(163, 73, 108, 0.15); }
     h1 { margin: 0 0 4px 0; font-size: 24px; font-weight: 700; letter-spacing: -0.5px; }
     .subtitle { color: var(--text-muted); margin: 0; font-size: 14px; font-weight: 500; }
 
@@ -63,7 +62,7 @@
     .status-badge { font-weight: 600; padding: 6px 16px; border-radius: 100px; font-size: 12px; }
     .status-pending { background-color: rgba(245, 158, 11, 0.15); color: #d97706; }
     .status-verified { background-color: rgba(16, 185, 129, 0.15); color: #059669; }
-    .status-gagal { background-color: rgba(239, 68, 68, 0.15); color: #DC2626; } /* TAMBAHAN UNTUK GAGAL */
+    .status-gagal { background-color: rgba(239, 68, 68, 0.15); color: #DC2626; } 
 
     .toggle-btn { background: none; border: none; cursor: pointer; padding: 4px; color: var(--text-muted); transition: color 0.2s ease; margin-left: 8px; }
     .toggle-btn:hover { color: var(--color-primary); }
@@ -85,14 +84,22 @@
 <div class="dashboard-card">
   
   <div class="profile-header">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/3/36/Logo_DPPI.png" alt="Logo DPPI" class="logo-image" onerror="this.src='https://placehold.co/100/F9F1E2/A3496C?text=DPPI';">
+      <div class="relative inline-block mb-5 group">
+          <img id="userProfileImage" src="https://upload.wikimedia.org/wikipedia/commons/3/36/Logo_DPPI.png" alt="Foto Profil" class="logo-image m-0 transition-opacity">
+          
+          <label for="fotoUpload" class="absolute inset-0 bg-black/60 text-white flex flex-col justify-center items-center rounded-full opacity-0 group-hover:opacity-100 cursor-pointer transition-all duration-300 m-[2px]" style="height: 80px; width: 80px; border-radius: 50%;">
+              <svg class="w-5 h-5 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+              <span class="text-[10px] font-bold">Ubah Foto</span>
+          </label>
+          <input type="file" id="fotoUpload" accept="image/png, image/jpeg, image/jpg" class="hidden">
+      </div>
+
       <h1 id="pageTitle">Memuat Data...</h1>
       <p class="subtitle">Akun Resmi TRIPATI DPPI</p>
   </div>
 
   <div class="data-list" id="userDetails">
     
-    <!-- Alasan Container (Sembunyi secara default) -->
     <div class="data-item" id="alasanContainer" style="display: none; border-color: #EF4444; background-color: #FEF2F2;">
         <span class="data-label" style="color: #DC2626;">Alasan Tidak Lolos</span>
         <span id="userAlasan" class="data-value" style="color: #B91C1C;">Memuat...</span>
@@ -164,6 +171,9 @@
 </div>
 
 <script>
+  // PENTING: Masukkan URL Deployment Google Apps Script Anda di sini!
+  const gasUrl = 'https://script.google.com/macros/s/AKfycbxC6uIwqEuFuBS-NB7jRWCH9kpRZC3Spw9ihQ6XND0-B84Z26Vr65ZaRrxOOhpeq303/exec'; 
+
   function togglePasswordVisibility() {
     const passwordInput = document.getElementById('userPasswordInput');
     const toggleIcon = document.getElementById('toggleIcon');
@@ -187,6 +197,18 @@
       try {
           const user = JSON.parse(userDataString);
           
+          const imgProfile = document.getElementById('userProfileImage');
+          if (user.fotoProfil && user.fotoProfil !== "") {
+              const match = user.fotoProfil.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) || user.fotoProfil.match(/id=([a-zA-Z0-9_-]+)/);
+              if (match && match[1]) {
+                  imgProfile.src = `https://drive.google.com/thumbnail?id=${match[1]}&sz=w200-h200`;
+              } else {
+                  imgProfile.src = user.fotoProfil;
+              }
+          } else {
+              imgProfile.src = `https://placehold.co/200/F9F1E2/A3496C?text=${user.nama.charAt(0)}`;
+          }
+
           document.getElementById('userName').textContent = user.nama || '-';
           document.getElementById('userSekolah').textContent = user.asalSekolah || '-';
           document.getElementById('userTelepon').textContent = user.nomorTelepon || '-';
@@ -196,7 +218,6 @@
           document.getElementById('userUsia').textContent = (user.usia ? user.usia + ' Tahun' : '-');
           document.getElementById('userFisik').textContent = (user.tinggi ? user.tinggi + ' cm' : '-') + ' / ' + (user.berat ? user.berat + ' kg' : '-');
           
-          // Penentuan Status dan Alasan
           const status = user.status ? String(user.status).trim() : 'Menunggu Verifikasi';
           let badgeClass = 'status-pending';
           
@@ -205,7 +226,6 @@
           } else if (status.toLowerCase() === 'tidak lolos' || status.toLowerCase() === 'gagal') {
               badgeClass = 'status-gagal';
               
-              // Tampilkan kotak alasan jika gagal
               const alasanContainer = document.getElementById('alasanContainer');
               alasanContainer.style.display = 'flex';
               document.getElementById('userAlasan').textContent = user.alasan ? user.alasan : 'Tidak memenuhi kualifikasi / Tidak ada keterangan dari admin.';
@@ -225,6 +245,57 @@
       setTimeout(redirectToLogin, 1200);
     }
   }
+
+  document.getElementById('fotoUpload').addEventListener('change', async function(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const messageArea = document.getElementById('messageArea');
+      const imgProfile = document.getElementById('userProfileImage');
+      const userData = JSON.parse(sessionStorage.getItem('userData'));
+
+      imgProfile.style.opacity = '0.3';
+      messageArea.className = "text-blue-500 text-center mt-4 text-sm font-medium";
+      messageArea.textContent = 'Mengunggah foto... Mohon tunggu.';
+
+      const reader = new FileReader();
+      reader.onload = async function(event) {
+          const base64Data = event.target.result.split(',')[1];
+          const payload = {
+              action: 'updateFoto',
+              nik: userData.nik,
+              fileName: file.name,
+              fileMimeType: file.type,
+              fileBase64: base64Data
+          };
+
+          try {
+              const response = await fetch(gasUrl, { method: 'POST', body: JSON.stringify(payload) });
+              const result = await response.json();
+
+              if (result.success) {
+                  messageArea.className = "text-green-500 text-center mt-4 text-sm font-medium";
+                  messageArea.textContent = 'Foto berhasil diperbarui!';
+                  
+                  userData.fotoProfil = result.fotoProfil;
+                  sessionStorage.setItem('userData', JSON.stringify(userData));
+                  
+                  loadUserDetails();
+                  imgProfile.style.opacity = '1';
+                  setTimeout(() => { messageArea.textContent = ''; }, 3000);
+              } else {
+                  messageArea.className = "text-red-500 text-center mt-4 text-sm font-medium";
+                  messageArea.textContent = result.message;
+                  imgProfile.style.opacity = '1';
+              }
+          } catch (error) {
+              messageArea.className = "text-red-500 text-center mt-4 text-sm font-medium";
+              messageArea.textContent = 'Gagal terhubung ke server saat mengunggah foto.';
+              imgProfile.style.opacity = '1';
+          }
+      };
+      reader.readAsDataURL(file);
+  });
 
   function redirectToLogin() {
     sessionStorage.removeItem('userData');

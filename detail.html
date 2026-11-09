@@ -198,6 +198,21 @@
     </div>
 
     <div class="data-item">
+        <span class="data-label">Tempat, Tanggal Lahir</span>
+        <span id="userTTL" class="data-value">Memuat...</span>
+    </div>
+
+    <div class="data-item">
+        <span class="data-label">Usia Saat Ini</span>
+        <span id="userUsia" class="data-value">Memuat...</span>
+    </div>
+
+    <div class="data-item">
+        <span class="data-label">Tinggi & Berat Badan</span>
+        <span id="userFisik" class="data-value">Memuat...</span>
+    </div>
+
+    <div class="data-item">
         <span class="data-label">Kata Sandi Keamanan</span>
         <div class="password-row flex items-center">
             <input type="password" id="userPasswordInput" value="Memuat..." readonly/>
@@ -241,10 +256,13 @@
       try {
           const user = JSON.parse(userDataString);
           
-          document.getElementById('userName').textContent = user.nama || '-';
+         document.getElementById('userName').textContent = user.nama || '-';
           document.getElementById('userSekolah').textContent = user.asalSekolah || '-';
           document.getElementById('userTelepon').textContent = user.nomorTelepon || '-';
           document.getElementById('userNik').textContent = user.nik || '-';
+          document.getElementById('userTTL').textContent = user.tempatLahir || '-';
+          document.getElementById('userUsia').textContent = (user.usia ? user.usia + ' Tahun' : '-');
+          document.getElementById('userFisik').textContent = (user.tinggi ? user.tinggi + ' cm' : '-') + ' / ' + (user.berat ? user.berat + ' kg' : '-');
           
           const status = user.status ? String(user.status).trim() : 'Menunggu Verifikasi';
           let badgeClass = status.toLowerCase().includes('terverifikasi') ? 'status-verified' : 'status-pending';

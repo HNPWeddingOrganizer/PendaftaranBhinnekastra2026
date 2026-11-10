@@ -291,6 +291,18 @@
               <input type="file" name="fileBukti" required id="fileBukti" accept=".jpg,.jpeg,.png,.pdf">
             </div>
           </div>
+          <div class="form-group">
+            <label class="input-label">Bukti Follow Instagram (@dppi.kotayogyakarta)</label>
+            <div class="file-input-wrapper">
+              <input type="file" name="fileIG" required id="fileIG" accept=".jpg,.jpeg,.png">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="input-label">Bukti Follow TikTok (@dppi.kotayogyakarta)</label>
+            <div class="file-input-wrapper">
+              <input type="file" name="fileTikTok" required id="fileTikTok" accept=".jpg,.jpeg,.png">
+            </div>
+          </div>
           <button type="submit" id="btnDaftar" class="btn-submit">
             <svg class="spinner w-5 h-5 hidden" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
             <span class="btn-text">Daftar Sekarang</span>
@@ -303,7 +315,7 @@
 
 <script>
   // PASTIKAN URL INI ADALAH URL DEPLOYMENT TERBARU ANDA
-  const gasBaseUrl = 'https://script.google.com/macros/s/AKfycbxC6uIwqEuFuBS-NB7jRWCH9kpRZC3Spw9ihQ6XND0-B84Z26Vr65ZaRrxOOhpeq303/exec';
+  const gasBaseUrl = 'https://script.google.com/macros/s/AKfycbwyxqw4jZZSRrjpEYgkI-ebgo82SXLK1SYcfnNP7RjN1bKdLGO211DVSuoYHpvCeLwa/exec';
 
   const carousel = document.getElementById('textCarousel');
   const dots = document.getElementById('carouselDots').children;
@@ -446,14 +458,32 @@
     const passwordInput = document.getElementById('daftarPassword').value;
 
     if (passwordInput.length < 6) return showMessage(messageDiv, "error", "Sandi minimal 6 karakter.");
-    if (fileInput.files.length === 0) return showMessage(messageDiv, "error", "File bukti wajib diunggah.");
+    const fileIG = document.getElementById('fileIG');
+    const fileTikTok = document.getElementById('fileTikTok');
+
+    if (fileInput.files.length === 0 || fileIG.files.length === 0 || fileTikTok.files.length === 0) {
+        return showMessage(messageDiv, "error", "Semua file bukti (Kartu, IG, TikTok) wajib diunggah.");
+    }
     
     setButtonLoading(btnDaftar, true, 'Daftar Sekarang', 'Memproses data...');
-    const file = fileInput.files[0];
-    const reader = new FileReader();
     
-    reader.onload = async function(event) {
-        const base64Data = event.target.result.split(',')[1];
+    // Helper function untuk membaca file sebagai base64
+    const toBase64 = file => new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result.split(',')[1]);
+        reader.onerror = error => reject(error);
+        reader.readAsDataURL(file);
+    });
+
+    try {
+        const fKartu = fileInput.files[0];
+        const fIG = fileIG.files[0];
+        const fTikTok = fileTikTok.files[0];
+
+        const [base64Kartu, base64IG, base64TikTok] = await Promise.all([
+            toBase64(fKartu), toBase64(fIG), toBase64(fTikTok)
+        ]);
+
         const payload = {
             action: 'register',
             nik: document.getElementById('daftarNik').value,
@@ -466,30 +496,27 @@
             usia: document.getElementById('daftarUsia').value,
             tinggi: document.getElementById('daftarTinggi').value,
             berat: document.getElementById('daftarBerat').value,
-            fileName: file.name,
-            fileMimeType: file.type,
-            fileBase64: base64Data
+            fileName: fKartu.name, fileMimeType: fKartu.type, fileBase64: base64Kartu,
+            fileIGName: fIG.name, fileIGMimeType: fIG.type, fileIGBase64: base64IG,
+            fileTikTokName: fTikTok.name, fileTikTokMimeType: fTikTok.type, fileTikTokBase64: base64TikTok
         };
 
-        try {
-            const response = await fetch(gasBaseUrl, { method: 'POST', body: JSON.stringify(payload) });
-            const result = await response.json();
-            setButtonLoading(btnDaftar, false, 'Daftar Sekarang');
-            
-            if (result.success) {
-                showMessage(messageDiv, "success", "Berhasil! Masuk ke sistem...");
-                const userData = { ...result.data, password: passwordInput };
-                sessionStorage.setItem('userData', JSON.stringify(userData));
-                setTimeout(() => { window.location.href = '/detail.html'; }, 800); 
-            } else {
-                showMessage(messageDiv, "error", result.message);
-            }
-        } catch (error) {
-            setButtonLoading(btnDaftar, false, 'Daftar Sekarang');
-            showMessage(messageDiv, "error", "Koneksi ke server gagal.");
+       const response = await fetch(gasBaseUrl, { method: 'POST', body: JSON.stringify(payload) });
+        const result = await response.json();
+        setButtonLoading(btnDaftar, false, 'Daftar Sekarang');
+        
+        if (result.success) {
+            showMessage(messageDiv, "success", "Berhasil! Masuk ke sistem...");
+            const userData = { ...result.data, password: passwordInput };
+            sessionStorage.setItem('userData', JSON.stringify(userData));
+            setTimeout(() => { window.location.href = '/detail.html'; }, 800); 
+        } else {
+            showMessage(messageDiv, "error", result.message);
         }
-    };
-    reader.readAsDataURL(file);
+    } catch (error) {
+        setButtonLoading(btnDaftar, false, 'Daftar Sekarang');
+        showMessage(messageDiv, "error", "Gagal memproses file atau koneksi server gagal.");
+    }
   });
   
   document.getElementById('loginForm').addEventListener('submit', async function(e) {

@@ -383,17 +383,17 @@
                   `;
               }
 
-              // 2. Tampilkan Banner Tripati (Di Bawah Detail)
+             // 2. Tampilkan Banner Tripati (Di Bawah Detail)
               const bannerTripatiContainer = document.getElementById('tripatiBannerContainer');
               if (bannerTripatiContainer.innerHTML === '') {
                   bannerTripatiContainer.innerHTML = `
                     <div class="mb-4 bg-gradient-to-br from-[#fdfbf7] to-[#f4ebe1] border border-[#DFBE8D] p-5 rounded-2xl text-center shadow-sm w-full">
                        <h3 class="font-bold text-[#A3496C] text-base mb-1">Program TRIPATI 2026</h3>
                        <p class="text-xs mb-4 text-[#886144]">Lanjutkan ke tahap evaluasi dan ujian melalui portal TRIPATI.</p>
-                       <a href="https://dppi-tripati2026.vercel.app/" target="_blank" class="flex items-center justify-center gap-2 w-full bg-[#A3496C] text-white px-6 py-3 rounded-xl font-bold text-sm hover:bg-[#853A55] transition shadow-md">
+                       <button onclick="autoLoginTripati()" class="flex items-center justify-center gap-2 w-full bg-[#A3496C] text-white px-6 py-3 rounded-xl font-bold text-sm hover:bg-[#853A55] transition shadow-md">
                           <span>Ikuti Program Tripati</span>
                           <i class="fas fa-arrow-right"></i>
-                       </a>
+                       </button>
                     </div>
                   `;
               }
@@ -479,7 +479,34 @@
 
   function openPhotoModal() { document.getElementById('photoModal').style.display = 'flex'; }
   function closePhotoModal() { document.getElementById('photoModal').style.display = 'none'; }
+// Fungsi untuk Auto-Login ke Portal Tripati
+  function autoLoginTripati() {
+      const userDataString = sessionStorage.getItem('userData');
+      if (userDataString) {
+          const user = JSON.parse(userDataString);
+          const nik = user.nik;
+          const password = user.password;
+          
+          if (!password || password === 'Tidak tersedia') {
+              Swal.fire('Gagal', 'Sandi tidak ditemukan, silakan login manual di Tripati', 'error');
+              window.open("https://dppi-tripati2026.vercel.app/", "_blank");
+              return;
+          }
 
+          // Gabungkan NIK dan Password, lalu ubah ke Base64 (Obfuscation) agar tidak terlihat jelas di URL
+          const token = btoa(nik + '|||' + password);
+          
+          Swal.fire({
+              title: 'Mengalihkan...',
+              text: 'Membuka Portal TRIPATI dan masuk secara otomatis...',
+              allowOutsideClick: false,
+              didOpen: () => Swal.showLoading()
+          });
+          
+          // Mengarahkan ke halaman index Tripati beserta token SSO
+          window.location.href = `https://dppi-tripati2026.vercel.app/index.html?sso=${token}`;
+      }
+  }
   function redirectToLogin() {
     sessionStorage.removeItem('userData');
     window.location.href = '/index.html'; 

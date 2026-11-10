@@ -49,7 +49,7 @@
       color: var(--text-main);
       display: flex; 
       justify-content: center; 
-      align-items: flex-start; /* Ubah agar bisa di-scroll dengan baik jika detail dibuka */
+      align-items: flex-start;
       min-height: 100vh; 
       margin: 0; 
       padding: 40px 20px;
@@ -75,7 +75,7 @@
         width: 90px; 
         height: 90px; 
         object-fit: contain; 
-        transform: scale(2); /* INI KUNCI ZOOM-NYA (1.5 artinya zoom 150%) */
+        transform: scale(2);
         margin-bottom: 10px; 
     }
 
@@ -133,7 +133,7 @@
     .detail-toggle-btn:hover { background: #e8dbb0; }
     
     .detail-content {
-        display: none; /* Sembunyikan default */
+        display: none;
         flex-direction: column;
         gap: 10px;
         margin-bottom: 24px;
@@ -166,10 +166,8 @@
     
    @media (max-width: 480px) {
       .dashboard-card { padding: 30px 20px; }
-      /* Hapus aturan column dan center pada profile-card agar tetap ke kiri */
       .profile-card { padding: 16px; gap: 16px; } 
       
-      /* Mengecilkan sedikit foto profil di HP agar info di kanannya muat */
       .profile-img-container { width: 75px; height: 75px; }
       .logo-image { width: 75px; height: 75px; }
       .profile-name { font-size: 16px; }
@@ -211,7 +209,7 @@
       <h2 class="font-bold text-[#A3496C] text-lg tracking-tight">Portal Bhinnekastra</h2>
   </div>
 
-  <!-- CONTAINER UNTUK BANNER TWIBBON (Diinjeksi via JS jika lolos) -->
+  <!-- CONTAINER UNTUK BANNER TRIPATI -->
   <div id="twibbonBannerContainer"></div>
 
   <!-- KARTU PROFIL UTAMA (KIRI FOTO, KANAN INFO) -->
@@ -375,8 +373,8 @@
                   bannerContainer.innerHTML = `
                     <div class="mb-6 bg-[#A3496C] text-white p-4 rounded-2xl text-center shadow-lg animate-pulse w-full">
                        <h3 class="font-bold text-lg mb-1">Selamat Anda Lolos! 🎉</h3>
-                       <p class="text-xs mb-3 opacity-90">Silakan gunakan Twibbon resmi untuk diposting di media sosial Anda.</p>
-                       <a href="twibbon.html" class="inline-block bg-white text-[#A3496C] px-6 py-2 rounded-full font-bold text-sm hover:bg-gray-100 transition shadow-sm">Pasang Twibbon Sekarang</a>
+                       <p class="text-xs mb-3 opacity-90">Silakan ikuti program TRIPATI selanjutnya dengan mengklik tombol di bawah ini.</p>
+                       <a href="https://dppi-tripati2026.vercel.app/" target="_blank" class="inline-block bg-white text-[#A3496C] px-6 py-2 rounded-full font-bold text-sm hover:bg-gray-100 transition shadow-sm">Ikuti Program Tripati</a>
                     </div>
                   `;
               }

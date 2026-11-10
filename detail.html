@@ -14,19 +14,19 @@
         // 1. Blokir Klik Kanan (Context Menu)
         document.addEventListener("contextmenu", e => e.preventDefault());
 
-        // 2. Blokir Shortcut Keyboard (F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C, Ctrl+U, Ctrl+S)
+        // 2. Blokir Shortcut Keyboard
         document.onkeydown = function (e) {
             if (
-                e.keyCode === 123 || // F12
-                (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 67 || e.keyCode === 74)) || // Inspect Element
-                (e.ctrlKey && (e.keyCode === 85 || e.keyCode === 83)) // View Source & Save
+                e.keyCode === 123 || 
+                (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 67 || e.keyCode === 74)) || 
+                (e.ctrlKey && (e.keyCode === 85 || e.keyCode === 83))
             ) {
                 e.preventDefault();
                 return false;
             }
         };
 
-        // 3. Debugger Trap (Membuat DevTools freeze jika dipaksa buka dengan cara lain)
+        // 3. Debugger Trap
         setInterval(() => {
             try { (function () { return false; }['constructor']('debugger')()); } catch (e) { }
         }, 100);
@@ -49,12 +49,13 @@
       color: var(--text-main);
       display: flex; 
       justify-content: center; 
-      align-items: center; 
+      align-items: flex-start; /* Ubah agar bisa di-scroll dengan baik jika detail dibuka */
       min-height: 100vh; 
       margin: 0; 
-      padding: 20px;
+      padding: 40px 20px;
       background-image: radial-gradient(circle at 50% 0%, rgba(163, 73, 108, 0.12) 0%, transparent 60%);
       background-repeat: no-repeat;
+      box-sizing: border-box;
     }
 
     .dashboard-card { 
@@ -63,16 +64,35 @@
       border-radius: 32px; 
       box-shadow: 0 15px 35px rgba(84, 58, 42, 0.08); 
       width: 100%;
-      max-width: 500px; 
+      max-width: 550px; 
       border: 1px solid var(--border-color);
+      margin: 0 auto;
     }
     
-    .profile-header { display: flex; flex-direction: column; align-items: center; margin-bottom: 32px; text-align: center; }
-    
+    /* Layout Header & Logo DPPI Terpisah */
+    .top-brand { display: flex; flex-direction: column; align-items: center; margin-bottom: 24px; }
+    .top-logo { width: 80px; height: 80px; object-fit: contain; margin-bottom: 12px; }
+
+    /* Layout Profil Kiri-Kanan */
+    .profile-card {
+        background: #faf7f2;
+        border: 1px solid var(--border-color);
+        border-radius: 24px;
+        padding: 24px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        margin-bottom: 24px;
+    }
+
     /* Styling Foto Profil & Lingkaran Loading */
-    .profile-img-container { position: relative; width: 90px; height: 90px; margin-bottom: 20px; display: inline-block; }
-    .logo-image { height: 90px; width: 90px; border-radius: 50%; object-fit: cover; border: 2px solid var(--border-color); padding: 2px; background-color: var(--bg-card); box-shadow: 0 8px 25px rgba(163, 73, 108, 0.15); cursor: pointer; transition: transform 0.2s; }
+    .profile-img-container { position: relative; width: 100px; height: 100px; flex-shrink: 0; }
+    .logo-image { height: 100px; width: 100px; border-radius: 50%; object-fit: cover; border: 2px solid var(--border-color); padding: 3px; background-color: var(--bg-card); box-shadow: 0 8px 25px rgba(163, 73, 108, 0.15); cursor: pointer; transition: transform 0.2s; }
     .logo-image:hover { transform: scale(1.03); }
+
+    .profile-info { flex: 1; min-width: 0; }
+    .profile-name { font-size: 20px; font-weight: 700; color: var(--text-main); margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .profile-school { font-size: 13px; font-weight: 500; color: var(--text-muted); margin-bottom: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
     /* Ring Spinner Loading melingkar di luar foto */
     .profile-loading-ring {
@@ -87,18 +107,43 @@
     }
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-    h1 { margin: 0 0 4px 0; font-size: 24px; font-weight: 700; letter-spacing: -0.5px; }
-    .subtitle { color: var(--text-muted); margin: 0; font-size: 14px; font-weight: 500; }
-
-    .data-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px; }
-    .data-item { display: flex; justify-content: space-between; align-items: center; padding: 18px 24px; border-radius: 20px; background: var(--bg-item); border: 1px solid transparent; transition: all 0.2s ease; }
-    .data-item:hover { border-color: var(--color-primary); background: var(--bg-main); }
-    .data-label { font-size: 13px; font-weight: 500; color: var(--text-muted); }
-    .data-value { color: var(--text-main); font-weight: 600; font-size: 14px; text-align: right; }
-
-    #userPasswordInput { background-color: transparent; border: none; outline: none; color: var(--text-main); font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600; text-align: right; width: 140px; pointer-events: none; letter-spacing: 2px; }
+    /* Accordion / Detail Section */
+    .detail-toggle-btn {
+        width: 100%;
+        background: var(--bg-item);
+        color: var(--text-main);
+        font-weight: 600;
+        font-size: 14px;
+        padding: 16px;
+        border-radius: 16px;
+        border: 1px solid var(--border-color);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+        transition: all 0.2s;
+        margin-bottom: 16px;
+    }
+    .detail-toggle-btn:hover { background: #e8dbb0; }
     
-    .status-badge { font-weight: 600; padding: 6px 16px; border-radius: 100px; font-size: 12px; }
+    .detail-content {
+        display: none; /* Sembunyikan default */
+        flex-direction: column;
+        gap: 10px;
+        margin-bottom: 24px;
+        animation: fadeIn 0.3s ease;
+    }
+    .detail-content.active { display: flex; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+    .data-item { display: flex; justify-content: space-between; align-items: center; padding: 14px 20px; border-radius: 16px; background: #faf7f2; border: 1px solid var(--border-color); transition: all 0.2s ease; }
+    .data-item:hover { border-color: var(--color-primary); background: #fff; }
+    .data-label { font-size: 12px; font-weight: 600; color: var(--text-muted); }
+    .data-value { color: var(--text-main); font-weight: 600; font-size: 13px; text-align: right; }
+
+    #userPasswordInput { background-color: transparent; border: none; outline: none; color: var(--text-main); font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600; text-align: right; width: 120px; pointer-events: none; letter-spacing: 2px; }
+    
+    .status-badge { font-weight: 600; padding: 6px 14px; border-radius: 100px; font-size: 11px; display: inline-block; }
     .status-pending { background-color: rgba(245, 158, 11, 0.15); color: #d97706; }
     .status-verified { background-color: rgba(16, 185, 129, 0.15); color: #059669; }
     .status-gagal { background-color: rgba(239, 68, 68, 0.15); color: #DC2626; } 
@@ -106,7 +151,7 @@
     .toggle-btn { background: none; border: none; cursor: pointer; padding: 4px; color: var(--text-muted); transition: color 0.2s ease; margin-left: 8px; }
     .toggle-btn:hover { color: var(--color-primary); }
     
-    .logout-button { background: transparent; color: var(--color-primary); padding: 16px; border: 1px solid var(--color-primary); border-radius: 100px; cursor: pointer; font-size: 14px; font-weight: 600; transition: all 0.2s ease; width: 100%; text-align: center; }
+    .logout-button { background: transparent; color: var(--color-primary); padding: 16px; border: 1px solid var(--color-primary); border-radius: 100px; cursor: pointer; font-size: 14px; font-weight: 600; transition: all 0.2s ease; width: 100%; text-align: center; margin-top: 10px;}
     .logout-button:hover { background: rgba(163, 73, 108, 0.08); border-color: var(--color-primary-hover); color: var(--color-primary-hover); }
 
     /* Modal Pratinjau Foto */
@@ -115,7 +160,9 @@
     
     @media (max-width: 480px) {
       .dashboard-card { padding: 30px 20px; }
-      .data-item { flex-direction: column; align-items: flex-start; gap: 8px; padding: 16px; }
+      .profile-card { flex-direction: column; text-align: center; padding: 20px; }
+      .profile-info { width: 100%; }
+      .data-item { flex-direction: column; align-items: flex-start; gap: 6px; padding: 14px; }
       .data-value { width: 100%; text-align: left; }
       #userPasswordInput { text-align: left; width: 100%; }
       .password-row { display: flex; width: 100%; justify-content: space-between; align-items: center;}
@@ -145,36 +192,49 @@
 
 <div class="dashboard-card">
   
-  <div class="profile-header">
-      <!-- Container Foto Profil dengan Ring Loading & Klik Detail -->
+  <!-- LOGO DPPI DI ATAS TENGAH -->
+  <div class="top-brand">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/3/36/Logo_DPPI.png" alt="Logo DPPI" class="top-logo">
+      <h2 class="font-bold text-[#A3496C] text-lg tracking-tight">Portal Bhinnekastra</h2>
+  </div>
+
+  <!-- CONTAINER UNTUK BANNER TWIBBON (Diinjeksi via JS jika lolos) -->
+  <div id="twibbonBannerContainer"></div>
+
+  <!-- KARTU PROFIL UTAMA (KIRI FOTO, KANAN INFO) -->
+  <div class="profile-card">
       <div class="profile-img-container group">
           <div id="loadingRing" class="profile-loading-ring"></div>
           <img id="userProfileImage" src="https://upload.wikimedia.org/wikipedia/commons/3/36/Logo_DPPI.png" alt="Foto Profil" class="logo-image" onclick="openPhotoModal()" title="Klik untuk lihat detail foto">
           
-          <!-- Tombol kecil overlay untuk ganti foto -->
           <label for="fotoUpload" class="absolute bottom-0 right-0 bg-[#A3496C] hover:bg-[#853A55] text-white p-2 rounded-full shadow-md cursor-pointer transition transform hover:scale-110" title="Unggah Foto Baru">
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
           </label>
           <input type="file" id="fotoUpload" accept="image/png, image/jpeg, image/jpg" class="hidden" onchange="handlePhotoUpload(this)">
-          <!-- Input tersembunyi untuk modal -->
           <input type="file" id="fotoUploadModal" accept="image/png, image/jpeg, image/jpg" class="hidden" onchange="handlePhotoUpload(this)">
       </div>
 
-      <h1 id="pageTitle">Memuat Data...</h1>
-      <p class="subtitle">Akun Bhinnekastra</p>
+      <div class="profile-info">
+          <h1 id="userName" class="profile-name">Memuat...</h1>
+          <p id="userSekolah" class="profile-school">Memuat asal instansi...</p>
+          <div id="userStatus" class="data-value"><span class="status-badge status-pending">Memuat...</span></div>
+          
+          <!-- Notifikasi Alasan Gagal -->
+          <div id="alasanContainer" class="mt-2 text-left" style="display: none;">
+              <p class="text-[11px] font-bold text-red-600 mb-0.5">Alasan Tidak Lolos:</p>
+              <p id="userAlasan" class="text-[11px] text-red-500 leading-tight border-l-2 border-red-500 pl-2">Memuat...</p>
+          </div>
+      </div>
   </div>
 
-  <div class="data-list" id="userDetails">
-    
-    <div class="data-item" id="alasanContainer" style="display: none; border-color: #EF4444; background-color: #FEF2F2;">
-        <span class="data-label" style="color: #DC2626;">Alasan Tidak Lolos</span>
-        <span id="userAlasan" class="data-value" style="color: #B91C1C;">Memuat...</span>
-    </div>
+  <!-- TOMBOL TOGGLE DETAIL -->
+  <button class="detail-toggle-btn" onclick="toggleDetails()" id="btnToggleDetail">
+      <span><i class="fas fa-list-ul mr-2"></i> Lihat Detail Data Pendaftaran</span>
+      <i class="fas fa-chevron-down transition-transform duration-300" id="iconToggleDetail"></i>
+  </button>
 
-    <div class="data-item">
-        <span class="data-label">Status Seleksi</span>
-        <div id="userStatus" class="data-value"><span class="status-badge status-pending">Memuat...</span></div>
-    </div>
+  <!-- DATA DETAIL (TERSEMBUNYI DEFAULT) -->
+  <div class="detail-content" id="detailSection">
     
     <div class="data-item">
         <span class="data-label">Nomor Induk Kependudukan</span>
@@ -182,13 +242,15 @@
     </div>
 
     <div class="data-item">
-        <span class="data-label">Nama Lengkap</span>
-        <span id="userName" class="data-value">Memuat...</span>
-    </div>
-    
-    <div class="data-item">
-        <span class="data-label">Asal Instansi / Sekolah</span>
-        <span id="userSekolah" class="data-value">Memuat...</span>
+        <span class="data-label">Kata Sandi Keamanan</span>
+        <div class="password-row flex items-center">
+            <input type="password" id="userPasswordInput" value="Memuat..." readonly/>
+            <button class="toggle-btn" onclick="togglePasswordVisibility()" aria-label="Lihat Sandi">
+                <svg id="toggleIcon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"></path>
+                </svg>
+            </button>
+        </div>
     </div>
 
     <div class="data-item">
@@ -215,18 +277,6 @@
         <span class="data-label">Tinggi & Berat Badan</span>
         <span id="userFisik" class="data-value">Memuat...</span>
     </div>
-
-    <div class="data-item">
-        <span class="data-label">Kata Sandi Keamanan</span>
-        <div class="password-row flex items-center">
-            <input type="password" id="userPasswordInput" value="Memuat..." readonly/>
-            <button class="toggle-btn" onclick="togglePasswordVisibility()" aria-label="Lihat Sandi">
-                <svg id="toggleIcon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"></path>
-                </svg>
-            </button>
-        </div>
-    </div>
   </div>
   
   <button class="logout-button" onclick="redirectToLogin()">
@@ -239,6 +289,19 @@
 <script>
   // PENTING: Masukkan URL Deployment Google Apps Script Anda di sini!
   const gasUrl = 'https://script.google.com/macros/s/AKfycbw3VBUed37LIm33Iwv5VZqh7JB0au28nUkN8DQqEMMYRuA6oHa44sTs0qb2PXIWmAzd/exec'; 
+
+  function toggleDetails() {
+      const detailSec = document.getElementById('detailSection');
+      const icon = document.getElementById('iconToggleDetail');
+      
+      if (detailSec.classList.contains('active')) {
+          detailSec.classList.remove('active');
+          icon.style.transform = "rotate(0deg)";
+      } else {
+          detailSec.classList.add('active');
+          icon.style.transform = "rotate(180deg)";
+      }
+  }
 
   function togglePasswordVisibility() {
     const passwordInput = document.getElementById('userPasswordInput');
@@ -291,32 +354,29 @@
           const status = user.status ? String(user.status).trim() : 'Menunggu Verifikasi';
           let badgeClass = 'status-pending';
           
-         if (status.toLowerCase() === 'lolos' || status.toLowerCase() === 'terverifikasi') {
+          if (status.toLowerCase() === 'lolos' || status.toLowerCase() === 'terverifikasi') {
               badgeClass = 'status-verified';
               
-              // Mencegah duplikasi banner jika fungsi dijalankan ulang (misal setelah ganti foto)
-              if (!document.getElementById('twibbonBannerTop')) {
-                  const bannerHTML = `
-                    <div id="twibbonBannerTop" class="mb-6 bg-[#A3496C] text-white p-4 rounded-2xl text-center shadow-lg animate-pulse">
+              const bannerContainer = document.getElementById('twibbonBannerContainer');
+              if (bannerContainer.innerHTML === '') {
+                  bannerContainer.innerHTML = `
+                    <div class="mb-6 bg-[#A3496C] text-white p-4 rounded-2xl text-center shadow-lg animate-pulse w-full">
                        <h3 class="font-bold text-lg mb-1">Selamat Anda Lolos! 🎉</h3>
-                       <p class="text-xs mb-3">Silakan gunakan Twibbon resmi untuk diposting di media sosial Anda.</p>
-                       <a href="twibbon.html" class="inline-block bg-white text-[#A3496C] px-6 py-2 rounded-full font-bold text-sm hover:bg-gray-100 transition">Pasang Twibbon Sekarang</a>
+                       <p class="text-xs mb-3 opacity-90">Silakan gunakan Twibbon resmi untuk diposting di media sosial Anda.</p>
+                       <a href="twibbon.html" class="inline-block bg-white text-[#A3496C] px-6 py-2 rounded-full font-bold text-sm hover:bg-gray-100 transition shadow-sm">Pasang Twibbon Sekarang</a>
                     </div>
                   `;
-                  // Menyisipkan banner tepat sebelum container data-list (userDetails)
-                  document.getElementById('userDetails').insertAdjacentHTML('beforebegin', bannerHTML);
               }
           } else if (status.toLowerCase() === 'tidak lolos' || status.toLowerCase() === 'gagal') {
               badgeClass = 'status-gagal';
               
               const alasanContainer = document.getElementById('alasanContainer');
-              alasanContainer.style.display = 'flex';
-              document.getElementById('userAlasan').textContent = user.alasan ? user.alasan : 'Tidak memenuhi kualifikasi / Tidak ada keterangan dari admin.';
+              alasanContainer.style.display = 'block';
+              document.getElementById('userAlasan').textContent = user.alasan ? user.alasan : 'Tidak memenuhi kualifikasi dari panitia.';
           }
           
           userStatusElement.innerHTML = `<span class="status-badge ${badgeClass}">${status}</span>`;
           passwordInput.value = user.password || 'Tidak tersedia';
-          document.getElementById('pageTitle').textContent = `Halo, ${user.nama.split(' ')[0]}`;
           
       } catch (e) {
           messageArea.textContent = 'Data gagal dimuat. Mengalihkan...';
@@ -339,13 +399,12 @@
       const imgProfile = document.getElementById('userProfileImage');
       const userData = JSON.parse(sessionStorage.getItem('userData'));
 
-      // Tampilkan spinner loading melingkar di sekeliling foto
       loadingRing.style.display = 'block';
       imgProfile.style.opacity = '0.4';
       messageArea.className = "text-blue-600 text-center mt-4 text-sm font-medium";
       messageArea.textContent = 'Mengunggah foto profil... Mohon tunggu.';
 
-      closePhotoModal(); // Tutup modal jika sedang terbuka
+      closePhotoModal(); 
 
       const reader = new FileReader();
       reader.onload = async function(event) {
@@ -379,23 +438,16 @@
               messageArea.className = "text-red-500 text-center mt-4 text-sm font-medium";
               messageArea.textContent = 'Gagal terhubung ke server saat mengunggah foto.';
           } finally {
-              // Hilangkan efek loading
               loadingRing.style.display = 'none';
               imgProfile.style.opacity = '1';
-              inputElement.value = ''; // Reset input file
+              inputElement.value = ''; 
           }
       };
       reader.readAsDataURL(file);
   }
 
-  // Fungsi Modal Pratinjau Foto
-  function openPhotoModal() {
-      document.getElementById('photoModal').style.display = 'flex';
-  }
-
-  function closePhotoModal() {
-      document.getElementById('photoModal').style.display = 'none';
-  }
+  function openPhotoModal() { document.getElementById('photoModal').style.display = 'flex'; }
+  function closePhotoModal() { document.getElementById('photoModal').style.display = 'none'; }
 
   function redirectToLogin() {
     sessionStorage.removeItem('userData');

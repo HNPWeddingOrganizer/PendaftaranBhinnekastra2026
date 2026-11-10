@@ -35,8 +35,22 @@
     </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js"></script>
   <style>
-    body { background-color: #F3EFE9; font-family: 'Inter', sans-serif; color: #2D241F; }
-    .canvas-container { margin: 0 auto; border: 2px dashed #D6CEC3; border-radius: 12px; overflow: hidden; background: #fff; }
+   body { background-color: #F3EFE9; font-family: 'Inter', sans-serif; color: #2D241F; }
+    
+    /* Perbaikan Canvas untuk Responsive di HP */
+    .canvas-container { 
+        margin: 0 auto; 
+        border: 2px dashed #D6CEC3; 
+        border-radius: 12px; 
+        overflow: hidden; 
+        background: #fff; 
+        width: 100% !important; 
+        max-width: 400px;
+        aspect-ratio: 1 / 1;
+    }
+    .canvas-container .canvas-container { width: 100% !important; height: 100% !important; }
+    .canvas-container canvas { width: 100% !important; height: 100% !important; object-fit: contain; }
+
     .btn-action { background: #B05C36; color: white; padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.2s; display: inline-block; text-align: center; }
     .btn-action:hover { background: #8C4524; }
     .btn-secondary { background: #EAE4DB; color: #2D241F; padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.2s; border: 1px solid #D6CEC3; }

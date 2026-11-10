@@ -70,8 +70,14 @@
     }
     
     /* Layout Header & Logo DPPI Terpisah */
-    .top-brand { display: flex; flex-direction: column; align-items: center; margin-bottom: 24px; }
-    .top-logo { width: 80px; height: 80px; object-fit: contain; margin-bottom: 12px; }
+    .top-brand { display: flex; flex-direction: column; align-items: center; margin-bottom: 16px; }
+    .top-logo { 
+        width: 90px; 
+        height: 90px; 
+        object-fit: contain; 
+        transform: scale(1.5); /* INI KUNCI ZOOM-NYA (1.5 artinya zoom 150%) */
+        margin-bottom: 10px; 
+    }
 
     /* Layout Profil Kiri-Kanan */
     .profile-card {

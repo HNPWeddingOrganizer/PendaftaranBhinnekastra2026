@@ -209,7 +209,7 @@
       <h2 class="font-bold text-[#A3496C] text-lg tracking-tight">Portal Bhinnekastra</h2>
   </div>
 
-  <!-- CONTAINER UNTUK BANNER TRIPATI -->
+  <!-- CONTAINER UNTUK BANNER TWIBBON (Di Atas) -->
   <div id="twibbonBannerContainer"></div>
 
   <!-- KARTU PROFIL UTAMA (KIRI FOTO, KANAN INFO) -->
@@ -289,6 +289,9 @@
         <span id="userFisik" class="data-value">Memuat...</span>
     </div>
   </div>
+
+  <!-- CONTAINER UNTUK BANNER TRIPATI (Di Bawah Detail) -->
+  <div id="tripatiBannerContainer"></div>
   
   <button class="logout-button" onclick="redirectToLogin()">
       Keluar dari Akun
@@ -368,16 +371,33 @@
           if (status.toLowerCase() === 'lolos' || status.toLowerCase() === 'terverifikasi') {
               badgeClass = 'status-verified';
               
-              const bannerContainer = document.getElementById('twibbonBannerContainer');
-              if (bannerContainer.innerHTML === '') {
-                  bannerContainer.innerHTML = `
+              // 1. Tampilkan Banner Twibbon (Di Atas)
+              const bannerTwibbonContainer = document.getElementById('twibbonBannerContainer');
+              if (bannerTwibbonContainer.innerHTML === '') {
+                  bannerTwibbonContainer.innerHTML = `
                     <div class="mb-6 bg-[#A3496C] text-white p-4 rounded-2xl text-center shadow-lg animate-pulse w-full">
                        <h3 class="font-bold text-lg mb-1">Selamat Anda Lolos! 🎉</h3>
-                       <p class="text-xs mb-3 opacity-90">Silakan ikuti program TRIPATI selanjutnya dengan mengklik tombol di bawah ini.</p>
-                       <a href="https://dppi-tripati2026.vercel.app/" target="_blank" class="inline-block bg-white text-[#A3496C] px-6 py-2 rounded-full font-bold text-sm hover:bg-gray-100 transition shadow-sm">Ikuti Program Tripati</a>
+                       <p class="text-xs mb-3 opacity-90">Silakan gunakan Twibbon resmi untuk diposting di media sosial Anda.</p>
+                       <a href="twibbon.html" class="inline-block bg-white text-[#A3496C] px-6 py-2 rounded-full font-bold text-sm hover:bg-gray-100 transition shadow-sm">Pasang Twibbon Sekarang</a>
                     </div>
                   `;
               }
+
+              // 2. Tampilkan Banner Tripati (Di Bawah Detail)
+              const bannerTripatiContainer = document.getElementById('tripatiBannerContainer');
+              if (bannerTripatiContainer.innerHTML === '') {
+                  bannerTripatiContainer.innerHTML = `
+                    <div class="mb-4 bg-gradient-to-br from-[#fdfbf7] to-[#f4ebe1] border border-[#DFBE8D] p-5 rounded-2xl text-center shadow-sm w-full">
+                       <h3 class="font-bold text-[#A3496C] text-base mb-1">Program TRIPATI 2026</h3>
+                       <p class="text-xs mb-4 text-[#886144]">Lanjutkan ke tahap evaluasi dan ujian melalui portal TRIPATI.</p>
+                       <a href="https://dppi-tripati2026.vercel.app/" target="_blank" class="flex items-center justify-center gap-2 w-full bg-[#A3496C] text-white px-6 py-3 rounded-xl font-bold text-sm hover:bg-[#853A55] transition shadow-md">
+                          <span>Ikuti Program Tripati</span>
+                          <i class="fas fa-arrow-right"></i>
+                       </a>
+                    </div>
+                  `;
+              }
+
           } else if (status.toLowerCase() === 'tidak lolos' || status.toLowerCase() === 'gagal') {
               badgeClass = 'status-gagal';
               

@@ -110,24 +110,33 @@
     let userImageObj = null;
     let twibbonImageObj = null;
 
-    async function loadTwibbonData() {
+   async function loadTwibbonData() {
         try {
             const response = await fetch(gasBaseUrl, {
                 method: 'POST',
-                body: JSON.stringify({ action: 'getTwibbonConfig' })
+                body: JSON.stringify({ action: 'getTwibbon' }) // 1. Perbaikan nama action
             });
             const result = await response.json();
             
-            if(result.success && result.data) {
-                document.getElementById('captionBox').innerText = result.data.caption || 'Caption belum diatur.';
-                if(result.data.twibbonUrl) {
-                    loadTwibbonFrame(result.data.twibbonUrl);
+            if(result.success) { // 2. Perbaikan struktur respon (result.data tidak ada di backend, langsung dari result)
+                document.getElementById('captionBox').innerText = result.caption || 'Caption belum diatur.';
+                if(result.frameUrl) { // 3. Perbaikan nama variabel dari twibbonUrl menjadi frameUrl
+                    
+                    // Konversi URL Drive ke bentuk Thumbnail agar terhindar dari CORS Canvas
+                    let finalUrl = result.frameUrl;
+                    const match = finalUrl.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) || finalUrl.match(/id=([a-zA-Z0-9_-]+)/);
+                    if (match && match[1]) {
+                        finalUrl = `https://drive.google.com/thumbnail?id=${match[1]}&sz=w1000`; 
+                    }
+                    
+                    loadTwibbonFrame(finalUrl);
                 } else {
                     loadTwibbonFrame('https://placehold.co/400x400/png?text=Frame+Belum+Diset');
                 }
             }
         } catch (e) {
             console.error("Gagal memuat config twibbon:", e);
+            document.getElementById('captionBox').innerText = 'Gagal memuat data dari server.';
         }
     }
 

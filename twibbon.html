@@ -114,19 +114,23 @@
         try {
             const response = await fetch(gasBaseUrl, {
                 method: 'POST',
-                body: JSON.stringify({ action: 'getTwibbon' }) // 1. Perbaikan nama action
+                // 1. TAMBAHKAN HEADER INI
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify({ action: 'getTwibbon' })
             });
             const result = await response.json();
             
-            if(result.success) { // 2. Perbaikan struktur respon (result.data tidak ada di backend, langsung dari result)
+            if(result.success) {
                 document.getElementById('captionBox').innerText = result.caption || 'Caption belum diatur.';
-                if(result.frameUrl) { // 3. Perbaikan nama variabel dari twibbonUrl menjadi frameUrl
-                    
-                    // Konversi URL Drive ke bentuk Thumbnail agar terhindar dari CORS Canvas
+                
+                if(result.frameUrl) { 
                     let finalUrl = result.frameUrl;
                     const match = finalUrl.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) || finalUrl.match(/id=([a-zA-Z0-9_-]+)/);
+                    
                     if (match && match[1]) {
-                        finalUrl = `https://drive.google.com/thumbnail?id=${match[1]}&sz=w1000`; 
+                        // 2. GUNAKAN URL PROXY INI UNTUK MENGHINDARI CORS FABRIC.JS
+                        // URL ini memaksa Google Drive untuk memberikan akses view secara langsung
+                        finalUrl = `https://lh3.googleusercontent.com/d/${match[1]}=w1000`; 
                     }
                     
                     loadTwibbonFrame(finalUrl);

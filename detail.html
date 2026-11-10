@@ -164,10 +164,17 @@
     .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(4px); z-index: 100; justify-content: center; align-items: center; padding: 20px; }
     .modal-content { background: var(--bg-card); padding: 24px; border-radius: 24px; max-width: 400px; width: 100%; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.2); border: 1px solid var(--border-color); }
     
-    @media (max-width: 480px) {
+   @media (max-width: 480px) {
       .dashboard-card { padding: 30px 20px; }
-      .profile-card { flex-direction: column; text-align: center; padding: 20px; }
-      .profile-info { width: 100%; }
+      /* Hapus aturan column dan center pada profile-card agar tetap ke kiri */
+      .profile-card { padding: 16px; gap: 16px; } 
+      
+      /* Mengecilkan sedikit foto profil di HP agar info di kanannya muat */
+      .profile-img-container { width: 75px; height: 75px; }
+      .logo-image { width: 75px; height: 75px; }
+      .profile-name { font-size: 16px; }
+      .profile-school { font-size: 11px; }
+      
       .data-item { flex-direction: column; align-items: flex-start; gap: 6px; padding: 14px; }
       .data-value { width: 100%; text-align: left; }
       #userPasswordInput { text-align: left; width: 100%; }

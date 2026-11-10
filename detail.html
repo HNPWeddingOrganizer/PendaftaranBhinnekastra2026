@@ -238,7 +238,7 @@
 
 <script>
   // PENTING: Masukkan URL Deployment Google Apps Script Anda di sini!
-  const gasUrl = 'https://script.google.com/macros/s/AKfycbw3VBUed37LIm33Iwv5VZqh7JB0au28nUkN8DQqEMMYRuA6oHa44sTs0qb2PXIWmAzd/exec'; 
+  const gasUrl = 'https://script.google.com/macros/s/AKfycbwyxqw4jZZSRrjpEYgkI-ebgo82SXLK1SYcfnNP7RjN1bKdLGO211DVSuoYHpvCeLwa/exec'; 
 
   function togglePasswordVisibility() {
     const passwordInput = document.getElementById('userPasswordInput');
@@ -293,16 +293,6 @@
           
           if (status.toLowerCase() === 'lolos' || status.toLowerCase() === 'terverifikasi') {
               badgeClass = 'status-verified';
-              // Tambahkan banner arahan Twibbon
-              const twibbonBanner = document.createElement('div');
-              twibbonBanner.innerHTML = `
-                <div class="mt-6 bg-[#A3496C] text-white p-4 rounded-2xl text-center shadow-lg animate-pulse">
-                   <h3 class="font-bold text-lg mb-1">Selamat Anda Lolos! 🎉</h3>
-                   <p class="text-xs mb-3">Silakan gunakan Twibbon resmi untuk diposting di media sosial Anda.</p>
-                   <a href="twibbon.html" class="inline-block bg-white text-[#A3496C] px-6 py-2 rounded-full font-bold text-sm hover:bg-gray-100 transition">Pasang Twibbon Sekarang</a>
-                </div>
-              `;
-              document.getElementById('userDetails').appendChild(twibbonBanner);
           } else if (status.toLowerCase() === 'tidak lolos' || status.toLowerCase() === 'gagal') {
               badgeClass = 'status-gagal';
               

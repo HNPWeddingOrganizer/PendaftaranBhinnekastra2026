@@ -81,9 +81,25 @@
     .carousel-slide { flex: 0 0 100%; scroll-snap-align: center; padding: 0 30px; }
     .swipe-wrapper { padding: 0 30px; }
     .swipe-container { background: var(--color-primary); height: 64px; border-radius: 100px; position: relative; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 25px -5px rgba(176, 92, 54, 0.3); }
-    .swipe-text { color: #fff; font-weight: 600; font-size: 15px; user-select: none; }
-    .swipe-thumb { position: absolute; left: 6px; width: 52px; height: 52px; background: #FFFFFF; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: grab; color: var(--color-primary); z-index: 10; touch-action: none; }
+    .swipe-text { color: #fff; font-weight: 600; font-size: 15px; user-select: none; animation: textPulse 2s infinite ease-in-out; }
+    .swipe-thumb { position: absolute; left: 6px; width: 52px; height: 52px; background: #FFFFFF; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: grab; color: var(--color-primary); z-index: 10; touch-action: none; animation: pulseGlow 2s infinite; }
     .swipe-thumb:active { cursor: grabbing; }
+    .swipe-thumb svg { animation: moveRight 1.5s infinite ease-in-out; }
+
+    /* ANIMASI PETUNJUK GESER */
+    @keyframes pulseGlow {
+        0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.6); }
+        70% { box-shadow: 0 0 0 12px rgba(255, 255, 255, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
+    }
+    @keyframes moveRight {
+        0%, 100% { transform: translateX(0); }
+        50% { transform: translateX(4px); }
+    }
+    @keyframes textPulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.6; }
+    }
 
     .auth-screen { display: none; opacity: 0; transform: translateY(20px); width: 100%; padding: 20px; transition: opacity 0.5s ease, transform 0.5s ease; z-index: 40; overflow-y: auto; max-height: 100vh; }
     .auth-container { background: var(--bg-card); width: 100%; max-width: 440px; margin: 20px auto; padding: 40px 32px; border-radius: 32px; box-shadow: 0 25px 50px -12px rgba(45, 36, 31, 0.1); border: 1px solid var(--border-color); }

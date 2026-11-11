@@ -10,6 +10,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
  <script>
         // 1. Blokir Klik Kanan (Context Menu)
         document.addEventListener("contextmenu", e => e.preventDefault());
@@ -49,7 +50,7 @@
       color: var(--text-main);
       display: flex; 
       justify-content: center; 
-      align-items: flex-start;
+      align-items: flex-start; /* Ubah agar bisa di-scroll dengan baik jika detail dibuka */
       min-height: 100vh; 
       margin: 0; 
       padding: 40px 20px;
@@ -75,7 +76,7 @@
         width: 90px; 
         height: 90px; 
         object-fit: contain; 
-        transform: scale(2);
+        transform: scale(2); /* INI KUNCI ZOOM-NYA (1.5 artinya zoom 150%) */
         margin-bottom: 10px; 
     }
 
@@ -133,7 +134,7 @@
     .detail-toggle-btn:hover { background: #e8dbb0; }
     
     .detail-content {
-        display: none;
+        display: none; /* Sembunyikan default */
         flex-direction: column;
         gap: 10px;
         margin-bottom: 24px;
@@ -166,8 +167,10 @@
     
    @media (max-width: 480px) {
       .dashboard-card { padding: 30px 20px; }
+      /* Hapus aturan column dan center pada profile-card agar tetap ke kiri */
       .profile-card { padding: 16px; gap: 16px; } 
       
+      /* Mengecilkan sedikit foto profil di HP agar info di kanannya muat */
       .profile-img-container { width: 75px; height: 75px; }
       .logo-image { width: 75px; height: 75px; }
       .profile-name { font-size: 16px; }
@@ -209,7 +212,7 @@
       <h2 class="font-bold text-[#A3496C] text-lg tracking-tight">Portal Bhinnekastra</h2>
   </div>
 
-  <!-- CONTAINER UNTUK BANNER TWIBBON (Di Atas) -->
+  <!-- CONTAINER UNTUK BANNER TWIBBON (Diinjeksi via JS jika lolos) -->
   <div id="twibbonBannerContainer"></div>
 
   <!-- KARTU PROFIL UTAMA (KIRI FOTO, KANAN INFO) -->
@@ -289,10 +292,10 @@
         <span id="userFisik" class="data-value">Memuat...</span>
     </div>
   </div>
-
+  
   <!-- CONTAINER UNTUK BANNER TRIPATI (Di Bawah Detail) -->
   <div id="tripatiBannerContainer"></div>
-  
+
   <button class="logout-button" onclick="redirectToLogin()">
       Keluar dari Akun
   </button>
@@ -371,10 +374,9 @@
           if (status.toLowerCase() === 'lolos' || status.toLowerCase() === 'terverifikasi') {
               badgeClass = 'status-verified';
               
-              // 1. Tampilkan Banner Twibbon (Di Atas)
-              const bannerTwibbonContainer = document.getElementById('twibbonBannerContainer');
-              if (bannerTwibbonContainer.innerHTML === '') {
-                  bannerTwibbonContainer.innerHTML = `
+              const bannerContainer = document.getElementById('twibbonBannerContainer');
+              if (bannerContainer.innerHTML === '') {
+                  bannerContainer.innerHTML = `
                     <div class="mb-6 bg-[#A3496C] text-white p-4 rounded-2xl text-center shadow-lg animate-pulse w-full">
                        <h3 class="font-bold text-lg mb-1">Selamat Anda Lolos! 🎉</h3>
                        <p class="text-xs mb-3 opacity-90">Silakan gunakan Twibbon resmi untuk diposting di media sosial Anda.</p>
@@ -383,7 +385,7 @@
                   `;
               }
 
-             // 2. Tampilkan Banner Tripati (Di Bawah Detail)
+              // Menambahkan Banner Tripati
               const bannerTripatiContainer = document.getElementById('tripatiBannerContainer');
               if (bannerTripatiContainer.innerHTML === '') {
                   bannerTripatiContainer.innerHTML = `
@@ -397,7 +399,6 @@
                     </div>
                   `;
               }
-
           } else if (status.toLowerCase() === 'tidak lolos' || status.toLowerCase() === 'gagal') {
               badgeClass = 'status-gagal';
               
@@ -418,6 +419,35 @@
       messageArea.textContent = 'Sesi habis. Silakan masuk kembali.';
       setTimeout(redirectToLogin, 1200);
     }
+  }
+
+  // Fungsi untuk Auto-Login ke Portal Tripati
+  function autoLoginTripati() {
+      const userDataString = sessionStorage.getItem('userData');
+      if (userDataString) {
+          const user = JSON.parse(userDataString);
+          const nik = user.nik;
+          const password = user.password;
+          
+          if (!password || password === 'Tidak tersedia') {
+              Swal.fire('Gagal', 'Sandi tidak ditemukan, silakan login manual di Tripati', 'error');
+              window.open("https://dppi-tripati2026.vercel.app/", "_blank");
+              return;
+          }
+
+          // Gabungkan NIK dan Password, lalu ubah ke Base64 (Obfuscation) agar tidak terlihat jelas di URL
+          const token = btoa(nik + '|||' + password);
+          
+          Swal.fire({
+              title: 'Mengalihkan...',
+              text: 'Membuka Portal TRIPATI dan masuk secara otomatis...',
+              allowOutsideClick: false,
+              didOpen: () => Swal.showLoading()
+          });
+          
+          // Mengarahkan ke halaman index Tripati beserta token SSO
+          window.location.href = `https://dppi-tripati2026.vercel.app/index.html?sso=${token}`;
+      }
   }
 
   // Fungsi Handler Upload Foto dengan Animasi Loading Melingkar
@@ -479,34 +509,7 @@
 
   function openPhotoModal() { document.getElementById('photoModal').style.display = 'flex'; }
   function closePhotoModal() { document.getElementById('photoModal').style.display = 'none'; }
-// Fungsi untuk Auto-Login ke Portal Tripati
-  function autoLoginTripati() {
-      const userDataString = sessionStorage.getItem('userData');
-      if (userDataString) {
-          const user = JSON.parse(userDataString);
-          const nik = user.nik;
-          const password = user.password;
-          
-          if (!password || password === 'Tidak tersedia') {
-              Swal.fire('Gagal', 'Sandi tidak ditemukan, silakan login manual di Tripati', 'error');
-              window.open("https://dppi-tripati2026.vercel.app/", "_blank");
-              return;
-          }
 
-          // Gabungkan NIK dan Password, lalu ubah ke Base64 (Obfuscation) agar tidak terlihat jelas di URL
-          const token = btoa(nik + '|||' + password);
-          
-          Swal.fire({
-              title: 'Mengalihkan...',
-              text: 'Membuka Portal TRIPATI dan masuk secara otomatis...',
-              allowOutsideClick: false,
-              didOpen: () => Swal.showLoading()
-          });
-          
-          // Mengarahkan ke halaman index Tripati beserta token SSO
-          window.location.href = `https://dppi-tripati2026.vercel.app/index.html?sso=${token}`;
-      }
-  }
   function redirectToLogin() {
     sessionStorage.removeItem('userData');
     window.location.href = '/index.html'; 

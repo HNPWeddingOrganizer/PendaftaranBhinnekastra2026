@@ -68,6 +68,7 @@
       max-width: 560px; 
       border: 1px solid var(--border-color);
       margin: 0 auto;
+      overflow: hidden;
     }
     
     /* Layout Header & Logo DPPI Terpisah */
@@ -212,12 +213,12 @@
     .logout-button { background: transparent; color: var(--color-primary); padding: 16px; border: 1px solid var(--color-primary); border-radius: 100px; cursor: pointer; font-size: 14px; font-weight: 600; transition: all 0.2s ease; width: 100%; text-align: center; margin-top: 10px;}
     .logout-button:hover { background: rgba(163, 73, 108, 0.08); border-color: var(--color-primary-hover); color: var(--color-primary-hover); }
 
-    /* Modal Pratinjau Foto */
-    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(4px); z-index: 100; justify-content: center; align-items: center; padding: 20px; }
-    .modal-content { background: var(--bg-card); padding: 24px; border-radius: 24px; max-width: 400px; width: 100%; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.2); border: 1px solid var(--border-color); }
+    /* Modal Pratinjau Foto & Modal Detail Evaluasi */
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(22, 15, 12, 0.72); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); z-index: 100; justify-content: center; align-items: center; padding: 20px; }
+    .modal-content { background: var(--bg-card); padding: 24px; border-radius: 24px; max-width: 400px; width: 100%; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.25); border: 1px solid var(--border-color); }
 
     /* ============================================================
-       STYLING DASHBOARD EVALUASI (SHEET EVALUASI)
+       STYLING DASHBOARD EVALUASI (RAPI, SCROLLABLE, & PRESERVED FORMAT)
        ============================================================ */
     .eval-section-card {
       background: #faf7f2;
@@ -225,6 +226,9 @@
       border-radius: 22px;
       padding: 18px;
       margin-bottom: 16px;
+      min-width: 0;
+      max-width: 100%;
+      overflow: hidden;
     }
 
     .eval-section-title {
@@ -245,6 +249,7 @@
       text-align: center;
       position: relative;
       overflow: hidden;
+      min-width: 0;
       transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
 
@@ -268,32 +273,91 @@
       transition: width 0.7s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
-    /* Kartu Evaluasi Fisik per Bagian */
+    /* Custom Scrollbar Rapi untuk Kotak Catatan & Modal */
+    .eval-scroll {
+      overflow-y: auto;
+      overflow-x: hidden;
+      scrollbar-width: thin;
+      scrollbar-color: #C9A672 #EFE4D2;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .eval-scroll::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .eval-scroll::-webkit-scrollbar-track {
+      background: #EFE4D2;
+      border-radius: 999px;
+    }
+
+    .eval-scroll::-webkit-scrollbar-thumb {
+      background: #C9A672;
+      border-radius: 999px;
+    }
+
+    .eval-scroll::-webkit-scrollbar-thumb:hover {
+      background: #A3496C;
+    }
+
+    /* Format Tulisan Sesuai Input Admin & Anti-Keluar Kolom */
+    .admin-formatted-text {
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+      tab-size: 4;
+      text-align: left;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .metric-safe-wrap {
+      overflow-wrap: anywhere;
+      word-break: break-word;
+      max-width: 100%;
+    }
+
+    /* Kartu Evaluasi Fisik per Bagian (Bisa Diklik untuk Perbesar) */
     .fisik-card {
       background: #FFFFFF;
-      border: 1px solid rgba(223, 190, 141, 0.85);
+      border: 1px solid rgba(223, 190, 141, 0.9);
       border-radius: 18px;
       padding: 14px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      min-width: 0;
+      max-width: 100%;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
     }
 
     .fisik-card:hover {
       border-color: var(--color-primary);
-      box-shadow: 0 8px 20px rgba(84, 58, 42, 0.06);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 22px rgba(163, 73, 108, 0.12);
+    }
+
+    .fisik-card:active {
+      transform: scale(0.99);
     }
 
     .fisik-note-box {
       margin-top: 10px;
-      padding: 9px 11px;
+      padding: 10px 11px;
       border-radius: 12px;
       background: #faf7f2;
-      border: 1px dashed rgba(223, 190, 141, 0.9);
-      font-size: 11px;
-      line-height: 1.45;
+      border: 1px dashed rgba(223, 190, 141, 0.95);
+      font-size: 11.5px;
+      line-height: 1.5;
       color: var(--text-main);
+      min-width: 0;
+      max-width: 100%;
+    }
+
+    .fisik-note-scroll {
+      max-height: 92px;
+      padding-right: 4px;
     }
 
     .pbb-note-box {
@@ -302,6 +366,73 @@
       border-left: 4px solid var(--color-primary);
       border-radius: 16px;
       padding: 16px;
+      min-width: 0;
+      max-width: 100%;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .pbb-note-box:hover {
+      border-color: var(--color-primary);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 22px rgba(163, 73, 108, 0.12);
+    }
+
+    .pbb-note-scroll {
+      max-height: 165px;
+      padding-right: 6px;
+    }
+
+    .expand-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--color-primary);
+      background: rgba(163, 73, 108, 0.08);
+      padding: 3px 9px;
+      border-radius: 999px;
+      transition: all 0.2s ease;
+    }
+
+    .fisik-card:hover .expand-pill,
+    .pbb-note-box:hover .expand-pill {
+      background: var(--color-primary);
+      color: #FFFFFF;
+    }
+
+    /* Modal Detail Evaluasi (Zoom / Perbesar) */
+    .eval-modal-card {
+      background: var(--bg-card);
+      border-radius: 28px;
+      max-width: 520px;
+      width: 100%;
+      max-height: 86vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 25px 60px rgba(22, 15, 12, 0.35);
+      border: 1px solid var(--border-color);
+      text-align: left;
+      animation: evalModalZoom 0.24s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    @keyframes evalModalZoom {
+      from { opacity: 0; transform: scale(0.92) translateY(12px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .eval-modal-note-box {
+      background: #faf7f2;
+      border: 1px solid var(--border-color);
+      border-radius: 18px;
+      padding: 16px;
+      max-height: 46vh;
+      font-size: 13.5px;
+      line-height: 1.65;
+      color: var(--text-main);
     }
 
     .skeleton-pulse {
@@ -698,6 +829,7 @@
       .password-row { display: flex; width: 100%; justify-content: space-between; align-items: center; }
       .tripati-portal-card { padding: 34px 22px 28px 22px; }
       .tripati-title-shimmer { font-size: 22px; }
+      .eval-modal-note-box { max-height: 52vh; font-size: 13px; }
     }
   </style>
 </head>
@@ -761,6 +893,59 @@
                 <i class="fas fa-camera mr-2"></i> Ganti Foto Profil
             </label>
             <button onclick="closePhotoModal()" class="w-full bg-gray-200 hover:bg-gray-300 text-gray-700 py-2.5 px-4 rounded-xl text-sm font-semibold transition">
+                Tutup
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL DETAIL EVALUASI (PERBESAR PER BAGIAN) -->
+<div class="modal-overlay" id="evalDetailModal" onclick="closeEvalDetailModal()">
+    <div class="eval-modal-card" onclick="event.stopPropagation()">
+        <!-- Header Modal -->
+        <div class="px-5 py-4 bg-[#faf7f2] border-b border-[#DFBE8D] flex items-center justify-between gap-3 shrink-0">
+            <div class="flex items-center gap-3 min-w-0">
+                <span id="evalModalIconWrap" class="w-10 h-10 rounded-xl flex items-center justify-center text-base shrink-0">
+                    <i id="evalModalIcon" class="fas fa-medal"></i>
+                </span>
+                <div class="min-w-0">
+                    <h3 id="evalModalTitle" class="font-bold text-base text-[#543A2A] truncate">Detail Evaluasi</h3>
+                    <p id="evalModalSubtitle" class="text-[11px] text-[#886144] truncate">Rincian hasil & catatan penilai</p>
+                </div>
+            </div>
+            <button type="button" onclick="closeEvalDetailModal()" aria-label="Tutup Detail"
+                class="w-9 h-9 rounded-full bg-[#EFE4D2] hover:bg-[#A3496C] text-[#543A2A] hover:text-white flex items-center justify-center transition shrink-0 cursor-pointer">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <!-- Body Modal -->
+        <div class="p-5 space-y-4 overflow-y-auto eval-scroll flex-1">
+            <!-- Box Capaian / Nilai -->
+            <div id="evalModalMetricWrap" class="bg-gradient-to-br from-[#fdfbf7] to-[#f4ebe1] border border-[#DFBE8D] rounded-2xl p-4 flex flex-col gap-1">
+                <span id="evalModalMetricLabel" class="text-[10px] font-bold uppercase tracking-widest text-[#886144]">Capaian</span>
+                <div id="evalModalMetricValue" class="text-xl sm:text-2xl font-extrabold text-[#A3496C] admin-formatted-text"></div>
+            </div>
+
+            <!-- Box Catatan Lengkap (Format Asli Admin + Scrollbar) -->
+            <div id="evalModalNoteSection">
+                <div class="flex items-center justify-between mb-2">
+                    <span id="evalModalNoteHeading" class="text-[11px] font-bold uppercase tracking-wider text-[#886144]">
+                        <i class="fas fa-pen-nib mr-1.5 text-[#A3496C]"></i>Catatan Evaluasi
+                    </span>
+                    <span class="text-[10px] text-[#886144]/80">Geser ke bawah jika panjang</span>
+                </div>
+                <div class="eval-modal-note-box eval-scroll">
+                    <div id="evalModalNoteContent" class="admin-formatted-text"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Modal -->
+        <div class="px-5 py-3.5 bg-[#faf7f2] border-t border-[#DFBE8D] flex items-center justify-between gap-3 shrink-0">
+            <span id="evalModalUpdated" class="text-[11px] text-[#886144] truncate"></span>
+            <button type="button" onclick="closeEvalDetailModal()"
+                class="bg-[#A3496C] hover:bg-[#853A55] text-white px-5 py-2 rounded-full text-xs font-bold transition shadow-sm shrink-0 cursor-pointer">
                 Tutup
             </button>
         </div>
@@ -950,6 +1135,9 @@
                   Update: -
               </span>
           </div>
+          <p class="text-[11px] text-[#886144] mb-3 -mt-1.5">
+              <i class="fas fa-hand-pointer mr-1 text-[#A3496C]"></i>Klik salah satu kotak untuk memperbesar dan membaca catatan lengkap.
+          </p>
 
           <div id="fisikEvalContainer" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div class="skeleton-pulse h-28 w-full"></div>
@@ -988,6 +1176,7 @@
 
   let currentUser = null;
   let evaluasiLoaded = false;
+  let evalDetailStore = {};
 
   // Reset overlay jika user kembali menggunakan tombol Back browser (bfcache)
   window.addEventListener('pageshow', () => {
@@ -999,6 +1188,14 @@
       }
   });
 
+  // Tutup modal dengan tombol Escape
+  window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+          closeEvalDetailModal();
+          closePhotoModal();
+      }
+  });
+
   function escapeHtml(str) {
       return String(str ?? '')
           .replace(/&/g, '&amp;')
@@ -1006,6 +1203,16 @@
           .replace(/>/g, '&gt;')
           .replace(/"/g, '&quot;')
           .replace(/'/g, '&#39;');
+  }
+
+  // Normalisasi line-break tanpa merusak spasi/indentasi/baris kosong yang ditulis admin
+  function normalizeAdminText(rawText) {
+      return String(rawText ?? '').replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+  }
+
+  function hasMeaningfulText(rawText) {
+      const trimmed = normalizeAdminText(rawText).trim();
+      return trimmed !== '' && trimmed !== '-';
   }
 
   // SWITCH TAB DASHBOARD (PROFIL <-> EVALUASI)
@@ -1255,28 +1462,83 @@
   }
 
   function formatMetricValue(rawVal, defaultUnit) {
-      const cleaned = String(rawVal ?? '').trim();
-      if (!cleaned || cleaned === '-') {
-          return { main: '-', unit: '', isEmpty: true };
+      const normalized = normalizeAdminText(rawVal);
+      const trimmed = normalized.trim();
+      if (!trimmed || trimmed === '-') {
+          return { main: '-', unit: '', displayFull: 'Belum dinilai', isEmpty: true };
       }
-      if (/^\d+([.,]\d+)?$/.test(cleaned)) {
-          return { main: cleaned, unit: defaultUnit, isEmpty: false };
+      if (/^\d+([.,]\d+)?$/.test(trimmed)) {
+          return { main: trimmed, unit: defaultUnit, displayFull: `${trimmed} ${defaultUnit}`, isEmpty: false };
       }
-      return { main: cleaned, unit: '', isEmpty: false };
+      return { main: normalized, unit: '', displayFull: normalized, isEmpty: false };
   }
 
-  function formatCatatanText(rawNote) {
-      const text = String(rawNote ?? '').trim();
-      if (!text || text === '-') {
-          return `<span class="text-[#886144]/70 italic">Belum ada catatan dari penilai.</span>`;
+  function formatCatatanHTML(rawNote) {
+      if (!hasMeaningfulText(rawNote)) {
+          return `<span class="text-[#886144]/75 italic">Belum ada catatan dari penilai.</span>`;
       }
-      return escapeHtml(text).replace(/\n/g, '<br>');
+      return escapeHtml(normalizeAdminText(rawNote));
+  }
+
+  function openEvalDetailModal(key) {
+      const item = evalDetailStore[key];
+      if (!item) return;
+
+      const modal = document.getElementById('evalDetailModal');
+      const iconWrap = document.getElementById('evalModalIconWrap');
+      const iconEl = document.getElementById('evalModalIcon');
+      const titleEl = document.getElementById('evalModalTitle');
+      const subtitleEl = document.getElementById('evalModalSubtitle');
+      const metricWrap = document.getElementById('evalModalMetricWrap');
+      const metricLabel = document.getElementById('evalModalMetricLabel');
+      const metricValue = document.getElementById('evalModalMetricValue');
+      const noteSection = document.getElementById('evalModalNoteSection');
+      const noteHeading = document.getElementById('evalModalNoteHeading');
+      const noteContent = document.getElementById('evalModalNoteContent');
+      const updatedEl = document.getElementById('evalModalUpdated');
+
+      iconWrap.className = `w-10 h-10 rounded-xl flex items-center justify-center text-base shrink-0 ${item.iconBg}`;
+      iconEl.className = `fas ${item.icon}`;
+      titleEl.textContent = item.title;
+      subtitleEl.textContent = item.subtitle;
+
+      if (item.showMetric) {
+          metricWrap.classList.remove('hidden');
+          metricLabel.textContent = item.metricLabel || 'Capaian';
+          metricValue.textContent = item.metricValue;
+      } else {
+          metricWrap.classList.add('hidden');
+      }
+
+      if (item.showNote) {
+          noteSection.classList.remove('hidden');
+          noteHeading.innerHTML = `<i class="fas fa-pen-nib mr-1.5 text-[#A3496C]"></i>${escapeHtml(item.noteLabel || 'Catatan Evaluasi')}`;
+          noteContent.innerHTML = formatCatatanHTML(item.noteRaw);
+      } else {
+          noteSection.classList.add('hidden');
+      }
+
+      updatedEl.innerHTML = item.updatedAt
+          ? `<i class="far fa-clock mr-1 text-[#A3496C]"></i>Diperbarui: ${escapeHtml(item.updatedAt)}`
+          : '';
+
+      modal.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+  }
+
+  function closeEvalDetailModal() {
+      const modal = document.getElementById('evalDetailModal');
+      if (modal) {
+          modal.style.display = 'none';
+          document.body.style.overflow = '';
+      }
   }
 
   function renderFisikDanPBB(ev) {
       const fisikContainer = document.getElementById('fisikEvalContainer');
       const pbbContainer = document.getElementById('pbbEvalContainer');
       const updatedBadge = document.getElementById('evalUpdatedBadge');
+      evalDetailStore = {};
 
       if (!ev) {
           updatedBadge.classList.add('hidden');
@@ -1297,8 +1559,12 @@
           return;
       }
 
-      if (ev.updated_at && String(ev.updated_at).trim() !== '' && String(ev.updated_at).trim() !== '-') {
-          updatedBadge.textContent = `Update: ${ev.updated_at}`;
+      const updatedAt = (ev.updated_at && String(ev.updated_at).trim() !== '' && String(ev.updated_at).trim() !== '-')
+          ? String(ev.updated_at).trim()
+          : '';
+
+      if (updatedAt) {
+          updatedBadge.textContent = `Update: ${updatedAt}`;
           updatedBadge.classList.remove('hidden');
       } else {
           updatedBadge.classList.add('hidden');
@@ -1306,28 +1572,36 @@
 
       const fisikItems = [
           {
+              key: 'push_up',
               title: 'Push Up',
+              subtitle: 'Evaluasi kekuatan otot lengan & dada',
               icon: 'fa-hand-fist',
               iconBg: 'bg-emerald-500/12 text-emerald-700',
               val: formatMetricValue(ev.push_up, 'kali'),
               note: ev.eval_push_up
           },
           {
+              key: 'sit_up',
               title: 'Sit Up',
+              subtitle: 'Evaluasi kekuatan otot perut',
               icon: 'fa-child-reaching',
               iconBg: 'bg-sky-500/12 text-sky-700',
               val: formatMetricValue(ev.sit_up, 'kali'),
               note: ev.eval_sit_up
           },
           {
+              key: 'back_up',
               title: 'Back Up',
+              subtitle: 'Evaluasi kekuatan otot punggung',
               icon: 'fa-dumbbell',
               iconBg: 'bg-purple-500/12 text-purple-700',
               val: formatMetricValue(ev.back_up, 'kali'),
               note: ev.eval_back_up
           },
           {
+              key: 'shuttle_run',
               title: 'Shuttle Run',
+              subtitle: 'Evaluasi kelincahan & kecepatan lari bolak-balik',
               icon: 'fa-stopwatch',
               iconBg: 'bg-amber-500/15 text-amber-700',
               val: formatMetricValue(ev.shuttle_run, 'detik'),
@@ -1335,50 +1609,92 @@
           }
       ];
 
-      const lariVal = String(ev.hasil_lari ?? '').trim();
-      const hasLari = lariVal !== '' && lariVal !== '-';
+      // Simpan data detail tiap bagian untuk modal zoom
+      fisikItems.forEach(item => {
+          evalDetailStore[item.key] = {
+              title: `Evaluasi ${item.title}`,
+              subtitle: item.subtitle,
+              icon: item.icon,
+              iconBg: item.iconBg,
+              showMetric: true,
+              metricLabel: `Hasil ${item.title}`,
+              metricValue: item.val.displayFull,
+              showNote: true,
+              noteLabel: `Catatan ${item.title} dari Admin`,
+              noteRaw: item.note,
+              updatedAt: updatedAt
+          };
+      });
 
       const cardsHtml = fisikItems.map(item => `
-          <div class="fisik-card">
-              <div>
-                  <div class="flex items-center justify-between gap-2 mb-2.5">
-                      <div class="flex items-center gap-2">
+          <div class="fisik-card" onclick="openEvalDetailModal('${item.key}')" role="button" tabindex="0">
+              <div class="min-w-0">
+                  <div class="flex items-start justify-between gap-2 mb-2">
+                      <div class="flex items-center gap-2 min-w-0">
                           <span class="w-7 h-7 rounded-lg ${item.iconBg} flex items-center justify-center text-xs shrink-0">
                               <i class="fas ${item.icon}"></i>
                           </span>
-                          <span class="text-xs font-bold text-[#543A2A]">${item.title}</span>
+                          <span class="text-xs font-bold text-[#543A2A] truncate">${item.title}</span>
                       </div>
-                      <div class="text-right leading-none">
-                          <span class="text-xl font-extrabold ${item.val.isEmpty ? 'text-[#886144]/50' : 'text-[#A3496C]'}">${escapeHtml(item.val.main)}</span>
-                          ${item.val.unit ? `<span class="text-[10px] font-semibold text-[#886144] ml-0.5">${item.val.unit}</span>` : ''}
-                      </div>
+                      <span class="expand-pill shrink-0">
+                          <i class="fas fa-expand-alt text-[9px]"></i>
+                          <span>Detail</span>
+                      </span>
+                  </div>
+
+                  <div class="mt-1 mb-1 text-left min-w-0">
+                      <span class="text-xl font-extrabold leading-tight metric-safe-wrap ${item.val.isEmpty ? 'text-[#886144]/50' : 'text-[#A3496C]'}">${escapeHtml(item.val.main)}</span>${item.val.unit ? `<span class="text-[11px] font-semibold text-[#886144] ml-1">${item.val.unit}</span>` : ''}
                   </div>
               </div>
+
               <div class="fisik-note-box">
-                  <span class="block text-[9px] font-bold uppercase tracking-wider text-[#886144] mb-0.5">
+                  <span class="block text-[9px] font-bold uppercase tracking-wider text-[#886144] mb-1">
                       <i class="fas fa-pen-nib mr-1 text-[#A3496C]"></i>Catatan ${item.title}
                   </span>
-                  <div>${formatCatatanText(item.note)}</div>
+                  <div class="fisik-note-scroll eval-scroll">
+                      <div class="admin-formatted-text">${formatCatatanHTML(item.note)}</div>
+                  </div>
               </div>
           </div>
       `).join('');
 
+      // Hasil Lari
+      const lariNormalized = normalizeAdminText(ev.hasil_lari);
+      const hasLari = hasMeaningfulText(lariNormalized);
+
+      evalDetailStore['hasil_lari'] = {
+          title: 'Evaluasi Hasil Lari',
+          subtitle: 'Capaian lari kesamaptaan peserta',
+          icon: 'fa-person-running',
+          iconBg: 'bg-[#A3496C]/12 text-[#A3496C]',
+          showMetric: false,
+          showNote: true,
+          noteLabel: 'Hasil & Catatan Lari dari Admin',
+          noteRaw: hasLari ? lariNormalized : '',
+          updatedAt: updatedAt
+      };
+
       const lariCardHtml = `
-          <div class="fisik-card sm:col-span-2">
-              <div class="flex flex-wrap items-center justify-between gap-3">
-                  <div class="flex items-center gap-2.5">
-                      <span class="w-9 h-9 rounded-xl bg-[#A3496C]/12 text-[#A3496C] flex items-center justify-center text-sm shrink-0">
+          <div class="fisik-card sm:col-span-2" onclick="openEvalDetailModal('hasil_lari')" role="button" tabindex="0">
+              <div class="flex items-center justify-between gap-2 mb-2.5 min-w-0">
+                  <div class="flex items-center gap-2.5 min-w-0">
+                      <span class="w-8 h-8 rounded-xl bg-[#A3496C]/12 text-[#A3496C] flex items-center justify-center text-sm shrink-0">
                           <i class="fas fa-person-running"></i>
                       </span>
-                      <div>
-                          <span class="block text-xs font-bold text-[#543A2A]">Hasil Lari</span>
-                          <span class="block text-[10px] text-[#886144]">Capaian lari kesamaptaan</span>
+                      <div class="min-w-0">
+                          <span class="block text-xs font-bold text-[#543A2A] truncate">Hasil Lari</span>
+                          <span class="block text-[10px] text-[#886144] truncate">Capaian lari kesamaptaan</span>
                       </div>
                   </div>
-                  <div class="text-right">
-                      <span class="inline-block px-3.5 py-1.5 rounded-xl ${hasLari ? 'bg-[#EFE4D2] text-[#543A2A]' : 'bg-[#faf7f2] text-[#886144]/60'} font-extrabold text-sm sm:text-base border border-[#DFBE8D]">
-                          ${hasLari ? escapeHtml(lariVal) : 'Belum dinilai'}
-                      </span>
+                  <span class="expand-pill shrink-0">
+                      <i class="fas fa-expand-alt text-[9px]"></i>
+                      <span>Detail</span>
+                  </span>
+              </div>
+
+              <div class="fisik-note-box mt-0">
+                  <div class="fisik-note-scroll eval-scroll">
+                      <div class="admin-formatted-text font-bold text-sm ${hasLari ? 'text-[#543A2A]' : 'text-[#886144]/70 font-normal italic'}">${hasLari ? escapeHtml(lariNormalized) : 'Belum dinilai'}</div>
                   </div>
               </div>
           </div>
@@ -1386,8 +1702,23 @@
 
       fisikContainer.innerHTML = cardsHtml + lariCardHtml;
 
-      const pbbText = String(ev.eval_pbb ?? '').trim();
-      if (!pbbText || pbbText === '-') {
+      // Evaluasi PBB
+      const pbbNormalized = normalizeAdminText(ev.eval_pbb);
+      const hasPbb = hasMeaningfulText(pbbNormalized);
+
+      evalDetailStore['eval_pbb'] = {
+          title: 'Evaluasi PBB',
+          subtitle: 'Catatan Peraturan Baris Berbaris dari Admin',
+          icon: 'fa-clipboard-check',
+          iconBg: 'bg-[#543A2A]/12 text-[#543A2A]',
+          showMetric: false,
+          showNote: true,
+          noteLabel: 'Catatan Evaluasi PBB Lengkap',
+          noteRaw: hasPbb ? pbbNormalized : '',
+          updatedAt: updatedAt
+      };
+
+      if (!hasPbb) {
           pbbContainer.innerHTML = `
               <div class="bg-white border border-dashed border-[#DFBE8D] rounded-2xl p-5 text-center">
                   <p class="text-xs font-semibold text-[#543A2A]">Belum Ada Catatan PBB</p>
@@ -1396,13 +1727,22 @@
           `;
       } else {
           pbbContainer.innerHTML = `
-              <div class="pbb-note-box">
-                  <div class="text-xs sm:text-[13px] text-[#543A2A] leading-relaxed font-medium">
-                      ${escapeHtml(pbbText).replace(/\n/g, '<br>')}
+              <div class="pbb-note-box" onclick="openEvalDetailModal('eval_pbb')" role="button" tabindex="0">
+                  <div class="flex items-center justify-between gap-2 mb-2">
+                      <span class="text-[10px] font-bold uppercase tracking-wider text-[#886144]">
+                          <i class="fas fa-pen-nib mr-1 text-[#A3496C]"></i>Catatan Panitia
+                      </span>
+                      <span class="expand-pill shrink-0">
+                          <i class="fas fa-expand-alt text-[9px]"></i>
+                          <span>Perbesar</span>
+                      </span>
                   </div>
-                  ${(ev.updated_at && String(ev.updated_at).trim() !== '-') ? `
+                  <div class="pbb-note-scroll eval-scroll">
+                      <div class="admin-formatted-text text-xs sm:text-[13px] text-[#543A2A] leading-relaxed font-medium">${escapeHtml(pbbNormalized)}</div>
+                  </div>
+                  ${updatedAt ? `
                   <div class="mt-3 pt-2.5 border-t border-[#DFBE8D]/50 flex items-center justify-end text-[10px] text-[#886144]">
-                      <span><i class="far fa-clock mr-1 text-[#A3496C]"></i>Diperbarui: ${escapeHtml(ev.updated_at)}</span>
+                      <span><i class="far fa-clock mr-1 text-[#A3496C]"></i>Diperbarui: ${escapeHtml(updatedAt)}</span>
                   </div>
                   ` : ''}
               </div>

@@ -71,13 +71,64 @@
     }
     
     /* Layout Header & Logo DPPI Terpisah */
-    .top-brand { display: flex; flex-direction: column; align-items: center; margin-bottom: 16px; }
+    .top-brand { display: flex; flex-direction: column; align-items: center; margin-bottom: 18px; }
     .top-logo { 
         width: 90px; 
         height: 90px; 
         object-fit: contain; 
         transform: scale(2);
         margin-bottom: 10px; 
+    }
+
+    /* NAVIGASI TAB DASHBOARD */
+    .dashboard-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      background: var(--bg-item);
+      padding: 5px;
+      border-radius: 100px;
+      border: 1px solid var(--border-color);
+      margin-bottom: 24px;
+    }
+
+    .dashboard-tab-btn {
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-weight: 600;
+      font-size: 13px;
+      padding: 11px 14px;
+      border-radius: 100px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.25s ease;
+    }
+
+    .dashboard-tab-btn:hover:not(.active) {
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.45);
+    }
+
+    .dashboard-tab-btn.active {
+      background: linear-gradient(135deg, #A3496C 0%, #853A55 100%);
+      color: #FFFFFF;
+      box-shadow: 0 6px 16px rgba(163, 73, 108, 0.28);
+    }
+
+    .tab-panel {
+      display: none;
+      animation: panelFadeIn 0.32s ease forwards;
+    }
+    .tab-panel.active {
+      display: block;
+    }
+    @keyframes panelFadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     /* Layout Profil Kiri-Kanan */
@@ -165,6 +216,85 @@
     .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(4px); z-index: 100; justify-content: center; align-items: center; padding: 20px; }
     .modal-content { background: var(--bg-card); padding: 24px; border-radius: 24px; max-width: 400px; width: 100%; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.2); border: 1px solid var(--border-color); }
 
+    /* ============================================================
+       STYLING DASHBOARD EVALUASI (PIP, TIU, NILAI & CATATAN ADMIN)
+       ============================================================ */
+    .eval-section-card {
+      background: #faf7f2;
+      border: 1px solid var(--border-color);
+      border-radius: 22px;
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+
+    .eval-section-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .cat-score-card {
+      background: #FFFFFF;
+      border: 1px solid var(--border-color);
+      border-radius: 18px;
+      padding: 16px 14px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .cat-score-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 22px rgba(84, 58, 42, 0.08);
+    }
+
+    .cat-score-bar-track {
+      width: 100%;
+      height: 6px;
+      background: var(--bg-item);
+      border-radius: 100px;
+      overflow: hidden;
+      margin: 10px 0 8px 0;
+    }
+
+    .cat-score-bar-fill {
+      height: 100%;
+      border-radius: 100px;
+      transition: width 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .admin-score-row {
+      background: #FFFFFF;
+      border: 1px solid rgba(223, 190, 141, 0.7);
+      border-radius: 14px;
+      padding: 12px 14px;
+    }
+
+    .admin-note-box {
+      background: linear-gradient(135deg, #FFFFFF 0%, #FDF8EE 100%);
+      border: 1px solid var(--border-color);
+      border-left: 4px solid var(--color-primary);
+      border-radius: 16px;
+      padding: 16px;
+    }
+
+    .skeleton-pulse {
+      background: linear-gradient(90deg, #EFE4D2 25%, #F9F1E2 50%, #EFE4D2 75%);
+      background-size: 200% 100%;
+      animation: shimmerSkeleton 1.4s infinite;
+      border-radius: 12px;
+    }
+
+    @keyframes shimmerSkeleton {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
     /* Tombol Banner TRIPATI dengan kilau lembut */
     .btn-tripati-launch {
       position: relative;
@@ -221,7 +351,6 @@
       clip-path: circle(155% at var(--portal-x, 50%) var(--portal-y, 50%));
     }
 
-    /* Background Blobs Khas TRIPATI */
     .tripati-bg-shapes {
       position: absolute;
       inset: 0;
@@ -262,7 +391,6 @@
       100% { transform: translate(-35px, 45px) scale(0.92); }
     }
 
-    /* Partikel Cahaya Emas */
     .tripati-particles {
       position: absolute;
       inset: 0;
@@ -286,7 +414,6 @@
       100% { transform: translateY(-105vh) scale(1.2); opacity: 0; }
     }
 
-    /* Kartu Glassmorphism Tengah */
     .tripati-portal-card {
       position: relative;
       z-index: 10;
@@ -316,7 +443,6 @@
       transform: translateY(0) scale(1);
     }
 
-    /* Animasi Warp Keluar sebelum Redirect */
     #tripatiPortalOverlay.warping .tripati-portal-card {
       opacity: 0;
       transform: scale(1.12);
@@ -324,7 +450,6 @@
       transition: opacity 0.38s ease, transform 0.38s ease, filter 0.38s ease;
     }
 
-    /* Logo & Orbit Rings */
     .tripati-logo-stage {
       position: relative;
       width: 128px;
@@ -403,7 +528,6 @@
       to { transform: translate(-50%, -50%) rotate(0deg); }
     }
 
-    /* Tipografi Shimmer Emas */
     .tripati-badge {
       display: inline-flex;
       align-items: center;
@@ -452,7 +576,6 @@
       text-overflow: ellipsis;
     }
 
-    /* Progress Bar Emas dengan Efek Kilau */
     .tripati-progress-track {
       width: 100%;
       height: 7px;
@@ -515,7 +638,6 @@
       flex-shrink: 0;
     }
 
-    /* Step Dots */
     .tripati-steps {
       display: flex;
       justify-content: center;
@@ -542,7 +664,8 @@
     }
 
     @media (max-width: 480px) {
-      .dashboard-card { padding: 30px 20px; }
+      .dashboard-card { padding: 28px 18px; }
+      .dashboard-tab-btn { font-size: 12px; padding: 10px 10px; gap: 6px; }
       .profile-card { padding: 16px; gap: 16px; } 
       .profile-img-container { width: 75px; height: 75px; }
       .logo-image { width: 75px; height: 75px; }
@@ -631,89 +754,202 @@
       <h2 class="font-bold text-[#A3496C] text-lg tracking-tight">Portal Bhinnekastra</h2>
   </div>
 
-  <!-- CONTAINER UNTUK BANNER TWIBBON (Diinjeksi via JS jika lolos) -->
-  <div id="twibbonBannerContainer"></div>
+  <!-- PILIHAN DASHBOARD (TAB SWITCHER) -->
+  <div class="dashboard-tabs" role="tablist">
+      <button type="button" id="tabBtnProfil" class="dashboard-tab-btn active" onclick="switchDashboardTab('profil')">
+          <i class="fas fa-id-card"></i>
+          <span>Profil Saya</span>
+      </button>
+      <button type="button" id="tabBtnEvaluasi" class="dashboard-tab-btn" onclick="switchDashboardTab('evaluasi')">
+          <i class="fas fa-chart-line"></i>
+          <span>Dashboard Evaluasi</span>
+      </button>
+  </div>
 
-  <!-- KARTU PROFIL UTAMA (KIRI FOTO, KANAN INFO) -->
-  <div class="profile-card">
-      <div class="profile-img-container group">
-          <div id="loadingRing" class="profile-loading-ring"></div>
-          <img id="userProfileImage" src="https://upload.wikimedia.org/wikipedia/commons/3/36/Logo_DPPI.png" alt="Foto Profil" class="logo-image" onclick="openPhotoModal()" title="Klik untuk lihat detail foto">
-          
-          <label for="fotoUpload" class="absolute bottom-0 right-0 bg-[#A3496C] hover:bg-[#853A55] text-white p-2 rounded-full shadow-md cursor-pointer transition transform hover:scale-110" title="Unggah Foto Baru">
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
-          </label>
-          <input type="file" id="fotoUpload" accept="image/png, image/jpeg, image/jpg" class="hidden" onchange="handlePhotoUpload(this)">
-          <input type="file" id="fotoUploadModal" accept="image/png, image/jpeg, image/jpg" class="hidden" onchange="handlePhotoUpload(this)">
+  <!-- ========================================================
+       PANEL 1: PROFIL & PROGRAM (TAMPILAN DEFAULT)
+       ======================================================== -->
+  <div id="panelProfil" class="tab-panel active">
+      <!-- CONTAINER UNTUK BANNER TWIBBON (Diinjeksi via JS jika lolos) -->
+      <div id="twibbonBannerContainer"></div>
+
+      <!-- KARTU PROFIL UTAMA (KIRI FOTO, KANAN INFO) -->
+      <div class="profile-card">
+          <div class="profile-img-container group">
+              <div id="loadingRing" class="profile-loading-ring"></div>
+              <img id="userProfileImage" src="https://upload.wikimedia.org/wikipedia/commons/3/36/Logo_DPPI.png" alt="Foto Profil" class="logo-image" onclick="openPhotoModal()" title="Klik untuk lihat detail foto">
+              
+              <label for="fotoUpload" class="absolute bottom-0 right-0 bg-[#A3496C] hover:bg-[#853A55] text-white p-2 rounded-full shadow-md cursor-pointer transition transform hover:scale-110" title="Unggah Foto Baru">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+              </label>
+              <input type="file" id="fotoUpload" accept="image/png, image/jpeg, image/jpg" class="hidden" onchange="handlePhotoUpload(this)">
+              <input type="file" id="fotoUploadModal" accept="image/png, image/jpeg, image/jpg" class="hidden" onchange="handlePhotoUpload(this)">
+          </div>
+
+          <div class="profile-info">
+              <h1 id="userName" class="profile-name">Memuat...</h1>
+              <p id="userSekolah" class="profile-school">Memuat asal instansi...</p>
+              <div id="userStatus" class="data-value"><span class="status-badge status-pending">Memuat...</span></div>
+              
+              <!-- Notifikasi Alasan Gagal -->
+              <div id="alasanContainer" class="mt-2 text-left" style="display: none;">
+                  <p class="text-[11px] font-bold text-red-600 mb-0.5">Alasan Tidak Lolos:</p>
+                  <p id="userAlasan" class="text-[11px] text-red-500 leading-tight border-l-2 border-red-500 pl-2">Memuat...</p>
+              </div>
+          </div>
       </div>
 
-      <div class="profile-info">
-          <h1 id="userName" class="profile-name">Memuat...</h1>
-          <p id="userSekolah" class="profile-school">Memuat asal instansi...</p>
-          <div id="userStatus" class="data-value"><span class="status-badge status-pending">Memuat...</span></div>
-          
-          <!-- Notifikasi Alasan Gagal -->
-          <div id="alasanContainer" class="mt-2 text-left" style="display: none;">
-              <p class="text-[11px] font-bold text-red-600 mb-0.5">Alasan Tidak Lolos:</p>
-              <p id="userAlasan" class="text-[11px] text-red-500 leading-tight border-l-2 border-red-500 pl-2">Memuat...</p>
+      <!-- TOMBOL TOGGLE DETAIL -->
+      <button class="detail-toggle-btn" onclick="toggleDetails()" id="btnToggleDetail">
+          <span><i class="fas fa-list-ul mr-2"></i> Lihat Detail Data Pendaftaran</span>
+          <i class="fas fa-chevron-down transition-transform duration-300" id="iconToggleDetail"></i>
+      </button>
+
+      <!-- DATA DETAIL (TERSEMBUNYI DEFAULT) -->
+      <div class="detail-content" id="detailSection">
+        <div class="data-item">
+            <span class="data-label">Nomor Induk Kependudukan</span>
+            <span id="userNik" class="data-value">Memuat...</span>
+        </div>
+
+        <div class="data-item">
+            <span class="data-label">Kata Sandi Keamanan</span>
+            <div class="password-row flex items-center">
+                <input type="password" id="userPasswordInput" value="Memuat..." readonly/>
+                <button class="toggle-btn" onclick="togglePasswordVisibility()" aria-label="Lihat Sandi">
+                    <svg id="toggleIcon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <div class="data-item">
+            <span class="data-label">Nomor Kontak WhatsApp</span>
+            <span id="userTelepon" class="data-value">Memuat...</span>
+        </div>
+
+        <div class="data-item">
+            <span class="data-label">Jenis Kelamin</span>
+            <span id="userJK" class="data-value">Memuat...</span>
+        </div>
+
+        <div class="data-item">
+            <span class="data-label">Tempat, Tanggal Lahir</span>
+            <span id="userTTL" class="data-value">Memuat...</span>
+        </div>
+
+        <div class="data-item">
+            <span class="data-label">Usia Saat Ini</span>
+            <span id="userUsia" class="data-value">Memuat...</span>
+        </div>
+
+        <div class="data-item">
+            <span class="data-label">Tinggi & Berat Badan</span>
+            <span id="userFisik" class="data-value">Memuat...</span>
+        </div>
+      </div>
+      
+      <!-- CONTAINER UNTUK BANNER TRIPATI (Di Bawah Detail) -->
+      <div id="tripatiBannerContainer"></div>
+  </div>
+
+  <!-- ========================================================
+       PANEL 2: DASHBOARD EVALUASI (PIP, TIU, NILAI & CATATAN ADMIN)
+       ======================================================== -->
+  <div id="panelEvaluasi" class="tab-panel">
+      <!-- Header Ringkas Evaluasi + Tombol Refresh -->
+      <div class="flex items-center justify-between gap-3 mb-4 px-1">
+          <div class="min-w-0">
+              <h3 class="font-bold text-base text-[#543A2A] leading-tight">Rekap Evaluasi Peserta</h3>
+              <p class="text-[11px] text-[#886144] truncate" id="evalSubHeader">Memuat data evaluasi...</p>
+          </div>
+          <button type="button" id="btnRefreshEval" onclick="loadEvaluationDashboard(true)"
+              class="shrink-0 bg-[#EFE4D2] hover:bg-[#DFBE8D] text-[#543A2A] border border-[#DFBE8D] px-3.5 py-2 rounded-full text-xs font-semibold flex items-center gap-1.5 transition cursor-pointer">
+              <i class="fas fa-sync-alt" id="iconRefreshEval"></i>
+              <span>Perbarui</span>
+          </button>
+      </div>
+
+      <!-- 1. HASIL UJIAN CAT TRIPATI (PIP & TIU) -->
+      <div class="eval-section-card">
+          <div class="eval-section-title justify-between">
+              <span class="flex items-center gap-2">
+                  <span class="w-7 h-7 rounded-lg bg-[#A3496C]/15 text-[#A3496C] flex items-center justify-center text-xs">
+                      <i class="fas fa-laptop-code"></i>
+                  </span>
+                  <span>Hasil Ujian CAT TRIPATI</span>
+              </span>
+              <span class="text-[10px] font-semibold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-[#EFE4D2] text-[#886144]">
+                  KKM 75
+              </span>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3" id="catScoresGrid">
+              <!-- Kartu PIP -->
+              <div class="cat-score-card" id="cardNilaiPIP">
+                  <span class="inline-block text-[10px] font-bold uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-[#A3496C]/12 text-[#A3496C] mb-2">
+                      UJIAN PIP
+                  </span>
+                  <p class="text-[11px] text-[#886144] mb-1">Ideologi Pancasila</p>
+                  <div id="nilaiPIPValue" class="text-3xl font-extrabold text-[#543A2A] leading-none my-1">...</div>
+                  <div class="cat-score-bar-track">
+                      <div id="barPIP" class="cat-score-bar-fill bg-[#A3496C]" style="width: 0%;"></div>
+                  </div>
+                  <div id="statusPIPBadge" class="text-[10px] font-semibold text-[#886144]">Memeriksa...</div>
+                  <div id="detailPIPText" class="text-[10px] text-[#886144]/80 mt-1">-</div>
+              </div>
+
+              <!-- Kartu TIU -->
+              <div class="cat-score-card" id="cardNilaiTIU">
+                  <span class="inline-block text-[10px] font-bold uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-[#C8963E]/15 text-[#886144] mb-2">
+                      UJIAN TIU
+                  </span>
+                  <p class="text-[11px] text-[#886144] mb-1">Intelegensia Umum</p>
+                  <div id="nilaiTIUValue" class="text-3xl font-extrabold text-[#543A2A] leading-none my-1">...</div>
+                  <div class="cat-score-bar-track">
+                      <div id="barTIU" class="cat-score-bar-fill bg-[#C8963E]" style="width: 0%;"></div>
+                  </div>
+                  <div id="statusTIUBadge" class="text-[10px] font-semibold text-[#886144]">Memeriksa...</div>
+                  <div id="detailTIUText" class="text-[10px] text-[#886144]/80 mt-1">-</div>
+              </div>
+          </div>
+      </div>
+
+      <!-- 2. NILAI EVALUASI DARI ADMIN / PANITIA -->
+      <div class="eval-section-card">
+          <div class="eval-section-title justify-between">
+              <span class="flex items-center gap-2">
+                  <span class="w-7 h-7 rounded-lg bg-[#C8963E]/20 text-[#886144] flex items-center justify-center text-xs">
+                      <i class="fas fa-award"></i>
+                  </span>
+                  <span>Nilai Evaluasi Panitia</span>
+              </span>
+              <span id="avgAdminScoreBadge" class="hidden text-[11px] font-bold px-3 py-0.5 rounded-full bg-[#A3496C] text-white">
+                  Rata-rata: 0
+              </span>
+          </div>
+
+          <div id="adminScoresContainer" class="space-y-2.5">
+              <div class="skeleton-pulse h-12 w-full"></div>
+              <div class="skeleton-pulse h-12 w-full"></div>
+          </div>
+      </div>
+
+      <!-- 3. CATATAN EVALUASI DARI ADMIN / PELATIH -->
+      <div class="eval-section-card">
+          <div class="eval-section-title">
+              <span class="w-7 h-7 rounded-lg bg-[#543A2A]/12 text-[#543A2A] flex items-center justify-center text-xs">
+                  <i class="fas fa-clipboard-list"></i>
+              </span>
+              <span>Catatan & Masukan Admin</span>
+          </div>
+
+          <div id="adminNotesContainer">
+              <div class="skeleton-pulse h-20 w-full"></div>
           </div>
       </div>
   </div>
-
-  <!-- TOMBOL TOGGLE DETAIL -->
-  <button class="detail-toggle-btn" onclick="toggleDetails()" id="btnToggleDetail">
-      <span><i class="fas fa-list-ul mr-2"></i> Lihat Detail Data Pendaftaran</span>
-      <i class="fas fa-chevron-down transition-transform duration-300" id="iconToggleDetail"></i>
-  </button>
-
-  <!-- DATA DETAIL (TERSEMBUNYI DEFAULT) -->
-  <div class="detail-content" id="detailSection">
-    
-    <div class="data-item">
-        <span class="data-label">Nomor Induk Kependudukan</span>
-        <span id="userNik" class="data-value">Memuat...</span>
-    </div>
-
-    <div class="data-item">
-        <span class="data-label">Kata Sandi Keamanan</span>
-        <div class="password-row flex items-center">
-            <input type="password" id="userPasswordInput" value="Memuat..." readonly/>
-            <button class="toggle-btn" onclick="togglePasswordVisibility()" aria-label="Lihat Sandi">
-                <svg id="toggleIcon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"></path>
-                </svg>
-            </button>
-        </div>
-    </div>
-
-    <div class="data-item">
-        <span class="data-label">Nomor Kontak WhatsApp</span>
-        <span id="userTelepon" class="data-value">Memuat...</span>
-    </div>
-
-    <div class="data-item">
-        <span class="data-label">Jenis Kelamin</span>
-        <span id="userJK" class="data-value">Memuat...</span>
-    </div>
-
-    <div class="data-item">
-        <span class="data-label">Tempat, Tanggal Lahir</span>
-        <span id="userTTL" class="data-value">Memuat...</span>
-    </div>
-
-    <div class="data-item">
-        <span class="data-label">Usia Saat Ini</span>
-        <span id="userUsia" class="data-value">Memuat...</span>
-    </div>
-
-    <div class="data-item">
-        <span class="data-label">Tinggi & Berat Badan</span>
-        <span id="userFisik" class="data-value">Memuat...</span>
-    </div>
-  </div>
-  
-  <!-- CONTAINER UNTUK BANNER TRIPATI (Di Bawah Detail) -->
-  <div id="tripatiBannerContainer"></div>
 
   <button class="logout-button" onclick="redirectToLogin()">
       Keluar dari Akun
@@ -723,8 +959,13 @@
 </div>
 
 <script>
-  // PENTING: Masukkan URL Deployment Google Apps Script Anda di sini!
-  const gasUrl = 'https://script.google.com/macros/s/AKfycbw3VBUed37LIm33Iwv5VZqh7JB0au28nUkN8DQqEMMYRuA6oHa44sTs0qb2PXIWmAzd/exec'; 
+  // URL Deployment Google Apps Script Bhinnekastra
+  const gasUrl = 'https://script.google.com/macros/s/AKfycbw3VBUed37LIm33Iwv5VZqh7JB0au28nUkN8DQqEMMYRuA6oHa44sTs0qb2PXIWmAzd/exec';
+  // URL Deployment Google Apps Script TRIPATI (untuk mengambil Nilai PIP & TIU)
+  const tripatiApiUrl = 'https://script.google.com/macros/s/AKfycbzMNz3nK-4mjMLYVLtsd_aw2TiKV5g5JHS5SbLIRDqgn-J6EFdZJ8vG20RwOJ-4R-3o/exec';
+
+  let currentUser = null;
+  let evaluasiLoaded = false;
 
   // Reset overlay jika user kembali menggunakan tombol Back browser (bfcache)
   window.addEventListener('pageshow', () => {
@@ -735,6 +976,39 @@
           document.body.style.overflow = '';
       }
   });
+
+  function escapeHtml(str) {
+      return String(str ?? '')
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+  }
+
+  // SWITCH TAB DASHBOARD (PROFIL <-> EVALUASI)
+  function switchDashboardTab(tab) {
+      const btnProfil = document.getElementById('tabBtnProfil');
+      const btnEvaluasi = document.getElementById('tabBtnEvaluasi');
+      const panelProfil = document.getElementById('panelProfil');
+      const panelEvaluasi = document.getElementById('panelEvaluasi');
+
+      if (tab === 'evaluasi') {
+          btnProfil.classList.remove('active');
+          btnEvaluasi.classList.add('active');
+          panelProfil.classList.remove('active');
+          panelEvaluasi.classList.add('active');
+
+          if (!evaluasiLoaded) {
+              loadEvaluationDashboard(false);
+          }
+      } else {
+          btnEvaluasi.classList.remove('active');
+          btnProfil.classList.add('active');
+          panelEvaluasi.classList.remove('active');
+          panelProfil.classList.add('active');
+      }
+  }
 
   function toggleDetails() {
       const detailSec = document.getElementById('detailSection');
@@ -771,11 +1045,13 @@
     if (userDataString) {
       try {
           const user = JSON.parse(userDataString);
+          currentUser = user;
           
           const imgProfile = document.getElementById('userProfileImage');
           const modalFullImage = document.getElementById('modalFullImage');
+          const initial = (user.nama || 'P').trim().charAt(0).toUpperCase();
           
-          let profileSrc = `https://placehold.co/200/F9F1E2/A3496C?text=${user.nama.charAt(0)}`;
+          let profileSrc = `https://placehold.co/200/F9F1E2/A3496C?text=${encodeURIComponent(initial)}`;
           if (user.fotoProfil && user.fotoProfil !== "") {
               const match = user.fotoProfil.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) || user.fotoProfil.match(/id=([a-zA-Z0-9_-]+)/);
               if (match && match[1]) {
@@ -796,6 +1072,7 @@
           document.getElementById('userTTL').textContent = user.tempatLahir || '-';
           document.getElementById('userUsia').textContent = (user.usia ? user.usia + ' Tahun' : '-');
           document.getElementById('userFisik').textContent = (user.tinggi ? user.tinggi + ' cm' : '-') + ' / ' + (user.berat ? user.berat + ' kg' : '-');
+          document.getElementById('evalSubHeader').textContent = `${user.nama || '-'} • NIK ${user.nik || '-'}`;
           
           const status = user.status ? String(user.status).trim() : 'Menunggu Verifikasi';
           let badgeClass = 'status-pending';
@@ -850,6 +1127,239 @@
     }
   }
 
+  // ============================================================
+  // LOGIKA DASHBOARD EVALUASI (PIP, TIU, NILAI & CATATAN ADMIN)
+  // ============================================================
+  async function loadEvaluationDashboard(forceRefresh = false) {
+      if (!currentUser || !currentUser.nik) return;
+
+      const refreshIcon = document.getElementById('iconRefreshEval');
+      const refreshBtn = document.getElementById('btnRefreshEval');
+      if (refreshIcon) refreshIcon.classList.add('fa-spin');
+      if (refreshBtn) refreshBtn.disabled = true;
+
+      // Reset tampilan loading saat refresh
+      if (forceRefresh || !evaluasiLoaded) {
+          setCatCardLoading('PIP');
+          setCatCardLoading('TIU');
+          document.getElementById('adminScoresContainer').innerHTML = `
+              <div class="skeleton-pulse h-12 w-full"></div>
+              <div class="skeleton-pulse h-12 w-full"></div>
+          `;
+          document.getElementById('adminNotesContainer').innerHTML = `
+              <div class="skeleton-pulse h-20 w-full"></div>
+          `;
+      }
+
+      const nik = String(currentUser.nik).trim();
+
+      const [pipResult, tiuResult, adminEvalResult] = await Promise.allSettled([
+          fetch(tripatiApiUrl, {
+              method: 'POST',
+              body: JSON.stringify({ action: 'getDataHasilSiswa', noPeserta: nik, jenis: 'PIP' })
+          }).then(r => r.json()),
+          fetch(tripatiApiUrl, {
+              method: 'POST',
+              body: JSON.stringify({ action: 'getDataHasilSiswa', noPeserta: nik, jenis: 'TIU' })
+          }).then(r => r.json()),
+          fetch(gasUrl, {
+              method: 'POST',
+              body: JSON.stringify({ action: 'getEvaluasi', nik: nik })
+          }).then(r => r.json())
+      ]);
+
+      // 1. Render Nilai PIP
+      if (pipResult.status === 'fulfilled' && pipResult.value && pipResult.value.success) {
+          renderCatCard('PIP', pipResult.value);
+      } else {
+          renderCatCard('PIP', null);
+      }
+
+      // 2. Render Nilai TIU
+      if (tiuResult.status === 'fulfilled' && tiuResult.value && tiuResult.value.success) {
+          renderCatCard('TIU', tiuResult.value);
+      } else {
+          renderCatCard('TIU', null);
+      }
+
+      // 3. Render Nilai & Catatan Evaluasi Admin
+      if (adminEvalResult.status === 'fulfilled' && adminEvalResult.value && adminEvalResult.value.success) {
+          renderAdminEvaluation(adminEvalResult.value.data || adminEvalResult.value);
+      } else {
+          renderAdminEvaluation(null);
+      }
+
+      evaluasiLoaded = true;
+      if (refreshIcon) refreshIcon.classList.remove('fa-spin');
+      if (refreshBtn) refreshBtn.disabled = false;
+  }
+
+  function setCatCardLoading(jenis) {
+      document.getElementById(`nilai${jenis}Value`).textContent = '...';
+      document.getElementById(`bar${jenis}`).style.width = '0%';
+      document.getElementById(`status${jenis}Badge`).innerHTML = '<span class="text-[#886144]">Memuat...</span>';
+      document.getElementById(`detail${jenis}Text`).textContent = '-';
+  }
+
+  function renderCatCard(jenis, data) {
+      const valEl = document.getElementById(`nilai${jenis}Value`);
+      const barEl = document.getElementById(`bar${jenis}`);
+      const badgeEl = document.getElementById(`status${jenis}Badge`);
+      const detailEl = document.getElementById(`detail${jenis}Text`);
+
+      if (!data || data.nilai === undefined || data.nilai === null || data.nilai === '') {
+          valEl.textContent = '-';
+          valEl.className = 'text-3xl font-extrabold text-[#886144]/50 leading-none my-1';
+          barEl.style.width = '0%';
+          badgeEl.innerHTML = `<span class="inline-block px-2.5 py-0.5 rounded-full bg-amber-500/15 text-amber-700 text-[10px] font-bold">Belum Ujian</span>`;
+          detailEl.textContent = 'Kerjakan via Portal TRIPATI';
+          return;
+      }
+
+      const numericScore = Math.max(0, Math.min(100, Number(data.nilai) || 0));
+      const isLulus = numericScore >= 75;
+
+      valEl.textContent = data.nilai;
+      valEl.className = `text-3xl font-extrabold leading-none my-1 ${isLulus ? 'text-emerald-700' : 'text-[#A3496C]'}`;
+      barEl.className = `cat-score-bar-fill ${isLulus ? 'bg-emerald-500' : 'bg-[#A3496C]'}`;
+
+      requestAnimationFrame(() => {
+          barEl.style.width = `${numericScore}%`;
+      });
+
+      badgeEl.innerHTML = isLulus
+          ? `<span class="inline-block px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-700 text-[10px] font-bold"><i class="fas fa-check-circle mr-1"></i>Lulus KKM</span>`
+          : `<span class="inline-block px-2.5 py-0.5 rounded-full bg-red-500/15 text-red-600 text-[10px] font-bold"><i class="fas fa-times-circle mr-1"></i>Belum Lulus</span>`;
+
+      if (data.benar !== undefined && data.totalSoal !== undefined) {
+          detailEl.textContent = `Benar ${data.benar}/${data.totalSoal} • Salah ${data.salah ?? '-'}`;
+      } else {
+          detailEl.textContent = 'Nilai tercatat di sistem';
+      }
+  }
+
+  function renderAdminEvaluation(evalData) {
+      const scoresContainer = document.getElementById('adminScoresContainer');
+      const notesContainer = document.getElementById('adminNotesContainer');
+      const avgBadge = document.getElementById('avgAdminScoreBadge');
+
+      if (!evalData) {
+          avgBadge.classList.add('hidden');
+          scoresContainer.innerHTML = `
+              <div class="bg-white border border-dashed border-[#DFBE8D] rounded-2xl p-5 text-center">
+                  <i class="fas fa-hourglass-half text-2xl text-[#DFBE8D] mb-2"></i>
+                  <p class="text-xs font-semibold text-[#543A2A]">Belum Ada Nilai Evaluasi</p>
+                  <p class="text-[11px] text-[#886144] mt-0.5">Nilai dari admin/pelatih akan muncul di sini setelah proses penilaian diinput.</p>
+              </div>
+          `;
+          notesContainer.innerHTML = `
+              <div class="bg-white border border-dashed border-[#DFBE8D] rounded-2xl p-5 text-center">
+                  <i class="fas fa-comment-dots text-2xl text-[#DFBE8D] mb-2"></i>
+                  <p class="text-xs font-semibold text-[#543A2A]">Belum Ada Catatan</p>
+                  <p class="text-[11px] text-[#886144] mt-0.5">Catatan dan masukan evaluasi dari panitia belum tersedia.</p>
+              </div>
+          `;
+          return;
+      }
+
+      // Ekstrak daftar aspek penilaian secara fleksibel
+      let scoreItems = [];
+      if (Array.isArray(evalData.nilaiList)) {
+          scoreItems = evalData.nilaiList;
+      } else if (Array.isArray(evalData.aspek)) {
+          scoreItems = evalData.aspek;
+      } else if (evalData.nilai && typeof evalData.nilai === 'object' && !Array.isArray(evalData.nilai)) {
+          scoreItems = Object.entries(evalData.nilai).map(([aspek, nilai]) => ({ aspek, nilai }));
+      } else {
+          const ignoreKeys = ['nik', 'nama', 'catatan', 'penilai', 'tanggalupdate', 'updatedat', 'status', 'success', 'message', 'predikat', 'ratarata'];
+          Object.entries(evalData).forEach(([key, val]) => {
+              if (!ignoreKeys.includes(key.toLowerCase()) && val !== '' && val !== null && val !== undefined) {
+                  scoreItems.push({ aspek: key, nilai: val });
+              }
+          });
+      }
+
+      // Render Daftar Nilai Admin
+      if (scoreItems.length === 0) {
+          avgBadge.classList.add('hidden');
+          scoresContainer.innerHTML = `
+              <div class="bg-white border border-dashed border-[#DFBE8D] rounded-2xl p-5 text-center">
+                  <p class="text-xs font-semibold text-[#543A2A]">Belum Ada Rincian Nilai</p>
+                  <p class="text-[11px] text-[#886144] mt-0.5">Admin belum mengisi komponen nilai evaluasi Anda.</p>
+              </div>
+          `;
+      } else {
+          let numericSum = 0;
+          let numericCount = 0;
+
+          scoresContainer.innerHTML = scoreItems.map(item => {
+              const label = escapeHtml(item.aspek || item.label || 'Penilaian');
+              const rawVal = item.nilai;
+              const numVal = Number(rawVal);
+              const isNumeric = rawVal !== '' && rawVal !== null && !Number.isNaN(numVal);
+
+              if (isNumeric) {
+                  numericSum += numVal;
+                  numericCount++;
+              }
+
+              const pct = isNumeric ? Math.max(0, Math.min(100, numVal)) : 0;
+              const barColor = !isNumeric ? 'bg-[#C8963E]' : (numVal >= 80 ? 'bg-emerald-500' : (numVal >= 65 ? 'bg-[#C8963E]' : 'bg-[#A3496C]'));
+
+              return `
+                  <div class="admin-score-row">
+                      <div class="flex justify-between items-center gap-2 mb-1.5">
+                          <span class="text-xs font-semibold text-[#543A2A]">${label}</span>
+                          <span class="text-sm font-extrabold text-[#A3496C]">${escapeHtml(rawVal)}</span>
+                      </div>
+                      ${isNumeric ? `
+                      <div class="w-full h-1.5 bg-[#EFE4D2] rounded-full overflow-hidden">
+                          <div class="h-full ${barColor} rounded-full transition-all duration-700" style="width: ${pct}%;"></div>
+                      </div>
+                      ` : ''}
+                  </div>
+              `;
+          }).join('');
+
+          if (numericCount > 0) {
+              const avg = (numericSum / numericCount).toFixed(1).replace(/\.0$/, '');
+              avgBadge.textContent = `Rata-rata: ${avg}`;
+              avgBadge.classList.remove('hidden');
+          } else {
+              avgBadge.classList.add('hidden');
+          }
+      }
+
+      // Render Catatan Admin
+      const catatan = (evalData.catatan || '').toString().trim();
+      const penilai = (evalData.penilai || '').toString().trim();
+      const tanggal = (evalData.tanggalUpdate || evalData.updatedAt || '').toString().trim();
+
+      if (!catatan || catatan === '-') {
+          notesContainer.innerHTML = `
+              <div class="bg-white border border-dashed border-[#DFBE8D] rounded-2xl p-5 text-center">
+                  <p class="text-xs font-semibold text-[#543A2A]">Belum Ada Catatan</p>
+                  <p class="text-[11px] text-[#886144] mt-0.5">Panitia belum menambahkan catatan khusus untuk Anda.</p>
+              </div>
+          `;
+      } else {
+          const formattedNote = escapeHtml(catatan).replace(/\n/g, '<br>');
+          notesContainer.innerHTML = `
+              <div class="admin-note-box">
+                  <div class="text-xs sm:text-[13px] text-[#543A2A] leading-relaxed font-medium">
+                      ${formattedNote}
+                  </div>
+                  ${(penilai || tanggal) ? `
+                  <div class="mt-3 pt-2.5 border-t border-[#DFBE8D]/50 flex flex-wrap justify-between items-center gap-2 text-[10px] text-[#886144]">
+                      <span>${penilai ? `<i class="fas fa-user-check mr-1 text-[#A3496C]"></i>${escapeHtml(penilai)}` : ''}</span>
+                      <span>${tanggal ? `<i class="far fa-clock mr-1"></i>${escapeHtml(tanggal)}` : ''}</span>
+                  </div>
+                  ` : ''}
+              </div>
+          `;
+      }
+  }
+
   // Generate partikel cahaya emas di layar transisi TRIPATI
   function spawnGoldParticles() {
       const container = document.getElementById('tripatiParticles');
@@ -868,7 +1378,6 @@
       }
   }
 
-  // Helper animasi angka persentase halus
   function animatePercent(from, to, duration) {
       const el = document.getElementById('tripatiPercentText');
       const start = performance.now();
@@ -881,7 +1390,6 @@
       requestAnimationFrame(frame);
   }
 
-  // Helper ganti teks status dengan transisi halus
   function setPortalStatus(text) {
       const el = document.getElementById('tripatiStatusText');
       el.classList.add('switching');
@@ -906,7 +1414,6 @@
           return;
       }
 
-      // Token SSO Base64
       const token = btoa(nik + '|||' + password);
       const targetUrl = `https://dppi-tripati2026.vercel.app/index.html?sso=${token}`;
 
@@ -917,7 +1424,6 @@
       const step2 = document.getElementById('tStep2');
       const step3 = document.getElementById('tStep3');
 
-      // Tentukan titik asal mekarnya portal dari koordinat klik tombol
       let originX = '50%';
       let originY = '50%';
       if (e && e.clientX && e.clientY) {
@@ -933,7 +1439,6 @@
       overlay.style.setProperty('--portal-y', originY);
       userLabel.textContent = user.nama || 'Peserta Terverifikasi';
 
-      // Reset state awal
       progressFill.style.width = '0%';
       document.getElementById('tripatiPercentText').textContent = '0%';
       document.getElementById('tripatiStatusText').textContent = 'Memverifikasi identitas Bhinnekastra...';
@@ -944,19 +1449,16 @@
       spawnGoldParticles();
       document.body.style.overflow = 'hidden';
 
-      // Fase 1: Ekspansi Portal Radial
       overlay.setAttribute('aria-hidden', 'false');
       requestAnimationFrame(() => {
           overlay.classList.add('active');
       });
 
-      // Fase 2: Tahap 1 (0% -> 38%)
       setTimeout(() => {
           progressFill.style.width = '38%';
           animatePercent(0, 38, 550);
       }, 320);
 
-      // Fase 3: Tahap 2 (38% -> 76%)
       setTimeout(() => {
           step1.className = 'tripati-step-dot done';
           step2.className = 'tripati-step-dot active';
@@ -965,7 +1467,6 @@
           animatePercent(38, 76, 600);
       }, 1000);
 
-      // Fase 4: Tahap 3 (76% -> 100%)
       setTimeout(() => {
           step2.className = 'tripati-step-dot done';
           step3.className = 'tripati-step-dot active';
@@ -974,7 +1475,6 @@
           animatePercent(76, 100, 500);
       }, 1700);
 
-      // Fase 5: Warp Masuk ke Dunia TRIPATI & Redirect
       setTimeout(() => {
           overlay.classList.add('warping');
       }, 2280);

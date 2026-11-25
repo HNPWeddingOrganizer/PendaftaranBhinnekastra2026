@@ -1061,7 +1061,7 @@
   </div>
 
   <!-- ========================================================
-       PANEL 2: DASHBOARD EVALUASI (LANGSUNG DARI SHEET EVALUASI)
+       PANEL 2: DASHBOARD EVALUASI (PIP & TIU + SHEET EVALUASI)
        ======================================================== -->
   <div id="panelEvaluasi" class="tab-panel">
       <!-- Header Ringkas Evaluasi + Tombol Refresh -->
@@ -1077,8 +1077,8 @@
           </button>
       </div>
 
-      <!-- 1. HASIL UJIAN CAT (Otomatis tampil jika kolom Nilai PIP/TIU tersedia di Sheet Evaluasi) -->
-      <div id="catSectionCard" class="eval-section-card hidden">
+      <!-- 1. HASIL UJIAN CAT TRIPATI (PIP & TIU — SELALU TAMPIL) -->
+      <div id="catSectionCard" class="eval-section-card">
           <div class="eval-section-title justify-between">
               <span class="flex items-center gap-2">
                   <span class="w-7 h-7 rounded-lg bg-[#A3496C]/15 text-[#A3496C] flex items-center justify-center text-xs">
@@ -1122,7 +1122,7 @@
           </div>
       </div>
 
-      <!-- 2. EVALUASI KESAMAPTAAN / FISIK (PUSH UP, SIT UP, BACK UP, SHUTTLE RUN, LARI) -->
+      <!-- 2. EVALUASI KESAMAPTAAN / FISIK (LANGSUNG DARI SHEET EVALUASI) -->
       <div class="eval-section-card">
           <div class="eval-section-title justify-between flex-wrap gap-2">
               <span class="flex items-center gap-2">
@@ -1148,7 +1148,7 @@
           </div>
       </div>
 
-      <!-- 3. CATATAN EVALUASI PBB -->
+      <!-- 3. CATATAN EVALUASI PBB (LANGSUNG DARI SHEET EVALUASI) -->
       <div class="eval-section-card">
           <div class="eval-section-title">
               <span class="w-7 h-7 rounded-lg bg-[#543A2A]/12 text-[#543A2A] flex items-center justify-center text-xs">
@@ -1173,6 +1173,8 @@
 <script>
   // URL Deployment Google Apps Script Bhinnekastra (Langsung membaca Sheet1 & Sheet Evaluasi)
   const gasUrl = 'https://script.google.com/macros/s/AKfycbxZ_SOzSPOM55CQ1Y0hefDmfmA1a_a_80sTjB9I_z7RwUxtpCnDaXi2LsFRmKd2nr7Q/exec';
+  // URL Deployment Google Apps Script TRIPATI (Untuk mengambil Nilai Ujian CAT PIP & TIU)
+  const tripatiApiUrl = 'https://script.google.com/macros/s/AKfycbzMNz3nK-4mjMLYVLtsd_aw2TiKV5g5JHS5SbLIRDqgn-J6EFdZJ8vG20RwOJ-4R-3o/exec';
 
   let currentUser = null;
   let evaluasiLoaded = false;
@@ -1357,23 +1359,20 @@
   }
 
   // ============================================================
-  // LOGIKA DASHBOARD EVALUASI (LANGSUNG DARI SHEET EVALUASI)
+  // LOGIKA DASHBOARD EVALUASI (PIP & TIU + SHEET EVALUASI)
   // ============================================================
   async function loadEvaluationDashboard(forceRefresh = false) {
       if (!currentUser || !currentUser.nik) return;
 
       const refreshIcon = document.getElementById('iconRefreshEval');
       const refreshBtn = document.getElementById('btnRefreshEval');
-      const catSection = document.getElementById('catSectionCard');
 
       if (refreshIcon) refreshIcon.classList.add('fa-spin');
       if (refreshBtn) refreshBtn.disabled = true;
 
       if (forceRefresh || !evaluasiLoaded) {
-          if (!catSection.classList.contains('hidden')) {
-              setCatCardLoading('PIP');
-              setCatCardLoading('TIU');
-          }
+          setCatCardLoading('PIP');
+          setCatCardLoading('TIU');
           document.getElementById('fisikEvalContainer').innerHTML = `
               <div class="skeleton-pulse h-28 w-full"></div>
               <div class="skeleton-pulse h-28 w-full"></div>
@@ -1388,33 +1387,50 @@
 
       const nik = String(currentUser.nik).trim();
 
-      try {
-          const response = await fetch(gasUrl, {
+      // Ambil Nilai PIP & TIU dari backend TRIPATI, dan Evaluasi Fisik/PBB langsung dari Sheet Evaluasi (gasUrl)
+      const [pipResult, tiuResult, evalSheetResult] = await Promise.allSettled([
+          fetch(tripatiApiUrl, {
+              method: 'POST',
+              body: JSON.stringify({ action: 'getDataHasilSiswa', noPeserta: nik, jenis: 'PIP' })
+          }).then(r => r.json()),
+          fetch(tripatiApiUrl, {
+              method: 'POST',
+              body: JSON.stringify({ action: 'getDataHasilSiswa', noPeserta: nik, jenis: 'TIU' })
+          }).then(r => r.json()),
+          fetch(gasUrl, {
               method: 'POST',
               body: JSON.stringify({ action: 'getEvaluasiPeserta', nik: nik })
-          });
-          const res = await response.json();
-          const evalData = (res && res.success && res.data) ? res.data : null;
+          }).then(r => r.json())
+      ]);
 
-          // Tampilkan kartu PIP & TIU otomatis hanya jika kolomnya ada di sheet Evaluasi
-          if (evalData && evalData.has_cat_columns) {
-              catSection.classList.remove('hidden');
-              renderCatCard('PIP', evalData.nilai_pip !== '' ? { nilai: evalData.nilai_pip } : null);
-              renderCatCard('TIU', evalData.nilai_tiu !== '' ? { nilai: evalData.nilai_tiu } : null);
-          } else {
-              catSection.classList.add('hidden');
-          }
+      const evalData = (evalSheetResult.status === 'fulfilled' && evalSheetResult.value && evalSheetResult.value.success && evalSheetResult.value.data)
+          ? evalSheetResult.value.data
+          : null;
 
-          // Render Push Up, Sit Up, Back Up, Shuttle Run, Hasil Lari & Catatan PBB
-          renderFisikDanPBB(evalData);
-      } catch (err) {
-          catSection.classList.add('hidden');
-          renderFisikDanPBB(null);
-      } finally {
-          evaluasiLoaded = true;
-          if (refreshIcon) refreshIcon.classList.remove('fa-spin');
-          if (refreshBtn) refreshBtn.disabled = false;
+      // 1. Render Nilai PIP (utama dari TRIPATI, fallback ke kolom Nilai PIP di Sheet Evaluasi jika ada)
+      if (pipResult.status === 'fulfilled' && pipResult.value && pipResult.value.success) {
+          renderCatCard('PIP', pipResult.value);
+      } else if (evalData && evalData.nilai_pip !== undefined && String(evalData.nilai_pip).trim() !== '' && String(evalData.nilai_pip).trim() !== '-') {
+          renderCatCard('PIP', { nilai: evalData.nilai_pip });
+      } else {
+          renderCatCard('PIP', null);
       }
+
+      // 2. Render Nilai TIU (utama dari TRIPATI, fallback ke kolom Nilai TIU di Sheet Evaluasi jika ada)
+      if (tiuResult.status === 'fulfilled' && tiuResult.value && tiuResult.value.success) {
+          renderCatCard('TIU', tiuResult.value);
+      } else if (evalData && evalData.nilai_tiu !== undefined && String(evalData.nilai_tiu).trim() !== '' && String(evalData.nilai_tiu).trim() !== '-') {
+          renderCatCard('TIU', { nilai: evalData.nilai_tiu });
+      } else {
+          renderCatCard('TIU', null);
+      }
+
+      // 3. Render Evaluasi Fisik & PBB langsung dari Sheet Evaluasi
+      renderFisikDanPBB(evalData);
+
+      evaluasiLoaded = true;
+      if (refreshIcon) refreshIcon.classList.remove('fa-spin');
+      if (refreshBtn) refreshBtn.disabled = false;
   }
 
   function setCatCardLoading(jenis) {

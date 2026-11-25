@@ -1017,6 +1017,15 @@
             <span class="data-label">Nomor Induk Kependudukan</span>
             <span id="userNik" class="data-value">Memuat...</span>
         </div>
+        <div class="data-item">
+            <span class="data-label">Program Terdaftar</span>
+            <span id="userProgram" class="data-value">Bhinnekastra</span>
+        </div>
+
+        <div class="data-item" id="rowAsalKabupaten" style="display: none;">
+            <span class="data-label">Asal Kabupaten</span>
+            <span id="userKabupaten" class="data-value">-</span>
+        </div>
 
         <div class="data-item">
             <span class="data-label">Kata Sandi Keamanan</span>
@@ -1172,7 +1181,7 @@
 
 <script>
   // URL Deployment Google Apps Script Bhinnekastra (Langsung membaca Sheet1 & Sheet Evaluasi)
-  const gasUrl = 'https://script.google.com/macros/s/AKfycbxZ_SOzSPOM55CQ1Y0hefDmfmA1a_a_80sTjB9I_z7RwUxtpCnDaXi2LsFRmKd2nr7Q/exec';
+  const gasUrl = 'https://script.google.com/macros/s/AKfycbwoGe8hzgF6Z3YUXHDkE1RurNFeImsVeox7WQvmbUnTGPwskQP3PDZVsRIkXj61UNF_/exec';
   // URL Deployment Google Apps Script TRIPATI (Untuk mengambil Nilai Ujian CAT PIP & TIU)
   const tripatiApiUrl = 'https://script.google.com/macros/s/AKfycbzMNz3nK-4mjMLYVLtsd_aw2TiKV5g5JHS5SbLIRDqgn-J6EFdZJ8vG20RwOJ-4R-3o/exec';
 
@@ -1299,6 +1308,15 @@
           document.getElementById('userSekolah').textContent = user.asalSekolah || '-';
           document.getElementById('userTelepon').textContent = user.nomorTelepon || '-';
           document.getElementById('userNik').textContent = user.nik || '-';
+          const progName = (user.program && String(user.program).trim().toLowerCase() === 'tripati') ? 'Tripati' : 'Bhinnekastra';
+          document.getElementById('userProgram').textContent = progName;
+          const rowKab = document.getElementById('rowAsalKabupaten');
+          if (progName === 'Tripati') {
+              rowKab.style.display = 'flex';
+              document.getElementById('userKabupaten').textContent = user.asalKabupaten || '-';
+          } else {
+              rowKab.style.display = 'none';
+          }
           document.getElementById('userJK').textContent = user.jenisKelamin || '-';
           document.getElementById('userTTL').textContent = user.tempatLahir || '-';
           document.getElementById('userUsia').textContent = (user.usia ? user.usia + ' Tahun' : '-');

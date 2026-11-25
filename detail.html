@@ -9,7 +9,7 @@
   
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
         // 1. Blokir Klik Kanan (Context Menu)
@@ -65,7 +65,7 @@
       border-radius: 32px; 
       box-shadow: 0 15px 35px rgba(84, 58, 42, 0.08); 
       width: 100%;
-      max-width: 550px; 
+      max-width: 560px; 
       border: 1px solid var(--border-color);
       margin: 0 auto;
     }
@@ -217,13 +217,13 @@
     .modal-content { background: var(--bg-card); padding: 24px; border-radius: 24px; max-width: 400px; width: 100%; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.2); border: 1px solid var(--border-color); }
 
     /* ============================================================
-       STYLING DASHBOARD EVALUASI (PIP, TIU, NILAI & CATATAN ADMIN)
+       STYLING DASHBOARD EVALUASI (PIP, TIU, FISIK & PBB TRIPATI)
        ============================================================ */
     .eval-section-card {
       background: #faf7f2;
       border: 1px solid var(--border-color);
       border-radius: 22px;
-      padding: 20px;
+      padding: 18px;
       margin-bottom: 16px;
     }
 
@@ -268,14 +268,35 @@
       transition: width 0.7s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
-    .admin-score-row {
+    /* Kartu Evaluasi Fisik per Bagian */
+    .fisik-card {
       background: #FFFFFF;
-      border: 1px solid rgba(223, 190, 141, 0.7);
-      border-radius: 14px;
-      padding: 12px 14px;
+      border: 1px solid rgba(223, 190, 141, 0.85);
+      border-radius: 18px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
 
-    .admin-note-box {
+    .fisik-card:hover {
+      border-color: var(--color-primary);
+      box-shadow: 0 8px 20px rgba(84, 58, 42, 0.06);
+    }
+
+    .fisik-note-box {
+      margin-top: 10px;
+      padding: 9px 11px;
+      border-radius: 12px;
+      background: #faf7f2;
+      border: 1px dashed rgba(223, 190, 141, 0.9);
+      font-size: 11px;
+      line-height: 1.45;
+      color: var(--text-main);
+    }
+
+    .pbb-note-box {
       background: linear-gradient(135deg, #FFFFFF 0%, #FDF8EE 100%);
       border: 1px solid var(--border-color);
       border-left: 4px solid var(--color-primary);
@@ -287,7 +308,7 @@
       background: linear-gradient(90deg, #EFE4D2 25%, #F9F1E2 50%, #EFE4D2 75%);
       background-size: 200% 100%;
       animation: shimmerSkeleton 1.4s infinite;
-      border-radius: 12px;
+      border-radius: 14px;
     }
 
     @keyframes shimmerSkeleton {
@@ -761,7 +782,7 @@
           <span>Profil Saya</span>
       </button>
       <button type="button" id="tabBtnEvaluasi" class="dashboard-tab-btn" onclick="switchDashboardTab('evaluasi')">
-          <i class="fas fa-chart-line"></i>
+          <i class="fas fa-medal"></i>
           <span>Dashboard Evaluasi</span>
       </button>
   </div>
@@ -855,13 +876,13 @@
   </div>
 
   <!-- ========================================================
-       PANEL 2: DASHBOARD EVALUASI (PIP, TIU, NILAI & CATATAN ADMIN)
+       PANEL 2: DASHBOARD EVALUASI (PIP, TIU, FISIK & PBB TRIPATI)
        ======================================================== -->
   <div id="panelEvaluasi" class="tab-panel">
       <!-- Header Ringkas Evaluasi + Tombol Refresh -->
       <div class="flex items-center justify-between gap-3 mb-4 px-1">
           <div class="min-w-0">
-              <h3 class="font-bold text-base text-[#543A2A] leading-tight">Rekap Evaluasi Peserta</h3>
+              <h3 class="font-bold text-base text-[#543A2A] leading-tight">Raport Evaluasi TRIPATI</h3>
               <p class="text-[11px] text-[#886144] truncate" id="evalSubHeader">Memuat data evaluasi...</p>
           </div>
           <button type="button" id="btnRefreshEval" onclick="loadEvaluationDashboard(true)"
@@ -878,17 +899,17 @@
                   <span class="w-7 h-7 rounded-lg bg-[#A3496C]/15 text-[#A3496C] flex items-center justify-center text-xs">
                       <i class="fas fa-laptop-code"></i>
                   </span>
-                  <span>Hasil Ujian CAT TRIPATI</span>
+                  <span>Nilai Ujian CAT (PIP & TIU)</span>
               </span>
               <span class="text-[10px] font-semibold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-[#EFE4D2] text-[#886144]">
                   KKM 75
               </span>
           </div>
 
-          <div class="grid grid-cols-2 gap-3" id="catScoresGrid">
+          <div class="grid grid-cols-2 gap-3">
               <!-- Kartu PIP -->
-              <div class="cat-score-card" id="cardNilaiPIP">
-                  <span class="inline-block text-[10px] font-bold uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-[#A3496C]/12 text-[#A3496C] mb-2">
+              <div class="cat-score-card">
+                  <span class="inline-block text-[10px] font-bold uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-[#A3496C]/12 text-[#A3496C] mb-1.5">
                       UJIAN PIP
                   </span>
                   <p class="text-[11px] text-[#886144] mb-1">Ideologi Pancasila</p>
@@ -901,8 +922,8 @@
               </div>
 
               <!-- Kartu TIU -->
-              <div class="cat-score-card" id="cardNilaiTIU">
-                  <span class="inline-block text-[10px] font-bold uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-[#C8963E]/15 text-[#886144] mb-2">
+              <div class="cat-score-card">
+                  <span class="inline-block text-[10px] font-bold uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-[#C8963E]/15 text-[#886144] mb-1.5">
                       UJIAN TIU
                   </span>
                   <p class="text-[11px] text-[#886144] mb-1">Intelegensia Umum</p>
@@ -916,36 +937,39 @@
           </div>
       </div>
 
-      <!-- 2. NILAI EVALUASI DARI ADMIN / PANITIA -->
+      <!-- 2. EVALUASI KESAMAPTAAN / FISIK (PUSH UP, SIT UP, BACK UP, SHUTTLE RUN, LARI) -->
       <div class="eval-section-card">
-          <div class="eval-section-title justify-between">
+          <div class="eval-section-title justify-between flex-wrap gap-2">
               <span class="flex items-center gap-2">
                   <span class="w-7 h-7 rounded-lg bg-[#C8963E]/20 text-[#886144] flex items-center justify-center text-xs">
-                      <i class="fas fa-award"></i>
+                      <i class="fas fa-person-running"></i>
                   </span>
-                  <span>Nilai Evaluasi Panitia</span>
+                  <span>Evaluasi Fisik & Kesamaptaan</span>
               </span>
-              <span id="avgAdminScoreBadge" class="hidden text-[11px] font-bold px-3 py-0.5 rounded-full bg-[#A3496C] text-white">
-                  Rata-rata: 0
+              <span id="evalUpdatedBadge" class="text-[10px] font-medium text-[#886144] bg-[#EFE4D2] px-2.5 py-0.5 rounded-full hidden">
+                  Update: -
               </span>
           </div>
 
-          <div id="adminScoresContainer" class="space-y-2.5">
-              <div class="skeleton-pulse h-12 w-full"></div>
-              <div class="skeleton-pulse h-12 w-full"></div>
+          <div id="fisikEvalContainer" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div class="skeleton-pulse h-28 w-full"></div>
+              <div class="skeleton-pulse h-28 w-full"></div>
+              <div class="skeleton-pulse h-28 w-full"></div>
+              <div class="skeleton-pulse h-28 w-full"></div>
+              <div class="skeleton-pulse h-20 w-full sm:col-span-2"></div>
           </div>
       </div>
 
-      <!-- 3. CATATAN EVALUASI DARI ADMIN / PELATIH -->
+      <!-- 3. CATATAN EVALUASI PBB -->
       <div class="eval-section-card">
           <div class="eval-section-title">
               <span class="w-7 h-7 rounded-lg bg-[#543A2A]/12 text-[#543A2A] flex items-center justify-center text-xs">
-                  <i class="fas fa-clipboard-list"></i>
+                  <i class="fas fa-clipboard-check"></i>
               </span>
-              <span>Catatan & Masukan Admin</span>
+              <span>Catatan Evaluasi PBB</span>
           </div>
 
-          <div id="adminNotesContainer">
+          <div id="pbbEvalContainer">
               <div class="skeleton-pulse h-20 w-full"></div>
           </div>
       </div>
@@ -961,7 +985,7 @@
 <script>
   // URL Deployment Google Apps Script Bhinnekastra
   const gasUrl = 'https://script.google.com/macros/s/AKfycbw3VBUed37LIm33Iwv5VZqh7JB0au28nUkN8DQqEMMYRuA6oHa44sTs0qb2PXIWmAzd/exec';
-  // URL Deployment Google Apps Script TRIPATI (untuk mengambil Nilai PIP & TIU)
+  // URL Deployment Google Apps Script TRIPATI (Sumber Nilai PIP, TIU & Evaluasi Fisik/PBB dari Admin TRIPATI)
   const tripatiApiUrl = 'https://script.google.com/macros/s/AKfycbzMNz3nK-4mjMLYVLtsd_aw2TiKV5g5JHS5SbLIRDqgn-J6EFdZJ8vG20RwOJ-4R-3o/exec';
 
   let currentUser = null;
@@ -1128,7 +1152,7 @@
   }
 
   // ============================================================
-  // LOGIKA DASHBOARD EVALUASI (PIP, TIU, NILAI & CATATAN ADMIN)
+  // LOGIKA DASHBOARD EVALUASI (PIP, TIU, FISIK & PBB TRIPATI)
   // ============================================================
   async function loadEvaluationDashboard(forceRefresh = false) {
       if (!currentUser || !currentUser.nik) return;
@@ -1138,22 +1162,24 @@
       if (refreshIcon) refreshIcon.classList.add('fa-spin');
       if (refreshBtn) refreshBtn.disabled = true;
 
-      // Reset tampilan loading saat refresh
       if (forceRefresh || !evaluasiLoaded) {
           setCatCardLoading('PIP');
           setCatCardLoading('TIU');
-          document.getElementById('adminScoresContainer').innerHTML = `
-              <div class="skeleton-pulse h-12 w-full"></div>
-              <div class="skeleton-pulse h-12 w-full"></div>
+          document.getElementById('fisikEvalContainer').innerHTML = `
+              <div class="skeleton-pulse h-28 w-full"></div>
+              <div class="skeleton-pulse h-28 w-full"></div>
+              <div class="skeleton-pulse h-28 w-full"></div>
+              <div class="skeleton-pulse h-28 w-full"></div>
+              <div class="skeleton-pulse h-20 w-full sm:col-span-2"></div>
           `;
-          document.getElementById('adminNotesContainer').innerHTML = `
+          document.getElementById('pbbEvalContainer').innerHTML = `
               <div class="skeleton-pulse h-20 w-full"></div>
           `;
       }
 
       const nik = String(currentUser.nik).trim();
 
-      const [pipResult, tiuResult, adminEvalResult] = await Promise.allSettled([
+      const [pipResult, tiuResult, fisikEvalResult] = await Promise.allSettled([
           fetch(tripatiApiUrl, {
               method: 'POST',
               body: JSON.stringify({ action: 'getDataHasilSiswa', noPeserta: nik, jenis: 'PIP' })
@@ -1162,32 +1188,36 @@
               method: 'POST',
               body: JSON.stringify({ action: 'getDataHasilSiswa', noPeserta: nik, jenis: 'TIU' })
           }).then(r => r.json()),
-          fetch(gasUrl, {
+          fetch(tripatiApiUrl, {
               method: 'POST',
-              body: JSON.stringify({ action: 'getEvaluasi', nik: nik })
+              body: JSON.stringify({ action: 'getEvaluasiPeserta', nik: nik })
           }).then(r => r.json())
       ]);
 
-      // 1. Render Nilai PIP
+      const evalData = (fisikEvalResult.status === 'fulfilled' && fisikEvalResult.value && fisikEvalResult.value.success)
+          ? (fisikEvalResult.value.data || fisikEvalResult.value)
+          : null;
+
+      // 1. Render Nilai PIP (fallback ke evalData.nilai_pip jika ada)
       if (pipResult.status === 'fulfilled' && pipResult.value && pipResult.value.success) {
           renderCatCard('PIP', pipResult.value);
+      } else if (evalData && evalData.nilai_pip !== undefined && evalData.nilai_pip !== '' && evalData.nilai_pip !== '-') {
+          renderCatCard('PIP', { nilai: evalData.nilai_pip });
       } else {
           renderCatCard('PIP', null);
       }
 
-      // 2. Render Nilai TIU
+      // 2. Render Nilai TIU (fallback ke evalData.nilai_tiu jika ada)
       if (tiuResult.status === 'fulfilled' && tiuResult.value && tiuResult.value.success) {
           renderCatCard('TIU', tiuResult.value);
+      } else if (evalData && evalData.nilai_tiu !== undefined && evalData.nilai_tiu !== '' && evalData.nilai_tiu !== '-') {
+          renderCatCard('TIU', { nilai: evalData.nilai_tiu });
       } else {
           renderCatCard('TIU', null);
       }
 
-      // 3. Render Nilai & Catatan Evaluasi Admin
-      if (adminEvalResult.status === 'fulfilled' && adminEvalResult.value && adminEvalResult.value.success) {
-          renderAdminEvaluation(adminEvalResult.value.data || adminEvalResult.value);
-      } else {
-          renderAdminEvaluation(null);
-      }
+      // 3. Render Evaluasi Fisik & PBB dari Admin TRIPATI
+      renderFisikDanPBB(evalData);
 
       evaluasiLoaded = true;
       if (refreshIcon) refreshIcon.classList.remove('fa-spin');
@@ -1207,7 +1237,7 @@
       const badgeEl = document.getElementById(`status${jenis}Badge`);
       const detailEl = document.getElementById(`detail${jenis}Text`);
 
-      if (!data || data.nilai === undefined || data.nilai === null || data.nilai === '') {
+      if (!data || data.nilai === undefined || data.nilai === null || data.nilai === '' || data.nilai === '-') {
           valEl.textContent = '-';
           valEl.className = 'text-3xl font-extrabold text-[#886144]/50 leading-none my-1';
           barEl.style.width = '0%';
@@ -1238,121 +1268,160 @@
       }
   }
 
-  function renderAdminEvaluation(evalData) {
-      const scoresContainer = document.getElementById('adminScoresContainer');
-      const notesContainer = document.getElementById('adminNotesContainer');
-      const avgBadge = document.getElementById('avgAdminScoreBadge');
+  function formatMetricValue(rawVal, defaultUnit) {
+      const cleaned = String(rawVal ?? '').trim();
+      if (!cleaned || cleaned === '-') {
+          return { main: '-', unit: '', isEmpty: true };
+      }
+      // Jika hanya angka/desimal, tambahkan satuan default
+      if (/^\d+([.,]\d+)?$/.test(cleaned)) {
+          return { main: cleaned, unit: defaultUnit, isEmpty: false };
+      }
+      return { main: cleaned, unit: '', isEmpty: false };
+  }
 
-      if (!evalData) {
-          avgBadge.classList.add('hidden');
-          scoresContainer.innerHTML = `
-              <div class="bg-white border border-dashed border-[#DFBE8D] rounded-2xl p-5 text-center">
-                  <i class="fas fa-hourglass-half text-2xl text-[#DFBE8D] mb-2"></i>
-                  <p class="text-xs font-semibold text-[#543A2A]">Belum Ada Nilai Evaluasi</p>
-                  <p class="text-[11px] text-[#886144] mt-0.5">Nilai dari admin/pelatih akan muncul di sini setelah proses penilaian diinput.</p>
+  function formatCatatanText(rawNote) {
+      const text = String(rawNote ?? '').trim();
+      if (!text || text === '-') {
+          return `<span class="text-[#886144]/70 italic">Belum ada catatan dari penilai.</span>`;
+      }
+      return escapeHtml(text).replace(/\n/g, '<br>');
+  }
+
+  function renderFisikDanPBB(ev) {
+      const fisikContainer = document.getElementById('fisikEvalContainer');
+      const pbbContainer = document.getElementById('pbbEvalContainer');
+      const updatedBadge = document.getElementById('evalUpdatedBadge');
+
+      if (!ev) {
+          updatedBadge.classList.add('hidden');
+          fisikContainer.innerHTML = `
+              <div class="sm:col-span-2 bg-white border border-dashed border-[#DFBE8D] rounded-2xl p-6 text-center">
+                  <i class="fas fa-dumbbell text-2xl text-[#DFBE8D] mb-2"></i>
+                  <p class="text-xs font-bold text-[#543A2A]">Data Evaluasi Fisik Belum Tersedia</p>
+                  <p class="text-[11px] text-[#886144] mt-1">Hasil Push Up, Sit Up, Back Up, Shuttle Run, dan Lari akan muncul di sini setelah diinput melalui Admin TRIPATI.</p>
               </div>
           `;
-          notesContainer.innerHTML = `
+          pbbContainer.innerHTML = `
               <div class="bg-white border border-dashed border-[#DFBE8D] rounded-2xl p-5 text-center">
-                  <i class="fas fa-comment-dots text-2xl text-[#DFBE8D] mb-2"></i>
-                  <p class="text-xs font-semibold text-[#543A2A]">Belum Ada Catatan</p>
-                  <p class="text-[11px] text-[#886144] mt-0.5">Catatan dan masukan evaluasi dari panitia belum tersedia.</p>
+                  <i class="fas fa-clipboard text-2xl text-[#DFBE8D] mb-2"></i>
+                  <p class="text-xs font-bold text-[#543A2A]">Belum Ada Catatan PBB</p>
+                  <p class="text-[11px] text-[#886144] mt-1">Catatan evaluasi Peraturan Baris Berbaris (PBB) dari panitia belum tersedia.</p>
               </div>
           `;
           return;
       }
 
-      // Ekstrak daftar aspek penilaian secara fleksibel
-      let scoreItems = [];
-      if (Array.isArray(evalData.nilaiList)) {
-          scoreItems = evalData.nilaiList;
-      } else if (Array.isArray(evalData.aspek)) {
-          scoreItems = evalData.aspek;
-      } else if (evalData.nilai && typeof evalData.nilai === 'object' && !Array.isArray(evalData.nilai)) {
-          scoreItems = Object.entries(evalData.nilai).map(([aspek, nilai]) => ({ aspek, nilai }));
+      // Tampilkan badge waktu update terakhir jika ada
+      if (ev.updated_at && String(ev.updated_at).trim() !== '' && String(ev.updated_at).trim() !== '-') {
+          updatedBadge.textContent = `Update: ${ev.updated_at}`;
+          updatedBadge.classList.remove('hidden');
       } else {
-          const ignoreKeys = ['nik', 'nama', 'catatan', 'penilai', 'tanggalupdate', 'updatedat', 'status', 'success', 'message', 'predikat', 'ratarata'];
-          Object.entries(evalData).forEach(([key, val]) => {
-              if (!ignoreKeys.includes(key.toLowerCase()) && val !== '' && val !== null && val !== undefined) {
-                  scoreItems.push({ aspek: key, nilai: val });
-              }
-          });
+          updatedBadge.classList.add('hidden');
       }
 
-      // Render Daftar Nilai Admin
-      if (scoreItems.length === 0) {
-          avgBadge.classList.add('hidden');
-          scoresContainer.innerHTML = `
-              <div class="bg-white border border-dashed border-[#DFBE8D] rounded-2xl p-5 text-center">
-                  <p class="text-xs font-semibold text-[#543A2A]">Belum Ada Rincian Nilai</p>
-                  <p class="text-[11px] text-[#886144] mt-0.5">Admin belum mengisi komponen nilai evaluasi Anda.</p>
-              </div>
-          `;
-      } else {
-          let numericSum = 0;
-          let numericCount = 0;
-
-          scoresContainer.innerHTML = scoreItems.map(item => {
-              const label = escapeHtml(item.aspek || item.label || 'Penilaian');
-              const rawVal = item.nilai;
-              const numVal = Number(rawVal);
-              const isNumeric = rawVal !== '' && rawVal !== null && !Number.isNaN(numVal);
-
-              if (isNumeric) {
-                  numericSum += numVal;
-                  numericCount++;
-              }
-
-              const pct = isNumeric ? Math.max(0, Math.min(100, numVal)) : 0;
-              const barColor = !isNumeric ? 'bg-[#C8963E]' : (numVal >= 80 ? 'bg-emerald-500' : (numVal >= 65 ? 'bg-[#C8963E]' : 'bg-[#A3496C]'));
-
-              return `
-                  <div class="admin-score-row">
-                      <div class="flex justify-between items-center gap-2 mb-1.5">
-                          <span class="text-xs font-semibold text-[#543A2A]">${label}</span>
-                          <span class="text-sm font-extrabold text-[#A3496C]">${escapeHtml(rawVal)}</span>
-                      </div>
-                      ${isNumeric ? `
-                      <div class="w-full h-1.5 bg-[#EFE4D2] rounded-full overflow-hidden">
-                          <div class="h-full ${barColor} rounded-full transition-all duration-700" style="width: ${pct}%;"></div>
-                      </div>
-                      ` : ''}
-                  </div>
-              `;
-          }).join('');
-
-          if (numericCount > 0) {
-              const avg = (numericSum / numericCount).toFixed(1).replace(/\.0$/, '');
-              avgBadge.textContent = `Rata-rata: ${avg}`;
-              avgBadge.classList.remove('hidden');
-          } else {
-              avgBadge.classList.add('hidden');
+      // 4 Item Fisik dengan Catatan Per Bagian (Push Up, Sit Up, Back Up, Shuttle Run)
+      const fisikItems = [
+          {
+              title: 'Push Up',
+              icon: 'fa-hand-fist',
+              iconBg: 'bg-emerald-500/12 text-emerald-700',
+              val: formatMetricValue(ev.push_up, 'kali'),
+              note: ev.eval_push_up
+          },
+          {
+              title: 'Sit Up',
+              icon: 'fa-child-reaching',
+              iconBg: 'bg-sky-500/12 text-sky-700',
+              val: formatMetricValue(ev.sit_up, 'kali'),
+              note: ev.eval_sit_up
+          },
+          {
+              title: 'Back Up',
+              icon: 'fa-dumbbell',
+              iconBg: 'bg-purple-500/12 text-purple-700',
+              val: formatMetricValue(ev.back_up, 'kali'),
+              note: ev.eval_back_up
+          },
+          {
+              title: 'Shuttle Run',
+              icon: 'fa-stopwatch',
+              iconBg: 'bg-amber-500/15 text-amber-700',
+              val: formatMetricValue(ev.shuttle_run, 'detik'),
+              note: ev.eval_shuttle_run
           }
-      }
+      ];
 
-      // Render Catatan Admin
-      const catatan = (evalData.catatan || '').toString().trim();
-      const penilai = (evalData.penilai || '').toString().trim();
-      const tanggal = (evalData.tanggalUpdate || evalData.updatedAt || '').toString().trim();
+      const lariVal = String(ev.hasil_lari ?? '').trim();
+      const hasLari = lariVal !== '' && lariVal !== '-';
 
-      if (!catatan || catatan === '-') {
-          notesContainer.innerHTML = `
+      const cardsHtml = fisikItems.map(item => `
+          <div class="fisik-card">
+              <div>
+                  <div class="flex items-center justify-between gap-2 mb-2.5">
+                      <div class="flex items-center gap-2">
+                          <span class="w-7 h-7 rounded-lg ${item.iconBg} flex items-center justify-center text-xs shrink-0">
+                              <i class="fas ${item.icon}"></i>
+                          </span>
+                          <span class="text-xs font-bold text-[#543A2A]">${item.title}</span>
+                      </div>
+                      <div class="text-right leading-none">
+                          <span class="text-xl font-extrabold ${item.val.isEmpty ? 'text-[#886144]/50' : 'text-[#A3496C]'}">${escapeHtml(item.val.main)}</span>
+                          ${item.val.unit ? `<span class="text-[10px] font-semibold text-[#886144] ml-0.5">${item.val.unit}</span>` : ''}
+                      </div>
+                  </div>
+              </div>
+              <div class="fisik-note-box">
+                  <span class="block text-[9px] font-bold uppercase tracking-wider text-[#886144] mb-0.5">
+                      <i class="fas fa-pen-nib mr-1 text-[#A3496C]"></i>Catatan ${item.title}
+                  </span>
+                  <div>${formatCatatanText(item.note)}</div>
+              </div>
+          </div>
+      `).join('');
+
+      // Kartu Hasil Lari (lebar penuh di bawah 4 kartu)
+      const lariCardHtml = `
+          <div class="fisik-card sm:col-span-2">
+              <div class="flex flex-wrap items-center justify-between gap-3">
+                  <div class="flex items-center gap-2.5">
+                      <span class="w-9 h-9 rounded-xl bg-[#A3496C]/12 text-[#A3496C] flex items-center justify-center text-sm shrink-0">
+                          <i class="fas fa-person-running"></i>
+                      </span>
+                      <div>
+                          <span class="block text-xs font-bold text-[#543A2A]">Hasil Lari</span>
+                          <span class="block text-[10px] text-[#886144]">Capaian lari kesamaptaan</span>
+                      </div>
+                  </div>
+                  <div class="text-right">
+                      <span class="inline-block px-3.5 py-1.5 rounded-xl ${hasLari ? 'bg-[#EFE4D2] text-[#543A2A]' : 'bg-[#faf7f2] text-[#886144]/60'} font-extrabold text-sm sm:text-base border border-[#DFBE8D]">
+                          ${hasLari ? escapeHtml(lariVal) : 'Belum dinilai'}
+                      </span>
+                  </div>
+              </div>
+          </div>
+      `;
+
+      fisikContainer.innerHTML = cardsHtml + lariCardHtml;
+
+      // Render Catatan Evaluasi PBB
+      const pbbText = String(ev.eval_pbb ?? '').trim();
+      if (!pbbText || pbbText === '-') {
+          pbbContainer.innerHTML = `
               <div class="bg-white border border-dashed border-[#DFBE8D] rounded-2xl p-5 text-center">
-                  <p class="text-xs font-semibold text-[#543A2A]">Belum Ada Catatan</p>
-                  <p class="text-[11px] text-[#886144] mt-0.5">Panitia belum menambahkan catatan khusus untuk Anda.</p>
+                  <p class="text-xs font-semibold text-[#543A2A]">Belum Ada Catatan PBB</p>
+                  <p class="text-[11px] text-[#886144] mt-0.5">Panitia belum mengisi catatan evaluasi Peraturan Baris Berbaris (PBB).</p>
               </div>
           `;
       } else {
-          const formattedNote = escapeHtml(catatan).replace(/\n/g, '<br>');
-          notesContainer.innerHTML = `
-              <div class="admin-note-box">
+          pbbContainer.innerHTML = `
+              <div class="pbb-note-box">
                   <div class="text-xs sm:text-[13px] text-[#543A2A] leading-relaxed font-medium">
-                      ${formattedNote}
+                      ${escapeHtml(pbbText).replace(/\n/g, '<br>')}
                   </div>
-                  ${(penilai || tanggal) ? `
-                  <div class="mt-3 pt-2.5 border-t border-[#DFBE8D]/50 flex flex-wrap justify-between items-center gap-2 text-[10px] text-[#886144]">
-                      <span>${penilai ? `<i class="fas fa-user-check mr-1 text-[#A3496C]"></i>${escapeHtml(penilai)}` : ''}</span>
-                      <span>${tanggal ? `<i class="far fa-clock mr-1"></i>${escapeHtml(tanggal)}` : ''}</span>
+                  ${(ev.updated_at && String(ev.updated_at).trim() !== '-') ? `
+                  <div class="mt-3 pt-2.5 border-t border-[#DFBE8D]/50 flex items-center justify-end text-[10px] text-[#886144]">
+                      <span><i class="far fa-clock mr-1 text-[#A3496C]"></i>Diperbarui: ${escapeHtml(ev.updated_at)}</span>
                   </div>
                   ` : ''}
               </div>

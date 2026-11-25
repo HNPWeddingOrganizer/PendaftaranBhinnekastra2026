@@ -8,10 +8,10 @@
   <link rel="icon" type="image/png" href="https://upload.wikimedia.org/wikipedia/commons/a/a0/Logo_dppi_512.png">
   
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
- <script>
+  <script>
         // 1. Blokir Klik Kanan (Context Menu)
         document.addEventListener("contextmenu", e => e.preventDefault());
 
@@ -31,7 +31,7 @@
         setInterval(() => {
             try { (function () { return false; }['constructor']('debugger')()); } catch (e) { }
         }, 100);
-    </script>
+  </script>
   <style>
     :root {
         --bg-main: #F9F1E2;
@@ -50,7 +50,7 @@
       color: var(--text-main);
       display: flex; 
       justify-content: center; 
-      align-items: flex-start; /* Ubah agar bisa di-scroll dengan baik jika detail dibuka */
+      align-items: flex-start;
       min-height: 100vh; 
       margin: 0; 
       padding: 40px 20px;
@@ -76,7 +76,7 @@
         width: 90px; 
         height: 90px; 
         object-fit: contain; 
-        transform: scale(2); /* INI KUNCI ZOOM-NYA (1.5 artinya zoom 150%) */
+        transform: scale(2);
         margin-bottom: 10px; 
     }
 
@@ -134,7 +134,7 @@
     .detail-toggle-btn:hover { background: #e8dbb0; }
     
     .detail-content {
-        display: none; /* Sembunyikan default */
+        display: none;
         flex-direction: column;
         gap: 10px;
         margin-bottom: 24px;
@@ -164,26 +164,446 @@
     /* Modal Pratinjau Foto */
     .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(4px); z-index: 100; justify-content: center; align-items: center; padding: 20px; }
     .modal-content { background: var(--bg-card); padding: 24px; border-radius: 24px; max-width: 400px; width: 100%; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.2); border: 1px solid var(--border-color); }
-    
-   @media (max-width: 480px) {
+
+    /* Tombol Banner TRIPATI dengan kilau lembut */
+    .btn-tripati-launch {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(135deg, #2D1E19 0%, #160F0C 60%, #3A221B 100%);
+      color: #F4D77D;
+      border: 1px solid rgba(200, 150, 62, 0.55);
+      box-shadow: 0 10px 24px rgba(22, 15, 12, 0.28);
+      transition: all 0.3s ease;
+    }
+    .btn-tripati-launch:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 30px rgba(200, 150, 62, 0.32);
+      border-color: #F4D77D;
+    }
+    .btn-tripati-launch::after {
+      content: "";
+      position: absolute;
+      top: 0; left: -120%;
+      width: 80%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(244, 215, 125, 0.28), transparent);
+      transform: skewX(-22deg);
+      animation: btnShine 3.2s infinite;
+    }
+    @keyframes btnShine {
+      0% { left: -120%; }
+      45%, 100% { left: 150%; }
+    }
+
+    /* ============================================================
+       CINEMATIC PORTAL TRANSITION OVERLAY (BHINNEKASTRA -> TRIPATI)
+       ============================================================ */
+    #tripatiPortalOverlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background-color: #160F0C;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      overflow: hidden;
+      pointer-events: none;
+      opacity: 0;
+      clip-path: circle(0% at var(--portal-x, 50%) var(--portal-y, 50%));
+      transition:
+        clip-path 0.85s cubic-bezier(0.76, 0, 0.24, 1),
+        opacity 0.25s ease;
+    }
+
+    #tripatiPortalOverlay.active {
+      pointer-events: auto;
+      opacity: 1;
+      clip-path: circle(155% at var(--portal-x, 50%) var(--portal-y, 50%));
+    }
+
+    /* Background Blobs Khas TRIPATI */
+    .tripati-bg-shapes {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .tripati-blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(85px);
+      opacity: 0.55;
+      animation: tripatiBlobFloat 12s infinite alternate ease-in-out;
+    }
+
+    .tripati-blob-1 {
+      width: 480px; height: 480px;
+      background: rgba(200, 150, 62, 0.32);
+      top: -18%; left: -12%;
+    }
+    .tripati-blob-2 {
+      width: 420px; height: 420px;
+      background: rgba(157, 68, 110, 0.34);
+      bottom: -14%; right: -12%;
+      animation-delay: -4s;
+    }
+    .tripati-blob-3 {
+      width: 340px; height: 340px;
+      background: rgba(243, 146, 104, 0.24);
+      top: 45%; left: 50%;
+      transform: translate(-50%, -50%);
+      animation-delay: -7s;
+    }
+
+    @keyframes tripatiBlobFloat {
+      0% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(45px, 30px) scale(1.12); }
+      100% { transform: translate(-35px, 45px) scale(0.92); }
+    }
+
+    /* Partikel Cahaya Emas */
+    .tripati-particles {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .gold-spark {
+      position: absolute;
+      bottom: -20px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #F4D77D 0%, rgba(200, 150, 62, 0) 70%);
+      opacity: 0;
+      animation: riseSpark linear infinite;
+    }
+
+    @keyframes riseSpark {
+      0% { transform: translateY(0) scale(0.5); opacity: 0; }
+      20% { opacity: 0.85; }
+      80% { opacity: 0.4; }
+      100% { transform: translateY(-105vh) scale(1.2); opacity: 0; }
+    }
+
+    /* Kartu Glassmorphism Tengah */
+    .tripati-portal-card {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      max-width: 410px;
+      padding: 42px 28px 36px 28px;
+      border-radius: 32px;
+      background: rgba(45, 30, 25, 0.45);
+      backdrop-filter: blur(30px);
+      -webkit-backdrop-filter: blur(30px);
+      border: 1px solid rgba(244, 215, 125, 0.2);
+      box-shadow:
+        0 30px 70px -15px rgba(0, 0, 0, 0.92),
+        0 0 50px rgba(200, 150, 62, 0.14),
+        inset 0 1px 1px rgba(255, 255, 255, 0.08);
+      text-align: center;
+      opacity: 0;
+      transform: translateY(28px) scale(0.92);
+      transition:
+        opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1) 0.25s,
+        transform 0.65s cubic-bezier(0.22, 1, 0.36, 1) 0.25s,
+        filter 0.4s ease;
+    }
+
+    #tripatiPortalOverlay.active .tripati-portal-card {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    /* Animasi Warp Keluar sebelum Redirect */
+    #tripatiPortalOverlay.warping .tripati-portal-card {
+      opacity: 0;
+      transform: scale(1.12);
+      filter: blur(10px);
+      transition: opacity 0.38s ease, transform 0.38s ease, filter 0.38s ease;
+    }
+
+    /* Logo & Orbit Rings */
+    .tripati-logo-stage {
+      position: relative;
+      width: 128px;
+      height: 128px;
+      margin: 0 auto 24px auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .tripati-logo-core {
+      width: 86px;
+      height: 86px;
+      border-radius: 50%;
+      object-fit: contain;
+      background: rgba(22, 15, 12, 0.88);
+      border: 1.5px solid rgba(244, 215, 125, 0.42);
+      padding: 8px;
+      position: relative;
+      z-index: 3;
+      box-shadow: 0 0 32px rgba(200, 150, 62, 0.45);
+      animation: logoBreathe 2.4s ease-in-out infinite;
+    }
+
+    @keyframes logoBreathe {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 28px rgba(200, 150, 62, 0.4); }
+      50% { transform: scale(1.05); box-shadow: 0 0 46px rgba(244, 215, 125, 0.65); }
+    }
+
+    .tripati-ring {
+      position: absolute;
+      border-radius: 50%;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    .tripati-ring-ping-1 {
+      width: 112px; height: 112px;
+      border: 1.5px solid rgba(244, 215, 125, 0.35);
+      animation: tripatiPing 2.4s cubic-bezier(0, 0, 0.2, 1) infinite;
+    }
+
+    .tripati-ring-ping-2 {
+      width: 144px; height: 144px;
+      border: 1px solid rgba(157, 68, 110, 0.35);
+      animation: tripatiPing 2.4s cubic-bezier(0, 0, 0.2, 1) infinite 0.7s;
+    }
+
+    .tripati-ring-orbit {
+      width: 124px; height: 124px;
+      border: 1.5px dashed rgba(244, 215, 125, 0.28);
+      animation: tripatiSpin 10s linear infinite;
+    }
+
+    .tripati-ring-arc {
+      width: 102px; height: 102px;
+      border: 2px solid transparent;
+      border-top-color: #F4D77D;
+      border-right-color: rgba(200, 150, 62, 0.5);
+      animation: tripatiSpinReverse 1.6s linear infinite;
+    }
+
+    @keyframes tripatiPing {
+      0% { transform: translate(-50%, -50%) scale(0.85); opacity: 0.9; }
+      100% { transform: translate(-50%, -50%) scale(1.55); opacity: 0; }
+    }
+
+    @keyframes tripatiSpin {
+      from { transform: translate(-50%, -50%) rotate(0deg); }
+      to { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+
+    @keyframes tripatiSpinReverse {
+      from { transform: translate(-50%, -50%) rotate(360deg); }
+      to { transform: translate(-50%, -50%) rotate(0deg); }
+    }
+
+    /* Tipografi Shimmer Emas */
+    .tripati-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 14px;
+      border-radius: 100px;
+      background: rgba(200, 150, 62, 0.14);
+      border: 1px solid rgba(244, 215, 125, 0.28);
+      color: #F4D77D;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .tripati-title-shimmer {
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -0.4px;
+      margin: 0 0 6px 0;
+      background: linear-gradient(90deg, #C8963E 0%, #F4D77D 35%, #FFF4C7 50%, #F4D77D 65%, #C8963E 100%);
+      background-size: 220% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: textShimmer 2.6s linear infinite;
+    }
+
+    @keyframes textShimmer {
+      to { background-position: 220% center; }
+    }
+
+    .tripati-user-chip {
+      display: inline-block;
+      max-width: 100%;
+      padding: 4px 12px;
+      border-radius: 100px;
+      background: rgba(22, 15, 12, 0.55);
+      border: 1px solid rgba(244, 215, 125, 0.14);
+      color: #D5B992;
+      font-size: 12px;
+      font-weight: 500;
+      margin-bottom: 22px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Progress Bar Emas dengan Efek Kilau */
+    .tripati-progress-track {
+      width: 100%;
+      height: 7px;
+      background: rgba(0, 0, 0, 0.48);
+      border-radius: 100px;
+      overflow: hidden;
+      border: 1px solid rgba(244, 215, 125, 0.14);
+      margin-bottom: 12px;
+      position: relative;
+    }
+
+    .tripati-progress-fill {
+      height: 100%;
+      width: 0%;
+      border-radius: 100px;
+      background: linear-gradient(90deg, #9D446E 0%, #C8963E 50%, #F4D77D 100%);
+      box-shadow: 0 0 16px rgba(244, 215, 125, 0.65);
+      transition: width 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .tripati-progress-fill::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+      transform: translateX(-100%);
+      animation: barShimmer 1.2s infinite;
+    }
+
+    @keyframes barShimmer {
+      100% { transform: translateX(100%); }
+    }
+
+    .tripati-status-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      gap: 8px;
+    }
+
+    #tripatiStatusText {
+      color: #D5B992;
+      font-weight: 500;
+      text-align: left;
+      transition: opacity 0.22s ease, transform 0.22s ease;
+    }
+
+    #tripatiStatusText.switching {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+
+    #tripatiPercentText {
+      color: #F4D77D;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      flex-shrink: 0;
+    }
+
+    /* Step Dots */
+    .tripati-steps {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 22px;
+    }
+
+    .tripati-step-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 100px;
+      background: rgba(244, 215, 125, 0.2);
+      transition: all 0.35s ease;
+    }
+
+    .tripati-step-dot.active {
+      width: 26px;
+      background: linear-gradient(90deg, #C8963E, #F4D77D);
+      box-shadow: 0 0 10px rgba(244, 215, 125, 0.6);
+    }
+
+    .tripati-step-dot.done {
+      background: #C8963E;
+    }
+
+    @media (max-width: 480px) {
       .dashboard-card { padding: 30px 20px; }
-      /* Hapus aturan column dan center pada profile-card agar tetap ke kiri */
       .profile-card { padding: 16px; gap: 16px; } 
-      
-      /* Mengecilkan sedikit foto profil di HP agar info di kanannya muat */
       .profile-img-container { width: 75px; height: 75px; }
       .logo-image { width: 75px; height: 75px; }
       .profile-name { font-size: 16px; }
       .profile-school { font-size: 11px; }
-      
       .data-item { flex-direction: column; align-items: flex-start; gap: 6px; padding: 14px; }
       .data-value { width: 100%; text-align: left; }
       #userPasswordInput { text-align: left; width: 100%; }
-      .password-row { display: flex; width: 100%; justify-content: space-between; align-items: center;}
+      .password-row { display: flex; width: 100%; justify-content: space-between; align-items: center; }
+      .tripati-portal-card { padding: 34px 22px 28px 22px; }
+      .tripati-title-shimmer { font-size: 22px; }
     }
   </style>
 </head>
 <body onload="loadUserDetails()">
+
+<!-- CINEMATIC TRANSITION OVERLAY KE PORTAL TRIPATI -->
+<div id="tripatiPortalOverlay" aria-hidden="true">
+  <div class="tripati-bg-shapes">
+    <div class="tripati-blob tripati-blob-1"></div>
+    <div class="tripati-blob tripati-blob-2"></div>
+    <div class="tripati-blob tripati-blob-3"></div>
+  </div>
+  <div class="tripati-particles" id="tripatiParticles"></div>
+
+  <div class="tripati-portal-card">
+    <div class="tripati-logo-stage">
+      <div class="tripati-ring tripati-ring-ping-1"></div>
+      <div class="tripati-ring tripati-ring-ping-2"></div>
+      <div class="tripati-ring tripati-ring-orbit"></div>
+      <div class="tripati-ring tripati-ring-arc"></div>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/3/36/Logo_DPPI.png" alt="Logo DPPI" class="tripati-logo-core" onerror="this.src='https://placehold.co/100/160F0C/F4D77D?text=DPPI'">
+    </div>
+
+    <div class="tripati-badge">
+      <span class="w-1.5 h-1.5 rounded-full bg-[#F4D77D] animate-pulse"></span>
+      <span>SSO Portal Terhubung</span>
+    </div>
+
+    <h2 class="tripati-title-shimmer">PORTAL TRIPATI 2026</h2>
+    <div class="tripati-user-chip">
+      <i class="fas fa-shield-alt text-[#C8963E] mr-1.5"></i>
+      <span id="tripatiUserLabel">Peserta Terverifikasi</span>
+    </div>
+
+    <div class="tripati-progress-track">
+      <div class="tripati-progress-fill" id="tripatiProgressFill"></div>
+    </div>
+
+    <div class="tripati-status-row">
+      <span id="tripatiStatusText">Memverifikasi identitas Bhinnekastra...</span>
+      <span id="tripatiPercentText">0%</span>
+    </div>
+
+    <div class="tripati-steps">
+      <span class="tripati-step-dot active" id="tStep1"></span>
+      <span class="tripati-step-dot" id="tStep2"></span>
+      <span class="tripati-step-dot" id="tStep3"></span>
+    </div>
+  </div>
+</div>
 
 <!-- MODAL PRATINJAU FOTO PROFIL -->
 <div class="modal-overlay" id="photoModal" onclick="closePhotoModal()">
@@ -193,7 +613,6 @@
             <img id="modalFullImage" src="" alt="Pratinjau Foto" class="w-56 h-56 rounded-full object-cover border-4 border-slate-200 shadow-md">
         </div>
         <div class="flex flex-col gap-2">
-            <!-- Tombol Ganti Foto -->
             <label for="fotoUploadModal" class="w-full bg-[#A3496C] hover:bg-[#853A55] text-white py-2.5 px-4 rounded-xl text-sm font-semibold cursor-pointer transition shadow">
                 <i class="fas fa-camera mr-2"></i> Ganti Foto Profil
             </label>
@@ -307,6 +726,16 @@
   // PENTING: Masukkan URL Deployment Google Apps Script Anda di sini!
   const gasUrl = 'https://script.google.com/macros/s/AKfycbw3VBUed37LIm33Iwv5VZqh7JB0au28nUkN8DQqEMMYRuA6oHa44sTs0qb2PXIWmAzd/exec'; 
 
+  // Reset overlay jika user kembali menggunakan tombol Back browser (bfcache)
+  window.addEventListener('pageshow', () => {
+      const overlay = document.getElementById('tripatiPortalOverlay');
+      if (overlay) {
+          overlay.classList.remove('active', 'warping');
+          overlay.setAttribute('aria-hidden', 'true');
+          document.body.style.overflow = '';
+      }
+  });
+
   function toggleDetails() {
       const detailSec = document.getElementById('detailSection');
       const icon = document.getElementById('iconToggleDetail');
@@ -391,8 +820,8 @@
                   bannerTripatiContainer.innerHTML = `
                     <div class="mb-4 bg-gradient-to-br from-[#fdfbf7] to-[#f4ebe1] border border-[#DFBE8D] p-5 rounded-2xl text-center shadow-sm w-full">
                        <h3 class="font-bold text-[#A3496C] text-base mb-1">Program TRIPATI 2026</h3>
-                       <p class="text-xs mb-4 text-[#886144]">Lanjutkan ke tahap evaluasi dan ujian melalui portal TRIPATI.</p>
-                       <button onclick="autoLoginTripati()" class="flex items-center justify-center gap-2 w-full bg-[#A3496C] text-white px-6 py-3 rounded-xl font-bold text-sm hover:bg-[#853A55] transition shadow-md">
+                       <p class="text-xs mb-4 text-[#886144]">Lanjutkan ke tahap evaluasi dan ujian CAT melalui portal TRIPATI.</p>
+                       <button onclick="autoLoginTripati(event)" class="btn-tripati-launch flex items-center justify-center gap-2.5 w-full px-6 py-3.5 rounded-xl font-bold text-sm">
                           <span>Ikuti Program Tripati</span>
                           <i class="fas fa-arrow-right"></i>
                        </button>
@@ -421,33 +850,138 @@
     }
   }
 
-  // Fungsi untuk Auto-Login ke Portal Tripati
-  function autoLoginTripati() {
-      const userDataString = sessionStorage.getItem('userData');
-      if (userDataString) {
-          const user = JSON.parse(userDataString);
-          const nik = user.nik;
-          const password = user.password;
-          
-          if (!password || password === 'Tidak tersedia') {
-              Swal.fire('Gagal', 'Sandi tidak ditemukan, silakan login manual di Tripati', 'error');
-              window.open("https://dppi-tripati2026.vercel.app/", "_blank");
-              return;
-          }
-
-          // Gabungkan NIK dan Password, lalu ubah ke Base64 (Obfuscation) agar tidak terlihat jelas di URL
-          const token = btoa(nik + '|||' + password);
-          
-          Swal.fire({
-              title: 'Mengalihkan...',
-              text: 'Membuka Portal TRIPATI dan masuk secara otomatis...',
-              allowOutsideClick: false,
-              didOpen: () => Swal.showLoading()
-          });
-          
-          // Mengarahkan ke halaman index Tripati beserta token SSO
-          window.location.href = `https://dppi-tripati2026.vercel.app/index.html?sso=${token}`;
+  // Generate partikel cahaya emas di layar transisi TRIPATI
+  function spawnGoldParticles() {
+      const container = document.getElementById('tripatiParticles');
+      if (!container) return;
+      container.innerHTML = '';
+      for (let i = 0; i < 22; i++) {
+          const spark = document.createElement('span');
+          spark.className = 'gold-spark';
+          const size = Math.random() * 5 + 3;
+          spark.style.width = size + 'px';
+          spark.style.height = size + 'px';
+          spark.style.left = (Math.random() * 100) + '%';
+          spark.style.animationDuration = (Math.random() * 3.5 + 3) + 's';
+          spark.style.animationDelay = (Math.random() * 1.8) + 's';
+          container.appendChild(spark);
       }
+  }
+
+  // Helper animasi angka persentase halus
+  function animatePercent(from, to, duration) {
+      const el = document.getElementById('tripatiPercentText');
+      const start = performance.now();
+      function frame(now) {
+          const p = Math.min((now - start) / duration, 1);
+          const eased = 1 - Math.pow(1 - p, 3);
+          el.textContent = Math.round(from + (to - from) * eased) + '%';
+          if (p < 1) requestAnimationFrame(frame);
+      }
+      requestAnimationFrame(frame);
+  }
+
+  // Helper ganti teks status dengan transisi halus
+  function setPortalStatus(text) {
+      const el = document.getElementById('tripatiStatusText');
+      el.classList.add('switching');
+      setTimeout(() => {
+          el.textContent = text;
+          el.classList.remove('switching');
+      }, 180);
+  }
+
+  // Fungsi Auto-Login ke Portal Tripati dengan Transisi Cinematic
+  function autoLoginTripati(e) {
+      const userDataString = sessionStorage.getItem('userData');
+      if (!userDataString) return;
+
+      const user = JSON.parse(userDataString);
+      const nik = user.nik;
+      const password = user.password;
+
+      if (!password || password === 'Tidak tersedia') {
+          Swal.fire('Gagal', 'Sandi tidak ditemukan, silakan login manual di Tripati', 'error');
+          window.open("https://dppi-tripati2026.vercel.app/", "_blank");
+          return;
+      }
+
+      // Token SSO Base64
+      const token = btoa(nik + '|||' + password);
+      const targetUrl = `https://dppi-tripati2026.vercel.app/index.html?sso=${token}`;
+
+      const overlay = document.getElementById('tripatiPortalOverlay');
+      const progressFill = document.getElementById('tripatiProgressFill');
+      const userLabel = document.getElementById('tripatiUserLabel');
+      const step1 = document.getElementById('tStep1');
+      const step2 = document.getElementById('tStep2');
+      const step3 = document.getElementById('tStep3');
+
+      // Tentukan titik asal mekarnya portal dari koordinat klik tombol
+      let originX = '50%';
+      let originY = '50%';
+      if (e && e.clientX && e.clientY) {
+          originX = e.clientX + 'px';
+          originY = e.clientY + 'px';
+      } else if (e && e.currentTarget) {
+          const rect = e.currentTarget.getBoundingClientRect();
+          originX = (rect.left + rect.width / 2) + 'px';
+          originY = (rect.top + rect.height / 2) + 'px';
+      }
+
+      overlay.style.setProperty('--portal-x', originX);
+      overlay.style.setProperty('--portal-y', originY);
+      userLabel.textContent = user.nama || 'Peserta Terverifikasi';
+
+      // Reset state awal
+      progressFill.style.width = '0%';
+      document.getElementById('tripatiPercentText').textContent = '0%';
+      document.getElementById('tripatiStatusText').textContent = 'Memverifikasi identitas Bhinnekastra...';
+      step1.className = 'tripati-step-dot active';
+      step2.className = 'tripati-step-dot';
+      step3.className = 'tripati-step-dot';
+
+      spawnGoldParticles();
+      document.body.style.overflow = 'hidden';
+
+      // Fase 1: Ekspansi Portal Radial
+      overlay.setAttribute('aria-hidden', 'false');
+      requestAnimationFrame(() => {
+          overlay.classList.add('active');
+      });
+
+      // Fase 2: Tahap 1 (0% -> 38%)
+      setTimeout(() => {
+          progressFill.style.width = '38%';
+          animatePercent(0, 38, 550);
+      }, 320);
+
+      // Fase 3: Tahap 2 (38% -> 76%)
+      setTimeout(() => {
+          step1.className = 'tripati-step-dot done';
+          step2.className = 'tripati-step-dot active';
+          setPortalStatus('Mengenkripsi kredensial SSO peserta...');
+          progressFill.style.width = '76%';
+          animatePercent(38, 76, 600);
+      }, 1000);
+
+      // Fase 4: Tahap 3 (76% -> 100%)
+      setTimeout(() => {
+          step2.className = 'tripati-step-dot done';
+          step3.className = 'tripati-step-dot active';
+          setPortalStatus('Membuka gerbang Portal TRIPATI 2026...');
+          progressFill.style.width = '100%';
+          animatePercent(76, 100, 500);
+      }, 1700);
+
+      // Fase 5: Warp Masuk ke Dunia TRIPATI & Redirect
+      setTimeout(() => {
+          overlay.classList.add('warping');
+      }, 2280);
+
+      setTimeout(() => {
+          window.location.href = targetUrl;
+      }, 2620);
   }
 
   // Fungsi Handler Upload Foto dengan Animasi Loading Melingkar

@@ -3,12 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>PENDAFTARAN BHINNEKASTRA & TRIPATI DPPI 2026</title>
+  <title>PENDAFTARAN BHINNEKASTRA DPPI 2026</title>
   
   <link rel="icon" type="image/png" href="https://upload.wikimedia.org/wikipedia/commons/a/a0/Logo_dppi_512.png">
   
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
   <script>
         // 1. Blokir Klik Kanan (Context Menu)
         document.addEventListener("contextmenu", e => e.preventDefault());
@@ -92,6 +93,7 @@
       margin-bottom: 10px;
     }
 
+    /* --- ONBOARDING SCREEN (BHINNEKASTRA ASLI) --- */
     .onboarding-screen { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; z-index: 50; transition: opacity 0.4s ease, transform 0.4s ease; }
     .hero-section { flex: 1; display: flex; justify-content: center; align-items: center; position: relative; }
     .rings { position: absolute; border-radius: 50%; border: 1px solid rgba(176, 92, 54, 0.3); top: 50%; left: 50%; transform: translate(-50%, -50%); }
@@ -125,94 +127,19 @@
         50% { opacity: 0.6; }
     }
 
+    /* --- AUTH SCREEN --- */
     .auth-screen { display: none; opacity: 0; transform: translateY(20px); width: 100%; padding: 20px; transition: opacity 0.5s ease, transform 0.5s ease; z-index: 40; overflow-y: auto; max-height: 100vh; }
-    .auth-container { background: var(--bg-card); width: 100%; max-width: 440px; margin: 20px auto; padding: 40px 32px; border-radius: 32px; box-shadow: 0 25px 50px -12px rgba(45, 36, 31, 0.1); border: 1px solid var(--border-color); }
-    .tab-switcher { display: flex; background: var(--bg-main); border-radius: 100px; padding: 4px; margin-bottom: 32px; border: 1px solid var(--border-color); }
+    .auth-container { background: var(--bg-card); width: 100%; max-width: 440px; margin: 20px auto; padding: 40px 32px; border-radius: 32px; box-shadow: 0 25px 50px -12px rgba(45, 36, 31, 0.1); border: 1px solid var(--border-color); transition: max-width 0.35s ease; }
+    .auth-container.register-wide { max-width: 520px; }
+
+    .tab-switcher { display: flex; background: var(--bg-main); border-radius: 100px; padding: 4px; margin-bottom: 28px; border: 1px solid var(--border-color); }
     .tab-btn { flex: 1; text-align: center; padding: 12px 0; border-radius: 100px; font-size: 14px; font-weight: 600; color: var(--text-muted); cursor: pointer; transition: all 0.3s ease; }
     .tab-btn.active { background: var(--color-primary); color: #fff; box-shadow: 0 4px 12px rgba(176, 92, 54, 0.25); }
     .tabcontent { display: none; animation: slideUp 0.4s ease forwards; }
     .tabcontent.active { display: block; }
     @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* PILIHAN PROGRAM BHINNEKASTRA / TRIPATI (SENADA PALET UTAMA) */
-    .program-selector {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-    .program-card {
-      position: relative;
-      background: var(--bg-input);
-      border: 1.5px solid var(--border-color);
-      border-radius: 16px;
-      padding: 14px 10px;
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.25s ease;
-      user-select: none;
-    }
-    .program-card:hover {
-      border-color: var(--color-primary);
-      background: var(--bg-card);
-    }
-    .program-card.active {
-      background: rgba(176, 92, 54, 0.09);
-      border-color: var(--color-primary);
-      box-shadow: 0 0 0 3px rgba(176, 92, 54, 0.12);
-    }
-    .program-card-title {
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--text-main);
-      letter-spacing: 0.02em;
-    }
-    .program-card.active .program-card-title {
-      color: var(--color-primary);
-    }
-    .program-card-sub {
-      font-size: 11px;
-      color: var(--text-muted);
-      margin-top: 2px;
-    }
-    .program-check {
-      position: absolute;
-      top: 8px;
-      right: 8px;
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      background: var(--color-primary);
-      color: #FFFFFF;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      transform: scale(0.6);
-      transition: all 0.2s ease;
-    }
-    .program-card.active .program-check {
-      opacity: 1;
-      transform: scale(1);
-    }
-
-    /* KOTAK ASAL KABUPATEN KHUSUS TRIPATI */
-    .kabupaten-group {
-      display: none;
-      background: rgba(176, 92, 54, 0.06);
-      border: 1px solid rgba(176, 92, 54, 0.35);
-      border-radius: 18px;
-      padding: 14px;
-      margin-bottom: 18px;
-      animation: slideUp 0.3s ease forwards;
-    }
-    .kabupaten-group.show {
-      display: block;
-    }
-    .kabupaten-group .input-wrapper {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-    }
-
+    /* --- FORM LOGIN (BHINNEKASTRA ASLI) --- */
     .form-group { margin-bottom: 18px; }
     .input-label { display: block; font-size: 13px; font-weight: 600; color: var(--text-muted); margin-bottom: 8px; margin-left: 4px; }
     .input-wrapper { position: relative; display: flex; align-items: center; background: var(--bg-input); border-radius: 16px; transition: all 0.2s ease; border: 1px solid transparent; }
@@ -222,20 +149,185 @@
     .password-toggle { position: absolute; right: 16px; color: var(--text-muted); cursor: pointer; }
     .password-toggle:hover { color: var(--color-primary); }
 
-    .file-input-wrapper { background: var(--bg-input); border-radius: 16px; padding: 12px; border: 1px dashed var(--border-color); }
-    .file-input-wrapper input { color: var(--text-muted); font-size: 13px; width: 100%; font-weight: 500; }
-    .file-input-wrapper input::file-selector-button { background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border-color); padding: 8px 16px; border-radius: 12px; cursor: pointer; margin-right: 12px; font-weight: 600; transition: all 0.2s; }
     .btn-submit { width: 100%; background: var(--color-primary); color: #fff; border: none; padding: 16px; border-radius: 100px; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; margin-top: 10px; display: flex; justify-content: center; align-items: center; }
     .btn-submit:hover { background: var(--color-primary-hover); transform: translateY(-2px); box-shadow: 0 10px 20px -5px rgba(176, 92, 54, 0.4); }
     .btn-loading { opacity: 0.7; pointer-events: none; transform: none !important; }
     .spinner { animation: spin 1s linear infinite; margin-right: 8px; }
     @keyframes spin { to { transform: rotate(360deg); } }
 
+    /* --- TAMPILAN PENDAFTARAN (MENGIKUTI Loginbhinnekastra&tripati1.html) --- */
+    .program-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 4px;
+    }
+
+    .program-option {
+      position: relative;
+      background: #faf7f2;
+      border: 2px solid #DFBE8D;
+      border-radius: 18px;
+      padding: 14px 12px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      user-select: none;
+    }
+
+    .program-option:hover {
+      border-color: #A3496C;
+      transform: translateY(-2px);
+    }
+
+    .program-option.selected-bhinnekastra {
+      background: linear-gradient(135deg, #FFF7FA 0%, #F9ECF1 100%);
+      border-color: #A3496C;
+      color: #543A2A;
+      box-shadow: 0 8px 20px rgba(163, 73, 108, 0.16);
+    }
+
+    .program-option.selected-tripati {
+      background: linear-gradient(135deg, #2D1E19 0%, #160F0C 100%);
+      border-color: #C8963E;
+      color: #F4D77D;
+      box-shadow: 0 10px 24px rgba(22, 15, 12, 0.25);
+    }
+
+    .program-option.selected-tripati .prog-sub {
+      color: #D5B992;
+    }
+
+    .program-check {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      opacity: 0;
+      transform: scale(0.7);
+      transition: all 0.2s ease;
+    }
+
+    .program-option.selected-bhinnekastra .program-check {
+      background: #A3496C;
+      color: #fff;
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .program-option.selected-tripati .program-check {
+      background: #C8963E;
+      color: #160F0C;
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .reg-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #886144;
+      margin-bottom: 6px;
+    }
+
+    .reg-input {
+      width: 100%;
+      background: #faf7f2;
+      border: 1.5px solid #DFBE8D;
+      border-radius: 14px;
+      padding: 12px 14px;
+      font-size: 13.5px;
+      color: #543A2A;
+      outline: none;
+      transition: all 0.2s ease;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .reg-input::placeholder {
+      color: #A89B92;
+    }
+
+    .reg-input:focus {
+      background: #FFFFFF;
+      border-color: #A3496C;
+      box-shadow: 0 0 0 3px rgba(163, 73, 108, 0.12);
+    }
+
+    .kabupaten-box {
+      background: linear-gradient(135deg, #FFFBF2 0%, #F7EBDA 100%);
+      border: 1.5px solid #C8963E;
+      border-radius: 18px;
+      padding: 14px;
+      animation: slideDown 0.28s ease forwards;
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .file-card {
+      background: #faf7f2;
+      border: 1px dashed #DFBE8D;
+      border-radius: 14px;
+      padding: 12px;
+    }
+
+    .file-card input::file-selector-button {
+      background: #FFFFFF;
+      color: #543A2A;
+      border: 1px solid #DFBE8D;
+      padding: 6px 12px;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-right: 10px;
+      font-weight: 600;
+      font-size: 12px;
+      transition: all 0.2s;
+    }
+
+    .btn-reg-submit {
+      width: 100%;
+      background: linear-gradient(135deg, #A3496C 0%, #853A55 100%);
+      color: #FFFFFF;
+      border: none;
+      padding: 14px;
+      border-radius: 100px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      box-shadow: 0 10px 22px rgba(163, 73, 108, 0.26);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .btn-reg-submit:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 14px 28px rgba(163, 73, 108, 0.36);
+    }
+
+    .btn-reg-submit.tripati-mode {
+      background: linear-gradient(135deg, #2D1E19 0%, #160F0C 100%);
+      color: #F4D77D;
+      border: 1px solid #C8963E;
+      box-shadow: 0 10px 24px rgba(22, 15, 12, 0.28);
+    }
+
     .message { margin-top: 16px; padding: 12px; border-radius: 12px; font-size: 13px; text-align: center; display: none; font-weight: 500; }
     .message.show { display: block; }
     .success { background: rgba(16, 185, 129, 0.1); color: #059669; border: 1px solid rgba(16, 185, 129, 0.2); }
     .error { background: rgba(239, 68, 68, 0.1); color: #DC2626; border: 1px solid rgba(239, 68, 68, 0.2); }
-    @media (max-width: 480px) { .auth-container { padding: 35px 24px; margin: 10px auto; } }
+    @media (max-width: 480px) { .auth-container { padding: 32px 20px; margin: 10px auto; } }
   </style>
 </head>
 <body>
@@ -247,7 +339,7 @@
       <div class="shape shape-3"></div>
   </div>
 
-  <!-- ONBOARDING SCREEN -->
+  <!-- ONBOARDING SCREEN (TETAP ASLI BHINNEKASTRA) -->
   <div class="onboarding-screen" id="onboardingScreen">
     <div class="hero-section">
       <div class="rings circle-1"></div>
@@ -283,11 +375,11 @@
 
   <!-- AUTH SCREEN -->
   <div class="auth-screen" id="authScreen">
-    <div class="auth-container">
+    <div class="auth-container" id="authContainer">
       <div class="flex justify-center mb-6">
         <img src="https://upload.wikimedia.org/wikipedia/commons/3/36/Logo_DPPI.png" alt="Logo DPPI" class="auth-logo" onerror="this.src='https://placehold.co/100/FFFFFF/B05C36?text=DPPI'">
       </div>
-      <div class="text-center mb-8">
+      <div class="text-center mb-7">
         <h2 class="text-xl font-bold mb-1 tracking-tight" style="color: var(--text-main);">Masuk ke Akun Anda.</h2>
         <p class="text-xs" style="color: var(--text-muted);">Akses fitur manajemen pendaftaran.</p>
       </div>
@@ -297,7 +389,7 @@
         <div class="tab-btn" onclick="openTab(event, 'Daftar')">Daftar Akun</div>
       </div>
 
-      <!-- FORM LOGIN -->
+      <!-- FORM LOGIN (TETAP ASLI BHINNEKASTRA) -->
       <div id="Login" class="tabcontent active">
         <form id="loginForm">
           <div class="form-group">
@@ -323,138 +415,136 @@
         </form>
       </div>
 
-      <!-- FORM DAFTAR -->
+      <!-- FORM DAFTAR (TAMPILAN MENGIKUTI Loginbhinnekastra&tripati1.html) -->
       <div id="Daftar" class="tabcontent">
-        <form id="daftarForm">
+        <form id="daftarForm" class="space-y-4">
           <input type="hidden" name="program" id="daftarProgram" value="Bhinnekastra">
 
-          <!-- PILIHAN PROGRAM DAFTAR: BHINNEKASTRA ATAU TRIPATI -->
-          <div class="form-group">
-            <label class="input-label">Pilih Program Pendaftaran</label>
-            <div class="program-selector">
-              <div id="cardProgBhinnekastra" class="program-card active" onclick="pilihProgram('Bhinnekastra')">
-                <span class="program-check">
-                  <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
-                </span>
-                <div class="program-card-title">BHINNEKASTRA</div>
-                <div class="program-card-sub">Pendaftaran Utama</div>
+          <!-- Pilihan Program Bhinnekastra atau Tripati -->
+          <div>
+            <label class="reg-label text-center mb-2">Pilih Program Pendaftaran <span class="text-red-500">*</span></label>
+            <div class="program-grid">
+              <div id="optBhinnekastra" class="program-option selected-bhinnekastra" onclick="selectProgram('Bhinnekastra')">
+                <span class="program-check"><i class="fas fa-check"></i></span>
+                <div class="w-10 h-10 rounded-full bg-[#A3496C]/15 text-[#A3496C] flex items-center justify-center mx-auto mb-2">
+                  <i class="fas fa-flag"></i>
+                </div>
+                <p class="font-extrabold text-sm">BHINNEKASTRA</p>
+                <p class="prog-sub text-[10px] text-[#886144] mt-0.5">Program Seleksi Utama</p>
               </div>
-              <div id="cardProgTripati" class="program-card" onclick="pilihProgram('Tripati')">
-                <span class="program-check">
-                  <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
-                </span>
-                <div class="program-card-title">TRIPATI</div>
-                <div class="program-card-sub">Program Evaluasi</div>
+
+              <div id="optTripati" class="program-option" onclick="selectProgram('Tripati')">
+                <span class="program-check"><i class="fas fa-check"></i></span>
+                <div class="w-10 h-10 rounded-full bg-[#C8963E]/20 text-[#C8963E] flex items-center justify-center mx-auto mb-2">
+                  <i class="fas fa-award"></i>
+                </div>
+                <p class="font-extrabold text-sm">TRIPATI</p>
+                <p class="prog-sub text-[10px] text-[#886144] mt-0.5">Program Evaluasi & CAT</p>
               </div>
             </div>
           </div>
 
-          <!-- FORM TAMBAHAN KHUSUS TRIPATI: ASAL KABUPATEN -->
-          <div id="kabupatenGroup" class="kabupaten-group">
-            <label class="input-label" style="color: var(--color-primary);">Asal Kabupaten / Kota (Khusus Tripati)</label>
-            <div class="input-wrapper">
-              <input type="text" placeholder="Pilih atau ketik Asal Kabupaten" name="asalKabupaten" id="daftarKabupaten" list="listKabupaten" class="input-field">
-            </div>
-            <datalist id="listKabupaten">
+          <!-- Kolom Tambahan Khusus TRIPATI: Asal Kabupaten -->
+          <div id="kabupatenFieldBox" class="kabupaten-box hidden">
+            <label for="daftarKabupaten" class="reg-label text-[#543A2A] flex items-center gap-1.5">
+              <i class="fas fa-map-marker-alt text-[#C8963E]"></i>
+              <span>Asal Kabupaten / Kota (Khusus Tripati) <span class="text-red-600">*</span></span>
+            </label>
+            <input type="text" name="asalKabupaten" id="daftarKabupaten" list="daftarKabupatenList" class="reg-input bg-white"
+              placeholder="Pilih atau ketik Asal Kabupaten (Contoh: Kabupaten Sleman)">
+            <datalist id="daftarKabupatenList">
               <option value="Kota Yogyakarta">
               <option value="Kabupaten Sleman">
               <option value="Kabupaten Bantul">
               <option value="Kabupaten Kulon Progo">
               <option value="Kabupaten Gunungkidul">
             </datalist>
-            <p class="text-[11px] mt-1.5 ml-1" style="color: var(--text-muted);">Wajib diisi untuk pendaftar program Tripati.</p>
+            <p class="text-[11px] text-[#886144] mt-1.5">Wajib diisi bagi pendaftar program Tripati.</p>
           </div>
 
-          <div class="form-group">
-            <label class="input-label">Username (NIK)</label>
-            <div class="input-wrapper">
-              <input type="text" placeholder="16 Digit NIK" name="nik" required id="daftarNik" class="input-field">
+          <!-- Biodata Peserta -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+            <div>
+              <label for="daftarNik" class="reg-label">NIK <span class="text-red-500">*</span></label>
+              <input type="text" name="nik" id="daftarNik" class="reg-input" placeholder="16 digit NIK" required>
+            </div>
+            <div>
+              <label for="daftarNama" class="reg-label">Nama Lengkap <span class="text-red-500">*</span></label>
+              <input type="text" name="nama" id="daftarNama" class="reg-input" placeholder="Sesuai identitas" required>
             </div>
           </div>
-          <div class="form-group">
-            <label class="input-label">Buat Kata Sandi</label>
-            <div class="input-wrapper">
-              <input type="password" placeholder="Minimal 6 karakter" name="password" required id="daftarPassword" class="input-field pr-12">
-              <div class="password-toggle" onclick="togglePasswordVisibility('daftarPassword', this)">
-                <svg class="w-5 h-5 toggle-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"></path></svg>
-              </div>
-            </div>
+
+          <div>
+            <label for="daftarSekolah" class="reg-label">Asal Sekolah / Instansi <span class="text-red-500">*</span></label>
+            <input type="text" name="asalSekolah" id="daftarSekolah" class="reg-input" placeholder="Contoh: SMAN 2 YOGYAKARTA" required>
           </div>
-          <div class="form-group">
-            <label class="input-label">Nama Lengkap</label>
-            <div class="input-wrapper">
-              <input type="text" placeholder="Sesuai Identitas" name="nama" required id="daftarNama" class="input-field">
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+            <div>
+              <label for="daftarTelepon" class="reg-label">No. WhatsApp Aktif <span class="text-red-500">*</span></label>
+              <input type="tel" name="nomorTelepon" id="daftarTelepon" class="reg-input" placeholder="08xxxxxxxxxx" required>
             </div>
-          </div>
-          <div class="form-group">
-            <label class="input-label">Asal Sekolah</label>
-            <div class="input-wrapper">
-              <input type="text" placeholder="Sekolah(Contoh: SMAN 50 YOGYAKARTA)" name="asalSekolah" required id="daftarSekolah" class="input-field">
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="input-label">Nomor WhatsApp</label>
-            <div class="input-wrapper">
-              <input type="text" placeholder="08xxxxxxxxxx" name="nomorTelepon" required id="daftarTelepon" class="input-field">
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="input-label">Jenis Kelamin</label>
-            <div class="input-wrapper">
-              <select name="jenisKelamin" required id="daftarJK" class="input-field" style="appearance: none;">
-                <option value="" disabled selected>Pilih Jenis Kelamin</option>
+            <div>
+              <label for="daftarJK" class="reg-label">Jenis Kelamin <span class="text-red-500">*</span></label>
+              <select name="jenisKelamin" id="daftarJK" class="reg-input" required>
+                <option value="">-- Pilih --</option>
                 <option value="Laki-laki">Laki-laki</option>
                 <option value="Perempuan">Perempuan</option>
               </select>
             </div>
           </div>
-          <div class="form-group">
-            <label class="input-label">Tempat, Tanggal Lahir</label>
-            <div class="input-wrapper">
-              <input type="text" placeholder="Contoh: Jakarta, 17 Agustus 2010" name="tempatLahir" required id="daftarTTL" class="input-field">
+
+          <div>
+            <label for="daftarTTL" class="reg-label">Tempat, Tanggal Lahir <span class="text-red-500">*</span></label>
+            <input type="text" name="tempatLahir" id="daftarTTL" class="reg-input" placeholder="Contoh: Yogyakarta, 17 Agustus 2010" required>
+          </div>
+
+          <div class="grid grid-cols-3 gap-3">
+            <div>
+              <label for="daftarUsia" class="reg-label">Usia (Thn) <span class="text-red-500">*</span></label>
+              <input type="number" name="usia" id="daftarUsia" class="reg-input text-center" placeholder="16" min="10" max="30" required>
+            </div>
+            <div>
+              <label for="daftarTinggi" class="reg-label">Tinggi (cm) <span class="text-red-500">*</span></label>
+              <input type="number" name="tinggi" id="daftarTinggi" class="reg-input text-center" placeholder="168" required>
+            </div>
+            <div>
+              <label for="daftarBerat" class="reg-label">Berat (kg) <span class="text-red-500">*</span></label>
+              <input type="number" name="berat" id="daftarBerat" class="reg-input text-center" placeholder="58" required>
             </div>
           </div>
-          <div class="flex gap-3">
-              <div class="form-group flex-1">
-                <label class="input-label">Usia</label>
-                <div class="input-wrapper">
-                  <input type="number" placeholder="16" name="usia" required id="daftarUsia" class="input-field text-center">
-                </div>
-              </div>
-              <div class="form-group flex-1">
-                <label class="input-label">TB (cm)</label>
-                <div class="input-wrapper">
-                  <input type="number" placeholder="170" name="tinggi" required id="daftarTinggi" class="input-field text-center">
-                </div>
-              </div>
-              <div class="form-group flex-1">
-                <label class="input-label">BB (kg)</label>
-                <div class="input-wrapper">
-                  <input type="number" placeholder="60" name="berat" required id="daftarBerat" class="input-field text-center">
-                </div>
-              </div>
-          </div>
-          <div class="form-group">
-            <label class="input-label">Bukti Kartu Pelajar</label>
-            <div class="file-input-wrapper">
-              <input type="file" name="fileBukti" required id="fileBukti" accept=".jpg,.jpeg,.png,.pdf">
+
+          <div>
+            <label for="daftarPassword" class="reg-label">Buat Kata Sandi Akun <span class="text-red-500">*</span></label>
+            <div class="relative">
+              <input type="password" name="password" id="daftarPassword" class="reg-input pr-11" placeholder="Minimal 6 karakter" minlength="6" required>
+              <button type="button" onclick="toggleRegPass()"
+                class="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#886144] hover:text-[#A3496C]">
+                <i id="iconDaftarPass" class="fas fa-eye"></i>
+              </button>
             </div>
           </div>
-          <div class="form-group">
-            <label class="input-label">Bukti Follow Instagram (@dppi.kotayogyakarta)</label>
-            <div class="file-input-wrapper">
-              <input type="file" name="fileIG" required id="fileIG" accept=".jpg,.jpeg,.png">
+
+          <!-- Upload Berkas -->
+          <div class="space-y-3 pt-1">
+            <div class="file-card">
+              <label for="fileBukti" class="reg-label">Kartu Pelajar / Identitas (Max 3MB) <span class="text-red-500">*</span></label>
+              <input type="file" name="fileBukti" id="fileBukti" accept=".jpg,.jpeg,.png,.pdf" required class="w-full text-xs text-[#543A2A] cursor-pointer">
+            </div>
+            <div class="file-card">
+              <label for="fileIG" class="reg-label">Bukti Follow IG @dppi.kotayogyakarta (Max 3MB) <span class="text-red-500">*</span></label>
+              <input type="file" name="fileIG" id="fileIG" accept=".jpg,.jpeg,.png" required class="w-full text-xs text-[#543A2A] cursor-pointer">
+            </div>
+            <div class="file-card">
+              <label for="fileTikTok" class="reg-label">Bukti Follow TikTok @dppi.kotayogyakarta (Max 3MB) <span class="text-red-500">*</span></label>
+              <input type="file" name="fileTikTok" id="fileTikTok" accept=".jpg,.jpeg,.png" required class="w-full text-xs text-[#543A2A] cursor-pointer">
             </div>
           </div>
-          <div class="form-group">
-            <label class="input-label">Bukti Follow TikTok (@dppi.kotayogyakarta)</label>
-            <div class="file-input-wrapper">
-              <input type="file" name="fileTikTok" required id="fileTikTok" accept=".jpg,.jpeg,.png">
-            </div>
-          </div>
-          <button type="submit" id="btnDaftar" class="btn-submit">
+
+          <button type="submit" id="btnDaftar" class="btn-reg-submit mt-2">
             <svg class="spinner w-5 h-5 hidden" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-            <span class="btn-text">Daftar Bhinnekastra</span>
+            <i class="fas fa-paper-plane mr-2 btn-reg-icon"></i>
+            <span class="btn-text">Daftar Program Bhinnekastra</span>
           </button>
           <div id="daftarMessage" class="message"></div>
         </form>
@@ -463,8 +553,8 @@
   </div>
 
 <script>
-  // PASTIKAN URL INI ADALAH URL DEPLOYMENT TERBARU ANDA
-  const gasBaseUrl = 'https://script.google.com/macros/s/AKfycbxZ_SOzSPOM55CQ1Y0hefDmfmA1a_a_80sTjB9I_z7RwUxtpCnDaXi2LsFRmKd2nr7Q/exec';
+  // URL DEPLOYMENT TERBARU DARI kode.gs
+  const gasBaseUrl = 'https://script.google.com/macros/s/AKfycbwoGe8hzgF6Z3YUXHDkE1RurNFeImsVeox7WQvmbUnTGPwskQP3PDZVsRIkXj61UNF_/exec';
 
   const carousel = document.getElementById('textCarousel');
   const dots = document.getElementById('carouselDots').children;
@@ -549,31 +639,47 @@
   // --- PILIH PROGRAM PENDAFTARAN (BHINNEKASTRA / TRIPATI) ---
   function getDaftarButtonLabel() {
       const prog = document.getElementById('daftarProgram').value;
-      return prog === 'Tripati' ? 'Daftar Tripati' : 'Daftar Bhinnekastra';
+      return prog === 'Tripati' ? 'Daftar Program Tripati' : 'Daftar Program Bhinnekastra';
   }
 
-  function pilihProgram(program) {
+  function selectProgram(program) {
       document.getElementById('daftarProgram').value = program;
-      const cardBhinn = document.getElementById('cardProgBhinnekastra');
-      const cardTripati = document.getElementById('cardProgTripati');
-      const kabGroup = document.getElementById('kabupatenGroup');
+      const optBhinn = document.getElementById('optBhinnekastra');
+      const optTrip = document.getElementById('optTripati');
+      const kabBox = document.getElementById('kabupatenFieldBox');
       const kabInput = document.getElementById('daftarKabupaten');
-      const btnDaftarText = document.querySelector('#btnDaftar .btn-text');
+      const btnDaftar = document.getElementById('btnDaftar');
+      const btnText = btnDaftar.querySelector('.btn-text');
+
+      optBhinn.classList.remove('selected-bhinnekastra');
+      optTrip.classList.remove('selected-tripati');
 
       if (program === 'Tripati') {
-          cardBhinn.classList.remove('active');
-          cardTripati.classList.add('active');
-          kabGroup.classList.add('show');
+          optTrip.classList.add('selected-tripati');
+          kabBox.classList.remove('hidden');
           kabInput.required = true;
-          if (btnDaftarText) btnDaftarText.textContent = 'Daftar Tripati';
+          btnDaftar.classList.add('tripati-mode');
+          if (btnText) btnText.textContent = 'Daftar Program Tripati';
           setTimeout(() => kabInput.focus(), 100);
       } else {
-          cardTripati.classList.remove('active');
-          cardBhinn.classList.add('active');
-          kabGroup.classList.remove('show');
+          optBhinn.classList.add('selected-bhinnekastra');
+          kabBox.classList.add('hidden');
           kabInput.required = false;
           kabInput.value = '';
-          if (btnDaftarText) btnDaftarText.textContent = 'Daftar Bhinnekastra';
+          btnDaftar.classList.remove('tripati-mode');
+          if (btnText) btnText.textContent = 'Daftar Program Bhinnekastra';
+      }
+  }
+
+  function toggleRegPass() {
+      const el = document.getElementById('daftarPassword');
+      const ic = document.getElementById('iconDaftarPass');
+      if (el.type === 'password') {
+          el.type = 'text';
+          ic.className = 'fas fa-eye-slash';
+      } else {
+          el.type = 'password';
+          ic.className = 'fas fa-eye';
       }
   }
 
@@ -599,14 +705,19 @@
     document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
     document.getElementById(tabName).classList.add('active');
     evt.currentTarget.classList.add("active");
+
+    const authContainer = document.getElementById('authContainer');
     const headerTitle = document.querySelector('.auth-container h2');
     const headerDesc = document.querySelector('.auth-container p');
+
     if(tabName === 'Login') {
+      authContainer.classList.remove('register-wide');
       headerTitle.textContent = 'Masuk ke Akun Anda.';
       headerDesc.textContent = 'Akses fitur manajemen pendaftaran.';
     } else {
+      authContainer.classList.add('register-wide');
       headerTitle.textContent = 'Buat Akun Baru.';
-      headerDesc.textContent = 'Pilih program dan lengkapi data pendaftaran.';
+      headerDesc.textContent = 'Pendaftaran Resmi Bhinnekastra & Tripati 2026.';
     }
   }
 
@@ -618,10 +729,12 @@
   
   function setButtonLoading(button, isLoading, originalText, loadingText) {
       const spinner = button.querySelector('.spinner');
+      const iconPlane = button.querySelector('.btn-reg-icon');
       const textSpan = button.querySelector('.btn-text');
       button.disabled = isLoading;
       button.classList.toggle('btn-loading', isLoading);
       if (spinner) spinner.classList.toggle('hidden', !isLoading);
+      if (iconPlane) iconPlane.classList.toggle('hidden', isLoading);
       if (textSpan) textSpan.textContent = isLoading ? loadingText : originalText;
   }
 
@@ -630,23 +743,34 @@
     const btnDaftar = document.getElementById('btnDaftar');
     const messageDiv = document.getElementById('daftarMessage');
     const fileInput = document.getElementById('fileBukti');
+    const fileIG = document.getElementById('fileIG');
+    const fileTikTok = document.getElementById('fileTikTok');
     const passwordInput = document.getElementById('daftarPassword').value;
-    const programDipilih = document.getElementById('daftarProgram').value;
+    const program = document.getElementById('daftarProgram').value;
     const asalKabupaten = document.getElementById('daftarKabupaten').value.trim();
     const labelBtn = getDaftarButtonLabel();
 
-    if (programDipilih === 'Tripati' && !asalKabupaten) {
+    if (program === 'Tripati' && !asalKabupaten) {
         return showMessage(messageDiv, "error", "Asal Kabupaten wajib diisi untuk pendaftaran Tripati.");
     }
-    if (passwordInput.length < 6) return showMessage(messageDiv, "error", "Sandi minimal 6 karakter.");
-    const fileIG = document.getElementById('fileIG');
-    const fileTikTok = document.getElementById('fileTikTok');
-
+    if (passwordInput.length < 6) {
+        return showMessage(messageDiv, "error", "Sandi minimal 6 karakter.");
+    }
     if (fileInput.files.length === 0 || fileIG.files.length === 0 || fileTikTok.files.length === 0) {
         return showMessage(messageDiv, "error", "Semua file bukti (Kartu, IG, TikTok) wajib diunggah.");
     }
+
+    const fKartu = fileInput.files[0];
+    const fIG = fileIG.files[0];
+    const fTikTok = fileTikTok.files[0];
+
+    for (const f of [fKartu, fIG, fTikTok]) {
+        if (f.size > 3 * 1024 * 1024) {
+            return showMessage(messageDiv, "error", `Ukuran file "${f.name}" melebihi batas maksimal 3 MB.`);
+        }
+    }
     
-    setButtonLoading(btnDaftar, true, labelBtn, 'Memproses data...');
+    setButtonLoading(btnDaftar, true, labelBtn, `Mendaftar ${program}...`);
     
     const toBase64 = file => new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -656,39 +780,39 @@
     });
 
     try {
-        const fKartu = fileInput.files[0];
-        const fIG = fileIG.files[0];
-        const fTikTok = fileTikTok.files[0];
-
         const [base64Kartu, base64IG, base64TikTok] = await Promise.all([
             toBase64(fKartu), toBase64(fIG), toBase64(fTikTok)
         ]);
 
         const payload = {
             action: 'register',
-            program: programDipilih,
-            asalKabupaten: programDipilih === 'Tripati' ? asalKabupaten : '-',
-            nik: document.getElementById('daftarNik').value,
+            program: program,
+            asalKabupaten: program === 'Tripati' ? asalKabupaten : '-',
+            nik: document.getElementById('daftarNik').value.trim(),
             password: passwordInput,
-            nama: document.getElementById('daftarNama').value,
-            asalSekolah: document.getElementById('daftarSekolah').value,
-            nomorTelepon: document.getElementById('daftarTelepon').value,
+            nama: document.getElementById('daftarNama').value.trim(),
+            asalSekolah: document.getElementById('daftarSekolah').value.trim(),
+            nomorTelepon: document.getElementById('daftarTelepon').value.trim(),
             jenisKelamin: document.getElementById('daftarJK').value,
-            tempatLahir: document.getElementById('daftarTTL').value,
-            usia: document.getElementById('daftarUsia').value,
-            tinggi: document.getElementById('daftarTinggi').value,
-            berat: document.getElementById('daftarBerat').value,
+            tempatLahir: document.getElementById('daftarTTL').value.trim(),
+            usia: document.getElementById('daftarUsia').value.trim(),
+            tinggi: document.getElementById('daftarTinggi').value.trim(),
+            berat: document.getElementById('daftarBerat').value.trim(),
             fileName: fKartu.name, fileMimeType: fKartu.type, fileBase64: base64Kartu,
             fileIGName: fIG.name, fileIGMimeType: fIG.type, fileIGBase64: base64IG,
             fileTikTokName: fTikTok.name, fileTikTokMimeType: fTikTok.type, fileTikTokBase64: base64TikTok
         };
 
-        const response = await fetch(gasBaseUrl, { method: 'POST', body: JSON.stringify(payload) });
+        const response = await fetch(gasBaseUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify(payload)
+        });
         const result = await response.json();
         setButtonLoading(btnDaftar, false, labelBtn);
         
         if (result.success) {
-            showMessage(messageDiv, "success", `Pendaftaran ${programDipilih} berhasil! Masuk ke sistem...`);
+            showMessage(messageDiv, "success", `Pendaftaran program ${program} berhasil! Masuk ke sistem...`);
             const userData = { ...result.data, password: passwordInput };
             sessionStorage.setItem('userData', JSON.stringify(userData));
             setTimeout(() => { window.location.href = '/detail.html'; }, 800); 
@@ -714,7 +838,11 @@
 
     setButtonLoading(btnLogin, true, 'Mulai Akses', 'Memverifikasi...');
     try {
-        const response = await fetch(gasBaseUrl, { method: 'POST', body: JSON.stringify(payload) });
+        const response = await fetch(gasBaseUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify(payload)
+        });
         const result = await response.json();
         setButtonLoading(btnLogin, false, 'Mulai Akses');
 
